@@ -1,0 +1,47 @@
+{
+  "name": "dev-flow-agent",
+  "version": "0.1.0",
+  "description": "Multi-agent workflow plugin: orient, plan, and distill coding work.",
+  "type": "module",
+  "bin": {
+    "dev-flow": "./bin/dev-flow.js"
+  },
+  "files": [
+    ".claude-plugin/",
+    ".codex-plugin/",
+    ".cursor-plugin/",
+    ".opencode/",
+    "skills/",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "gemini-extension.json",
+    "README.md",
+    "LICENSE",
+    "bin/"
+  ],
+  "scripts": {
+    "install-plugin": "node ./bin/dev-flow.js install",
+    "validate": "node ./bin/dev-flow.js validate"
+  },
+  "keywords": [
+    "ai-agent",
+    "claude-code",
+    "codex",
+    "cursor",
+    "gemini",
+    "opencode",
+    "skills",
+    "workflow"
+  ],
+  "author": "Dev Flow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-flow/dev-flow.git"
+  },
+  "homepage": "https://github.com/dev-flow/dev-flow#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "dev-flow",
+  "description": "Three focused development workflow skills: orient repository context, plan verifiable work, and distill durable knowledge.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Dev Flow"
+  },
+  "homepage": "https://github.com/dev-flow/dev-flow",
+  "repository": "https://github.com/dev-flow/dev-flow",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "context",
+    "planning",
+    "knowledge",
+    "workflow",
+    "coding-agents"
+  ]
+}

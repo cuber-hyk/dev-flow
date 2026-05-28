@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Orient"
+  short_description: "Enter repo context without reading noise"
+  default_prompt: "Use $dev-orient to enter this repository context before starting the task."

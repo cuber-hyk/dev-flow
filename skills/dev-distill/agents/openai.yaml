@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Distill"
+  short_description: "Distill task outcomes into durable project knowledge"
+  default_prompt: "Use $dev-distill to turn this completed task into durable docs, ADRs, or tests."

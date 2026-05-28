@@ -1,0 +1,6 @@
+{
+  "name": "dev-flow",
+  "description": "Orient, plan, and distill coding work with three focused agent skills.",
+  "version": "0.1.0",
+  "contextFileName": "GEMINI.md"
+}
