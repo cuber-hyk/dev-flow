@@ -41,14 +41,14 @@ Local marketplace install:
 After publishing to npm:
 
 ```bash
-npx dev-flow-agent install
+npx cuber-hyk-dev-flow install
 ```
 
 Local package test before publishing:
 
 ```bash
 npm pack
-npx ./dev-flow-agent-0.1.0.tgz install
+npx ./cuber-hyk-dev-flow-0.1.0.tgz install
 ```
 
 The installer copies this plugin to:

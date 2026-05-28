@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "description": "A compact Codex workflow plugin for low-noise repository orientation, task planning, and knowledge distillation.",
   "author": {
-    "name": "Dev Flow",
-    "url": "https://github.com/dev-flow"
+    "name": "cuber-hyk",
+    "url": "https://github.com/cuber-hyk"
   },
-  "homepage": "https://github.com/dev-flow/dev-flow",
-  "repository": "https://github.com/dev-flow/dev-flow",
+  "homepage": "https://github.com/cuber-hyk/dev-flow",
+  "repository": "https://github.com/cuber-hyk/dev-flow",
   "license": "MIT",
   "skills": "./skills/",
   "interface": {
     "displayName": "Dev Flow",
     "shortDescription": "Orient, plan, and distill coding work.",
     "longDescription": "Dev Flow provides three focused Codex skills: dev-orient to enter repository context without noise, dev-plan to create a minimal verifiable task plan, and dev-distill to turn completed work into durable project knowledge.",
-    "developerName": "Dev Flow",
+    "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
     "defaultPrompt": [
@@ -22,7 +22,7 @@
       "Use dev-plan to define the next task.",
       "Use dev-distill to preserve durable project knowledge."
     ],
-    "websiteURL": "https://github.com/dev-flow/dev-flow",
+    "websiteURL": "https://github.com/cuber-hyk/dev-flow",
     "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
     "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
     "brandColor": "#2563EB"

@@ -6,7 +6,7 @@ Add Dev Flow to the `plugin` array in your `opencode.json`:
 
 ```json
 {
-  "plugin": ["dev-flow@git+https://github.com/dev-flow/dev-flow.git"]
+  "plugin": ["dev-flow@git+https://github.com/cuber-hyk/dev-flow.git"]
 }
 ```
 

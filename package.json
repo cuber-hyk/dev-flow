@@ -1,5 +1,5 @@
 {
-  "name": "dev-flow-agent",
+  "name": "cuber-hyk-dev-flow",
   "version": "0.1.0",
   "description": "Multi-agent workflow plugin: orient, plan, and distill coding work.",
   "type": "module",
@@ -34,13 +34,13 @@
     "skills",
     "workflow"
   ],
-  "author": "Dev Flow",
+  "author": "cuber-hyk",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dev-flow/dev-flow.git"
+    "url": "git+https://github.com/cuber-hyk/dev-flow.git"
   },
-  "homepage": "https://github.com/dev-flow/dev-flow#readme",
+  "homepage": "https://github.com/cuber-hyk/dev-flow#readme",
   "engines": {
     "node": ">=18"
   }
