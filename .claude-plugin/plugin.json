@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
-  "description": "Three focused development workflow skills: orient repository context, plan verifiable work, and distill durable knowledge.",
-  "version": "0.2.0",
+  "description": "Lifecycle workflow skills for repository memory: init, check, orient, plan, audit, and distill.",
+  "version": "0.4.3",
   "author": {
     "name": "cuber-hyk"
   },

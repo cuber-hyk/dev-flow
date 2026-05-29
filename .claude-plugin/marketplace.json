@@ -1,14 +1,14 @@
 {
   "name": "cuberhyk-plugins",
-  "description": "Local marketplace for the cuberhyk-dev-flow coding-agent workflow plugin",
+  "description": "Local marketplace for cuber-hyk coding-agent plugins",
   "owner": {
     "name": "cuber-hyk"
   },
   "plugins": [
     {
       "name": "cuberhyk-dev-flow",
-      "description": "Orient, plan, and distill coding work across agent harnesses",
-      "version": "0.2.0",
+      "description": "Init, check, orient, plan, audit, and distill coding work across agent harnesses",
+      "version": "0.4.3",
       "source": "./",
       "author": {
         "name": "cuber-hyk"

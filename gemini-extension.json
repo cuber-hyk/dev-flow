@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
-  "description": "Orient, plan, and distill coding work with three focused agent skills.",
-  "version": "0.1.0",
+  "description": "Init, check, orient, plan, audit, and distill coding work with focused agent skills.",
+  "version": "0.4.3",
   "contextFileName": "GEMINI.md"
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Check"
+  short_description: "Validate Dev Flow docs routing"
+  default_prompt: "Use $dev-check to validate Dev Flow documentation routing and lifecycle health."

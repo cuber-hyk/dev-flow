@@ -28,7 +28,10 @@ Use OpenCode's native skill tool to list and load skills:
 
 ```text
 use skill tool to list skills
+use skill tool to load cuberhyk-dev-flow/dev-init
+use skill tool to load cuberhyk-dev-flow/dev-check
 use skill tool to load cuberhyk-dev-flow/dev-orient
 use skill tool to load cuberhyk-dev-flow/dev-plan
+use skill tool to load cuberhyk-dev-flow/dev-audit
 use skill tool to load cuberhyk-dev-flow/dev-distill
 ```

@@ -207,7 +207,7 @@
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: 14px;
       }
 
@@ -275,7 +275,7 @@
 
       .flow {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
         gap: 12px;
       }
 
@@ -555,6 +555,8 @@
           <a href="#skills"><span class="dot"></span>技能职责</a>
           <a href="#memory"><span class="dot"></span>目录规则</a>
           <a href="#lifecycle"><span class="dot"></span>生命周期</a>
+          <a href="#templates"><span class="dot"></span>模板</a>
+          <a href="#persistence"><span class="dot"></span>落文档</a>
           <a href="#workflow"><span class="dot"></span>开发流程</a>
           <a href="#scenes"><span class="dot"></span>使用场景</a>
           <a href="#rules"><span class="dot"></span>维护规则</a>
@@ -566,9 +568,9 @@
           <p class="eyebrow">Coding Agent Workflow Plugin</p>
           <h2>让 AI 先读对上下文，再计划、实现、沉淀。</h2>
           <p>
-            cuberhyk-dev-flow 把大型项目里的 AI 协作拆成三个清晰动作：
-            进入上下文、制定可验证计划、沉淀长期知识。它不追求复杂方法论，
-            只提供一条稳定的小循环。
+            cuberhyk-dev-flow 把大型项目里的 AI 协作拆成一条生命周期：
+            初始化、检查、进入上下文、计划或审查、实现、沉淀、再检查。它不追求复杂方法论，
+            只提供一条稳定的闭环。
           </p>
           <div class="quick-actions">
             <a class="action primary" href="#install">查看安装命令</a>
@@ -638,11 +640,11 @@ node .\bin\dev-flow.js install</code></pre>
           <div class="decision">
             <article class="panel">
               <h4>创建目录和入口文档</h4>
-              <p>生成 <code>CONTEXT.md</code>、<code>docs/ai/context-map.md</code>、capabilities、plans、audits、adr 等目录；已有文件不会被覆盖。</p>
+              <p>生成 <code>AGENTS.md</code> Dev Flow 小节、<code>CONTEXT.md</code>、<code>docs/ai/context-map.md</code>、capabilities、plans、audits、adr 等目录和模板；已有文件不会被覆盖。</p>
             </article>
             <article class="panel">
               <h4>检查文档路由</h4>
-              <p>检查缺失目录、计划/审查缺状态、capability 误放审查报告、context-map 是否默认指向历史材料。</p>
+            <p>检查缺失目录、计划/审查缺状态、capability 误放审查报告、context-map 是否默认指向历史材料，以及 gitignore 是否隐藏文档产物。</p>
             </article>
           </div>
 
@@ -661,11 +663,40 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
 
         <section id="skills">
           <div class="section-head">
-            <h3>三个技能</h3>
+            <h3>六个技能</h3>
             <p>每个技能只做自己的事，避免一个命令同时读上下文、写计划、改代码、写报告。</p>
           </div>
 
           <div class="grid">
+            <article class="skill">
+              <header>
+                <h4>dev-init</h4>
+                <span class="badge">初始化</span>
+              </header>
+              <p>用于项目首次接入时，创建 Dev Flow 推荐的记忆结构和入口文档。</p>
+              <ul>
+                <li>创建 CONTEXT 和 context-map</li>
+                <li>创建 capabilities、plans、audits、adr</li>
+                <li>不覆盖已有文件</li>
+                <li>提示下一步使用 dev-check</li>
+              </ul>
+            </article>
+
+            <article class="skill">
+              <header>
+                <h4>dev-check</h4>
+                <span class="badge green">检查</span>
+              </header>
+              <p>用于检查文档归位、生命周期状态、git 可见性和默认上下文是否会被历史材料污染。</p>
+              <ul>
+                <li>检查缺失目录</li>
+                <li>检查 plans/audits 状态</li>
+                <li>识别 capability 误放报告</li>
+                <li>检查 gitignore 是否隐藏产物</li>
+                <li>提示下一步技能</li>
+              </ul>
+            </article>
+
             <article class="skill">
               <header>
                 <h4>dev-orient</h4>
@@ -698,6 +729,21 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
 
             <article class="skill">
               <header>
+                <h4>dev-audit</h4>
+                <span class="badge">审查</span>
+              </header>
+              <p>用于检查功能、模块或文档系统是否正确完整，把发现、证据和验证写入 docs/audits。</p>
+              <ul>
+                <li>明确审查范围</li>
+                <li>记录事实源和证据</li>
+                <li>按严重级别列发现</li>
+                <li>不把报告写入 capabilities</li>
+                <li>提示下一步 dev-plan 或 dev-distill</li>
+              </ul>
+            </article>
+
+            <article class="skill">
+              <header>
                 <h4>dev-distill</h4>
                 <span class="badge amber">沉淀知识</span>
               </header>
@@ -716,7 +762,7 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
         <section id="memory">
           <div class="section-head">
             <h3>目录规则</h3>
-            <p>三个技能都遵守同一套知识归位规则，避免计划、审查报告和长期事实混在一起。</p>
+            <p>六个技能都遵守同一套知识归位规则，避免计划、审查报告和长期事实混在一起。</p>
           </div>
 
           <table class="routing-table">
@@ -777,6 +823,60 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
           </table>
         </section>
 
+        <section id="templates">
+          <div class="section-head">
+            <h3>模板内容</h3>
+            <p>初始化命令会创建模板，后续每类产物都有固定字段，减少 AI 自由发挥。</p>
+          </div>
+
+          <table class="routing-table">
+            <thead>
+              <tr>
+                <th>模板</th>
+                <th>包含内容</th>
+                <th>由哪个技能使用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>AGENTS.md</code> Dev Flow 小节</td>
+                <td>技能顺序、文档路由、默认上下文排除规则。</td>
+                <td><code>dev-init</code> 追加，所有技能读取。</td>
+              </tr>
+              <tr>
+                <td><code>CONTEXT.md</code></td>
+                <td>稳定领域词汇和业务概念。</td>
+                <td><code>dev-orient</code> 读取，<code>dev-distill</code> 更新。</td>
+              </tr>
+              <tr>
+                <td><code>docs/ai/context-map.md</code></td>
+                <td>任务到 capability、代码入口和产物目录的路由。</td>
+                <td><code>dev-orient</code> 读取，<code>dev-distill</code> 维护。</td>
+              </tr>
+              <tr>
+                <td><code>docs/capabilities/_template.md</code></td>
+                <td>职责、当前行为、事实源、入口和验证方式。</td>
+                <td><code>dev-distill</code> 用于沉淀稳定事实。</td>
+              </tr>
+              <tr>
+                <td><code>docs/plans/_template.md</code></td>
+                <td>目标、范围、假设、步骤、验证、验收标准、git 可见性和关闭方式。</td>
+                <td><code>dev-plan</code> 用于持久计划。</td>
+              </tr>
+              <tr>
+                <td><code>docs/audits/_template.md</code></td>
+                <td>审查范围、事实源、发现、验证、git 可见性和关闭方式。</td>
+                <td><code>dev-audit</code> 用于审查报告。</td>
+              </tr>
+              <tr>
+                <td><code>docs/adr/_template.md</code></td>
+                <td>背景、决策、备选方案、后果和状态历史。</td>
+                <td><code>dev-distill</code> 在 ADR gate 通过时使用。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
         <section id="lifecycle">
           <div class="section-head">
             <h3>产物生命周期</h3>
@@ -816,6 +916,40 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
           </table>
         </section>
 
+        <section id="persistence">
+          <div class="section-head">
+            <h3>何时落文档</h3>
+            <p>小计划、小审查可以口头完成；非平凡任务、需要后续追踪或工作流要求时，创建持久产物并确认 git 能追踪。</p>
+          </div>
+
+          <table class="routing-table">
+            <thead>
+              <tr>
+                <th>技能</th>
+                <th>何时落文档</th>
+                <th>创建后检查</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dev-plan</code></td>
+                <td>用户要求计划文档、工作流要求、高风险/跨模块/多轮任务、审查后修复或需要后续评审时，创建或更新 <code>docs/plans/YYYY-MM-DD-short-topic.md</code>。</td>
+                <td>创建 <code>docs/plans/YYYY-MM-DD-short-topic.md</code> 后运行 <code>git status --short --branch --untracked-files=all</code>。</td>
+              </tr>
+              <tr>
+                <td><code>dev-audit</code></td>
+                <td>用户要求审查报告、工作流要求、非平凡/跨模块/正确性敏感审查，或发现需要后续处理的问题时，创建或更新 <code>docs/audits/YYYY-MM-DD-topic-audit.md</code>。</td>
+                <td>创建 <code>docs/audits/YYYY-MM-DD-topic-audit.md</code> 后运行 <code>git status --short --branch --untracked-files=all</code>。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="height: 14px"></div>
+          <div class="note">
+            如果任务很小、低风险、预计一轮完成，且用户没有要求文档，dev-plan 或 dev-audit 可以只在对话里输出。只要创建了计划或审查文件，就必须检查 git 可见性；如果 gitignore 隐藏了文件，agent 必须补最小 allow rule，或明确告诉用户该产物不会进入版本管理。
+          </div>
+        </section>
+
         <section id="workflow">
           <div class="section-head">
             <h3>功能开发流程</h3>
@@ -835,11 +969,16 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
             </article>
             <article class="step">
               <div class="step-number">3</div>
+              <h4>Audit</h4>
+              <p>审查任务走 dev-audit，功能任务可跳过。</p>
+            </article>
+            <article class="step">
+              <div class="step-number">4</div>
               <h4>Implement</h4>
               <p>按计划做最小必要修改并验证。</p>
             </article>
             <article class="step">
-              <div class="step-number">4</div>
+              <div class="step-number">5</div>
               <h4>Distill</h4>
               <p>把稳定知识沉淀到文档或测试，并关闭历史产物。</p>
             </article>
@@ -850,15 +989,41 @@ npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
           <div class="terminal">
             <div class="terminal-head">
               <span>一次典型功能开发</span>
-              <button class="copy" data-copy="/cuberhyk-dev-flow:dev-orient 我要开发学习统计的连续学习天数
+              <button class="copy" data-copy="/cuberhyk-dev-flow:dev-check 检查当前项目的 Dev Flow 文档结构
+/cuberhyk-dev-flow:dev-orient 我要开发学习统计的连续学习天数
 /cuberhyk-dev-flow:dev-plan 基于刚才上下文制定实现计划
 按照计划实现并运行验证
-/cuberhyk-dev-flow:dev-distill 本次实现完成，请沉淀长期知识">复制</button>
+/cuberhyk-dev-flow:dev-distill 本次实现完成，请沉淀长期知识
+/cuberhyk-dev-flow:dev-check 复查文档归位和生命周期状态">复制</button>
             </div>
-            <pre><code>/cuberhyk-dev-flow:dev-orient 我要开发学习统计的连续学习天数
+            <pre><code>/cuberhyk-dev-flow:dev-check 检查当前项目的 Dev Flow 文档结构
+/cuberhyk-dev-flow:dev-orient 我要开发学习统计的连续学习天数
 /cuberhyk-dev-flow:dev-plan 基于刚才上下文制定实现计划
 按照计划实现并运行验证
-/cuberhyk-dev-flow:dev-distill 本次实现完成，请沉淀长期知识</code></pre>
+/cuberhyk-dev-flow:dev-distill 本次实现完成，请沉淀长期知识
+/cuberhyk-dev-flow:dev-check 复查文档归位和生命周期状态</code></pre>
+          </div>
+
+          <div style="height: 14px"></div>
+
+          <div class="terminal">
+            <div class="terminal-head">
+              <span>一次审查驱动开发</span>
+              <button class="copy" data-copy="/cuberhyk-dev-flow:dev-check 检查文档结构
+/cuberhyk-dev-flow:dev-orient 我要审查学习统计模块
+/cuberhyk-dev-flow:dev-audit 审查学习统计的统计口径、事实源和测试缺口
+/cuberhyk-dev-flow:dev-plan 基于审查发现制定修复计划
+按照计划实现并运行验证
+/cuberhyk-dev-flow:dev-distill 沉淀稳定事实并关闭审查产物
+/cuberhyk-dev-flow:dev-check 复查生命周期状态">复制</button>
+            </div>
+            <pre><code>/cuberhyk-dev-flow:dev-check 检查文档结构
+/cuberhyk-dev-flow:dev-orient 我要审查学习统计模块
+/cuberhyk-dev-flow:dev-audit 审查学习统计的统计口径、事实源和测试缺口
+/cuberhyk-dev-flow:dev-plan 基于审查发现制定修复计划
+按照计划实现并运行验证
+/cuberhyk-dev-flow:dev-distill 沉淀稳定事实并关闭审查产物
+/cuberhyk-dev-flow:dev-check 复查生命周期状态</code></pre>
           </div>
         </section>
 

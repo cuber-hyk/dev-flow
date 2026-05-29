@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.2.0",
-  "description": "A compact Codex workflow plugin for low-noise repository orientation, task planning, and knowledge distillation.",
+  "version": "0.4.3",
+  "description": "A compact Codex lifecycle workflow plugin for repository initialization, validation, orientation, planning, audits, and knowledge distillation.",
   "author": {
     "name": "cuber-hyk",
     "url": "https://github.com/cuber-hyk"
@@ -12,14 +12,17 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "cuberhyk-dev-flow",
-    "shortDescription": "Orient, plan, and distill coding work.",
-    "longDescription": "cuberhyk-dev-flow provides three focused Codex skills: dev-orient to enter repository context without noise, dev-plan to create a minimal verifiable task plan, and dev-distill to turn completed work into durable project knowledge.",
+    "shortDescription": "Init, check, orient, plan, audit, and distill coding work.",
+    "longDescription": "cuberhyk-dev-flow provides six focused Codex skills: dev-init to bootstrap repository memory, dev-check to validate docs routing, dev-orient to enter repository context without noise, dev-plan to create a minimal verifiable task plan, dev-audit to route structured findings to docs/audits, and dev-distill to turn completed work into durable project knowledge.",
     "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
     "defaultPrompt": [
+      "Use dev-init to initialize Dev Flow memory when needed.",
+      "Use dev-check to validate docs routing.",
       "Use dev-orient to enter this repository context.",
-      "Use dev-plan to define the next task.",
+      "Use dev-plan to define the next task and persist non-trivial plans.",
+      "Use dev-audit to review features or workflows and persist non-trivial findings.",
       "Use dev-distill to preserve durable project knowledge."
     ],
     "websiteURL": "https://github.com/cuber-hyk/dev-flow",

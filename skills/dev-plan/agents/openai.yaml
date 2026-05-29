@@ -1,4 +1,4 @@
 interface:
   display_name: "Dev Plan"
-  short_description: "Plan goals, risks, verification, and outputs"
-  default_prompt: "Use $dev-plan to define the goal, steps, risks, verification, and artifact destinations before implementation."
+  short_description: "Plan work and persist non-trivial plans"
+  default_prompt: "Use $dev-plan to define the goal, steps, risks, verification, and decide whether this needs a docs/plans file before implementation."
