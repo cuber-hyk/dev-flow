@@ -7,15 +7,18 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const pluginRoot = path.resolve(__dirname, '..')
-const pluginName = 'dev-flow'
+const pluginName = 'cuberhyk-dev-flow'
+const legacyPluginNames = ['dev-flow']
 
 function usage() {
-  console.log(`Dev Flow installer
+  console.log(`cuberhyk-dev-flow installer
 
 Usage:
-  npx dev-flow-agent install
-  npx dev-flow-agent validate
-  npx dev-flow-agent paths
+  npx cuberhyk-dev-flow install
+  npx cuberhyk-dev-flow validate
+  npx cuberhyk-dev-flow init-project [project-dir]
+  npx cuberhyk-dev-flow validate-docs [project-dir]
+  npx cuberhyk-dev-flow paths
 
 Options:
   DEV_FLOW_PLUGIN_DIR       Override plugin install directory
@@ -24,6 +27,39 @@ Options:
 Claude Code local test:
   claude --plugin-dir <plugin-dir>
 `)
+}
+
+function today() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function ensureDir(target, created) {
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target, { recursive: true })
+    created.push(target)
+  }
+}
+
+function writeIfMissing(file, content, created) {
+  if (fs.existsSync(file)) return
+  fs.mkdirSync(path.dirname(file), { recursive: true })
+  fs.writeFileSync(file, content)
+  created.push(file)
+}
+
+function readText(file) {
+  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
+}
+
+function walkMarkdown(dir) {
+  if (!fs.existsSync(dir)) return []
+  const result = []
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) result.push(...walkMarkdown(full))
+    else if (entry.isFile() && entry.name.toLowerCase().endsWith('.md')) result.push(full)
+  }
+  return result
 }
 
 function copyRecursive(src, dest) {
@@ -93,6 +129,10 @@ function installCodexMarketplace(pluginDir) {
     category: 'Productivity',
   }
 
+  marketplace.plugins = marketplace.plugins.filter(
+    (plugin) => !legacyPluginNames.includes(plugin.name) || plugin.name === pluginName
+  )
+
   const index = marketplace.plugins.findIndex((plugin) => plugin.name === pluginName)
   if (index >= 0) {
     marketplace.plugins[index] = entry
@@ -118,12 +158,172 @@ function validatePluginRoot(root = pluginRoot) {
     'GEMINI.md',
     'gemini-extension.json',
     'README.md',
+    'docs/usage.html',
   ]
 
   const missing = required.filter((item) => !fs.existsSync(path.join(root, item)))
   if (missing.length > 0) {
     throw new Error(`Missing required files:\n${missing.map((item) => `- ${item}`).join('\n')}`)
   }
+}
+
+function initProject() {
+  const targetRoot = path.resolve(process.argv[3] || process.cwd())
+  const created = []
+  const day = today()
+
+  const dirs = [
+    'docs/ai',
+    'docs/capabilities',
+    'docs/plans',
+    'docs/audits',
+    'docs/audits/archived',
+    'docs/adr',
+  ]
+
+  for (const dir of dirs) ensureDir(path.join(targetRoot, dir), created)
+
+  writeIfMissing(
+    path.join(targetRoot, 'CONTEXT.md'),
+    `# Project Context
+
+This file stores stable domain vocabulary and business concepts only.
+
+## Domain Vocabulary
+
+| Term | Definition |
+|---|---|
+
+## Maintenance Rules
+
+- Add terms here only when they are reused across modules.
+- Put implementation details in the relevant capability document.
+- Put audit reports in \`docs/audits/\`, not here.
+`,
+    created
+  )
+
+  writeIfMissing(
+    path.join(targetRoot, 'docs/ai/context-map.md'),
+    `# AI Context Map
+
+This file routes AI agents to current context without reading process noise.
+
+## Default Entry
+
+1. Read \`AGENTS.md\` or \`CLAUDE.md\` when present.
+2. Read \`CONTEXT.md\`.
+3. Select only task-relevant \`docs/capabilities/*.md\`.
+4. Read only code entry points named by the selected capability docs.
+
+## Memory Rules
+
+- Do not read \`docs/plans/\` by default.
+- Do not read \`docs/audits/\` by default.
+- Do not read any \`archived/\` directory by default.
+- Treat code and tests as the final source of truth when docs disagree.
+
+## Task Routes
+
+| Task type | Read first | Code entry points |
+|---|---|---|
+
+## Updated
+
+- ${day}: Initialized cuberhyk-dev-flow context map.
+`,
+    created
+  )
+
+  const gitkeepDirs = [
+    'docs/capabilities',
+    'docs/plans',
+    'docs/audits',
+    'docs/audits/archived',
+    'docs/adr',
+  ]
+
+  for (const dir of gitkeepDirs) {
+    writeIfMissing(path.join(targetRoot, dir, '.gitkeep'), '', created)
+  }
+
+  console.log(`cuberhyk-dev-flow project memory initialized: ${targetRoot}`)
+  if (created.length === 0) {
+    console.log('No files or directories were created; everything already exists.')
+    return
+  }
+  console.log('Created:')
+  for (const item of created) console.log(`- ${path.relative(targetRoot, item)}`)
+}
+
+function validateDocs() {
+  const targetRoot = path.resolve(process.argv[3] || process.cwd())
+  const warnings = []
+  const errors = []
+
+  const recommended = [
+    'CONTEXT.md',
+    'docs/ai/context-map.md',
+    'docs/capabilities',
+    'docs/plans',
+    'docs/audits',
+    'docs/audits/archived',
+    'docs/adr',
+  ]
+
+  for (const item of recommended) {
+    if (!fs.existsSync(path.join(targetRoot, item))) warnings.push(`Missing recommended path: ${item}`)
+  }
+
+  const capabilityFiles = walkMarkdown(path.join(targetRoot, 'docs/capabilities'))
+  for (const file of capabilityFiles) {
+    const rel = path.relative(targetRoot, file).split(path.sep).join('/')
+    const text = readText(file)
+    if (/(audit|audits|plan|plans|审查|审核|计划)/i.test(path.basename(file))) {
+      errors.push(`Process artifact appears to be stored in capabilities: ${rel}`)
+    }
+    if (/artifact_type:\s*(audit|plan)/i.test(text)) {
+      errors.push(`Capability file declares audit/plan artifact_type: ${rel}`)
+    }
+    if (/##\s*(Findings|审查|问题清单|Audit)/i.test(text)) {
+      warnings.push(`Capability file may contain audit findings; keep only current facts: ${rel}`)
+    }
+  }
+
+  for (const dir of ['docs/plans', 'docs/audits']) {
+    const files = walkMarkdown(path.join(targetRoot, dir))
+    for (const file of files) {
+      const rel = path.relative(targetRoot, file).split(path.sep).join('/')
+      const text = readText(file)
+      if (!/^---[\s\S]*?status:/m.test(text)) {
+        warnings.push(`Process artifact should include frontmatter status: ${rel}`)
+      }
+    }
+  }
+
+  const contextMap = readText(path.join(targetRoot, 'docs/ai/context-map.md'))
+  if (contextMap) {
+    const mentionsProcessDirs = /docs\/(plans|audits)|archived\//i.test(contextMap)
+    const marksNonDefault = /do not read|不默认读取|not read by default/i.test(contextMap)
+    if (mentionsProcessDirs && !marksNonDefault) {
+      warnings.push('context-map references plans/audits/archived without a non-default-read rule.')
+    }
+  }
+
+  console.log(`cuberhyk-dev-flow docs validation: ${targetRoot}`)
+  if (errors.length === 0 && warnings.length === 0) {
+    console.log('No issues found.')
+    return
+  }
+  if (errors.length > 0) {
+    console.log('Errors:')
+    for (const item of errors) console.log(`- ${item}`)
+  }
+  if (warnings.length > 0) {
+    console.log('Warnings:')
+    for (const item of warnings) console.log(`- ${item}`)
+  }
+  if (errors.length > 0) process.exitCode = 1
 }
 
 function install() {
@@ -144,7 +344,7 @@ function install() {
 }
 
 function printSuccess(pluginDir, marketplacePath) {
-  console.log('Dev Flow installed.')
+  console.log('cuberhyk-dev-flow installed.')
   console.log(`Plugin directory: ${pluginDir}`)
   console.log(`Codex marketplace: ${marketplacePath}`)
   console.log('')
@@ -153,10 +353,10 @@ function printSuccess(pluginDir, marketplacePath) {
   console.log('')
   console.log('Claude Code marketplace install:')
   console.log(`  /plugin marketplace add "${pluginDir}"`)
-  console.log('  /plugin install dev-flow@dev-flow-local')
+  console.log('  /plugin install cuberhyk-dev-flow@cuberhyk-plugins')
   console.log('')
   console.log('Codex:')
-  console.log('  Open /plugins and install Dev Flow from your personal marketplace.')
+  console.log('  Open /plugins and install cuberhyk-dev-flow from your personal marketplace.')
 }
 
 function paths() {
@@ -169,9 +369,11 @@ const command = process.argv[2] || 'install'
 
 try {
   if (command === 'install') install()
+  else if (command === 'init-project') initProject()
+  else if (command === 'validate-docs') validateDocs()
   else if (command === 'validate') {
     validatePluginRoot(pluginRoot)
-    console.log('Dev Flow package structure is valid.')
+    console.log('cuberhyk-dev-flow package structure is valid.')
   } else if (command === 'paths') paths()
   else if (command === 'help' || command === '--help' || command === '-h') usage()
   else {

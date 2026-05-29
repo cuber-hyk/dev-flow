@@ -1,8 +1,8 @@
 {
-  "name": "dev-flow",
-  "displayName": "Dev Flow",
+  "name": "cuberhyk-dev-flow",
+  "displayName": "cuberhyk-dev-flow",
   "description": "Orient, plan, and distill coding work with three focused agent skills.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "cuber-hyk"
   },

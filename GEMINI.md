@@ -1,6 +1,6 @@
-# Dev Flow
+# cuberhyk-dev-flow
 
-Dev Flow is a compact workflow plugin for coding agents.
+cuberhyk-dev-flow is a compact workflow plugin for coding agents.
 
 Use the shared skills in this order for non-trivial development work:
 

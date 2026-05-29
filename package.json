@@ -1,10 +1,10 @@
 {
-  "name": "cuber-hyk-dev-flow",
-  "version": "0.1.0",
+  "name": "cuberhyk-dev-flow",
+  "version": "0.2.0",
   "description": "Multi-agent workflow plugin: orient, plan, and distill coding work.",
   "type": "module",
   "bin": {
-    "dev-flow": "./bin/dev-flow.js"
+    "cuberhyk-dev-flow": "./bin/dev-flow.js"
   },
   "files": [
     ".claude-plugin/",
@@ -16,13 +16,16 @@
     "CLAUDE.md",
     "GEMINI.md",
     "gemini-extension.json",
+    "docs/",
     "README.md",
     "LICENSE",
     "bin/"
   ],
   "scripts": {
     "install-plugin": "node ./bin/dev-flow.js install",
-    "validate": "node ./bin/dev-flow.js validate"
+    "validate": "node ./bin/dev-flow.js validate",
+    "init-project": "node ./bin/dev-flow.js init-project",
+    "validate-docs": "node ./bin/dev-flow.js validate-docs"
   },
   "keywords": [
     "ai-agent",

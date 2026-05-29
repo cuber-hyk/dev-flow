@@ -1,7 +1,7 @@
 {
-  "name": "dev-flow",
+  "name": "cuberhyk-dev-flow",
   "description": "Three focused development workflow skills: orient repository context, plan verifiable work, and distill durable knowledge.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "cuber-hyk"
   },

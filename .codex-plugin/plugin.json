@@ -1,6 +1,6 @@
 {
-  "name": "dev-flow",
-  "version": "0.1.0",
+  "name": "cuberhyk-dev-flow",
+  "version": "0.2.0",
   "description": "A compact Codex workflow plugin for low-noise repository orientation, task planning, and knowledge distillation.",
   "author": {
     "name": "cuber-hyk",
@@ -11,9 +11,9 @@
   "license": "MIT",
   "skills": "./skills/",
   "interface": {
-    "displayName": "Dev Flow",
+    "displayName": "cuberhyk-dev-flow",
     "shortDescription": "Orient, plan, and distill coding work.",
-    "longDescription": "Dev Flow provides three focused Codex skills: dev-orient to enter repository context without noise, dev-plan to create a minimal verifiable task plan, and dev-distill to turn completed work into durable project knowledge.",
+    "longDescription": "cuberhyk-dev-flow provides three focused Codex skills: dev-orient to enter repository context without noise, dev-plan to create a minimal verifiable task plan, and dev-distill to turn completed work into durable project knowledge.",
     "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
