@@ -1,6 +1,6 @@
----
+﻿---
 name: dev-init
-description: Initialize Dev Flow repository memory for a project. Use when a user wants to set up cuberhyk-dev-flow in a repository, create the recommended AGENTS/CONTEXT/docs/ai/docs/capabilities/docs/plans/docs/audits/docs/adr structure, install document templates, or asks how to start using the workflow in a new or existing project. Runs or recommends the cuberhyk-dev-flow init-project command. Do not use for task planning, audits, implementation, or distillation.
+description: Initialize Dev Flow repository memory for a new or existing project. Use when a user wants to set up cuberhyk-dev-flow, quickly connect an existing project to Dev Flow, create the recommended AGENTS/CONTEXT/docs/ai/docs/capabilities/docs/plans/docs/audits/docs/adr structure, install document templates, or asks how to start using the workflow. Runs or recommends the underlying cuberhyk-dev-flow init-project command for file creation. Do not use for task planning, audits, implementation, or distillation.
 ---
 
 # Dev Init
@@ -27,9 +27,19 @@ Dev Init does not:
 - Replace project-specific agent policy; only append the marked Dev Flow section when absent.
 - Replace `dev-orient`; use `dev-orient` after initialization for task-specific context.
 
-## Command
+## User-Facing Use
 
-Preferred after npm publish:
+Ask the agent to use this skill:
+
+```text
+dev-init 接入当前项目的 Dev Flow 文档结构
+```
+
+For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-orient`, `dev-audit`, and `dev-distill` to generate stable, project-specific knowledge from real code.
+
+## Internal Command
+
+`dev-init` uses this CLI command as its stable file-creation mechanism:
 
 ```bash
 cuberhyk-dev-flow init-project /path/to/project
@@ -39,12 +49,6 @@ Local source checkout:
 
 ```bash
 node C:\Users\YourName\plugins\dev-flow\bin\dev-flow.js init-project /path/to/project
-```
-
-From this plugin repo:
-
-```bash
-npm run init-project -- /path/to/project
 ```
 
 ## What It Creates

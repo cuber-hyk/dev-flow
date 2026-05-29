@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A compact Codex lifecycle workflow plugin for repository initialization, validation, orientation, planning, audits, and knowledge distillation.",
   "author": {
     "name": "cuber-hyk",

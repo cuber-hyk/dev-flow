@@ -1,4 +1,4 @@
-# cuberhyk-dev-flow
+﻿# cuberhyk-dev-flow
 
 cuberhyk-dev-flow is a compact lifecycle workflow plugin for coding agents. It provides six skills:
 
@@ -53,27 +53,39 @@ Lifecycle rules:
 | Capability | current facts only; no investigation logs |
 | ADR | `proposed` -> `accepted`, `superseded`, or `deprecated` |
 
-## Project Bootstrap
+## Existing Project Quick Start
 
-Initialize the recommended memory structure in a project:
+For an existing project, ask the agent to use `dev-init` first. The skill will inspect the target project and call the underlying initialization command when appropriate.
 
-```bash
-npx cuberhyk-dev-flow init-project /path/to/project
+```text
+dev-init 接入当前项目的 Dev Flow 文档结构
 ```
 
-`init-project` creates missing files only. Existing `AGENTS.md` is not overwritten; the command appends a marked Dev Flow section only when that section is absent.
+`dev-init` creates missing files only. Existing `AGENTS.md` is not overwritten; the skill appends a marked Dev Flow section only when that section is absent.
 
-Validate documentation routing:
+Then continue with:
 
-```bash
-npx cuberhyk-dev-flow validate-docs /path/to/project
+```text
+dev-check 检查文档结构和 gitignore 规则
+dev-orient 进入当前项目上下文
+dev-audit 审查当前项目的功能边界、文档缺口和稳定事实
+dev-distill 把稳定事实沉淀到 CONTEXT、capabilities、ADR 或测试
+dev-check 复查文档归位和生命周期状态
 ```
 
-The validator checks for missing memory directories, plan/audit metadata, ADR status, capability `source_of_truth`, process artifacts stored under `docs/capabilities/`, context-map references to missing paths, context maps that route default context to plans/audits/archived files, and gitignore rules that hide Dev Flow document paths.
+The CLI command `cuberhyk-dev-flow init-project [project-dir]` is the implementation detail that `dev-init` uses to create directories and templates. Users normally invoke the skill, not the command.
+
+Validate documentation routing through the skill:
+
+```text
+dev-check 检查当前项目的 Dev Flow 文档结构
+```
+
+`dev-check` uses the underlying `validate-docs` command to check for missing memory directories, plan/audit metadata, ADR status, capability `source_of_truth`, process artifacts stored under `docs/capabilities/`, context-map references to missing paths, context maps that route default context to plans/audits/archived files, and gitignore rules that hide Dev Flow document paths.
 
 ## Templates
 
-`init-project` installs concise templates:
+`dev-init` installs concise templates:
 
 | Template | Purpose |
 |---|---|
@@ -118,9 +130,9 @@ If `.gitignore` hides the file, the agent must add the smallest safe allow rule 
 
 First-time project setup:
 
-```bash
-npx cuberhyk-dev-flow init-project /path/to/project
-npx cuberhyk-dev-flow validate-docs /path/to/project
+```text
+dev-init 接入当前项目
+dev-check 检查文档结构
 ```
 
 Feature development:
@@ -173,7 +185,7 @@ Local package test before publishing:
 
 ```bash
 npm pack
-npx ./cuberhyk-dev-flow-0.4.3.tgz install
+npx ./cuberhyk-dev-flow-0.4.4.tgz install
 ```
 
 The installer copies this plugin to:

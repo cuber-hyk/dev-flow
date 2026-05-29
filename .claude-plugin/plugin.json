@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
   "description": "Lifecycle workflow skills for repository memory: init, check, orient, plan, audit, and distill.",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "author": {
     "name": "cuber-hyk"
   },

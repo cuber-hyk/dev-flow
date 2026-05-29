@@ -633,8 +633,8 @@ node .\bin\dev-flow.js install</code></pre>
 
         <section id="bootstrap">
           <div class="section-head">
-            <h3>项目初始化</h3>
-            <p>新项目接入 cuberhyk-dev-flow 时，先创建最小记忆结构，再用校验命令检查文档归位。</p>
+            <h3>快速接入</h3>
+            <p>新项目或已有项目都先使用 dev-init，让 AI 创建最小记忆结构；底层命令只作为技能内部实现。</p>
           </div>
 
           <div class="decision">
@@ -643,8 +643,8 @@ node .\bin\dev-flow.js install</code></pre>
               <p>生成 <code>AGENTS.md</code> Dev Flow 小节、<code>CONTEXT.md</code>、<code>docs/ai/context-map.md</code>、capabilities、plans、audits、adr 等目录和模板；已有文件不会被覆盖。</p>
             </article>
             <article class="panel">
-              <h4>检查文档路由</h4>
-            <p>检查缺失目录、计划/审查缺状态、capability 误放审查报告、context-map 是否默认指向历史材料，以及 gitignore 是否隐藏文档产物。</p>
+              <h4>从骨架到真实知识</h4>
+              <p><code>dev-init</code> 只建骨架；已有项目要继续用 <code>dev-orient</code>、<code>dev-audit</code>、<code>dev-distill</code> 基于代码沉淀 capability、ADR 和稳定事实。</p>
             </article>
           </div>
 
@@ -652,12 +652,20 @@ node .\bin\dev-flow.js install</code></pre>
 
           <div class="terminal">
             <div class="terminal-head">
-              <span>初始化与校验</span>
-              <button class="copy" data-copy="npx cuberhyk-dev-flow init-project /path/to/project
-npx cuberhyk-dev-flow validate-docs /path/to/project">复制</button>
+              <span>已有项目快速接入</span>
+              <button class="copy" data-copy="dev-init 接入当前项目的 Dev Flow 文档结构
+dev-check 检查文档结构和 gitignore 规则
+dev-orient 进入当前项目上下文
+dev-audit 审查当前项目的功能边界、文档缺口和稳定事实
+dev-distill 把稳定事实沉淀到 CONTEXT、capabilities、ADR 或测试
+dev-check 复查文档归位和生命周期状态">复制</button>
             </div>
-            <pre><code>npx cuberhyk-dev-flow init-project /path/to/project
-npx cuberhyk-dev-flow validate-docs /path/to/project</code></pre>
+            <pre><code>dev-init 接入当前项目的 Dev Flow 文档结构
+dev-check 检查文档结构和 gitignore 规则
+dev-orient 进入当前项目上下文
+dev-audit 审查当前项目的功能边界、文档缺口和稳定事实
+dev-distill 把稳定事实沉淀到 CONTEXT、capabilities、ADR 或测试
+dev-check 复查文档归位和生命周期状态</code></pre>
           </div>
         </section>
 
