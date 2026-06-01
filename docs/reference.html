@@ -60,7 +60,7 @@
                   <tr><td><code>dev-plan</code></td><td>内置 orient gate，识别决策点，制定计划。</td><td>实现或归档知识。</td></tr>
                   <tr><td><code>dev-audit</code></td><td>内置 orient gate，输出证据化发现。</td><td>修复问题。</td></tr>
                   <tr><td><code>dev-exploratory-review</code></td><td>开放式风险发现，建立项目地图与风险地图，只报告真实失败路径。</td><td>实现修复或评论风格偏好。</td></tr>
-                  <tr><td><code>dev-branch</code></td><td>分支实现、验证、changelog/distill/review gates。</td><td>静默混入无关改动或自动 push。</td></tr>
+                  <tr><td><code>dev-branch</code></td><td>分支实现、验证、changelog/distill/check/review gates。</td><td>静默混入无关改动或自动 push。</td></tr>
                   <tr><td><code>dev-changelog</code></td><td>维护面向人的发布说明。</td><td>记录每个 commit 或内部微调。</td></tr>
                   <tr><td><code>dev-distill</code></td><td>沉淀长期知识并关闭过程产物。</td><td>重新规划、重新审查或实现。</td></tr>
                 </tbody>
@@ -211,7 +211,7 @@
                   <ul class="source-list">
                     <li>分类 dirty worktree，必要时创建任务分支。</li>
                     <li>实现并运行验证。</li>
-                    <li>审核前执行 Changelog、Distill 和 Review Gate。</li>
+                    <li>审核前执行 Changelog、Distill、Check 和 Review Gate。</li>
                   </ul>
                   <p class="source-label">不会做</p>
                   <ul class="source-list"><li>不自动提交、合并、删除分支或 push；push 需要单独确认。</li></ul>

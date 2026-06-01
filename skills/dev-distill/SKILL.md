@@ -67,12 +67,35 @@ events or vague historical labels. Dev Distill must end with a concrete closeout
 
 ### Audit Closeout
 
-- Archive an audit when evidence, comparisons, or reasoning may be useful later.
+- Run the Audit Closeout Gate before archiving or deleting any audit.
+- Keep an audit active when any finding is `open`, `planned`, `in_progress`, or `fixed` without
+  verification, or when the audit contains unresolved `Not verified`, `Open questions`, `Next step`,
+  `Recommended next step`, `待进一步调查`, or `推荐下一步` content.
+- Keep partially executed audits active. Update finding status, owner plan, branch/commit, and
+  verification fields instead of archiving the whole audit.
+- Archive an audit only when every finding is `verified`, `accepted_risk`, `wont_fix`,
+  `not_reproducible`, or fully transferred to an active plan that owns follow-up.
   Move it to `docs/audits/archived/` and set `status: archived`.
-- Delete an audit when all useful conclusions are represented in capability docs, ADRs, tests, or
-  code and the raw evidence has no future value.
+- Delete an audit only when all useful conclusions are represented in capability docs, ADRs, tests,
+  code, or active plans, every finding is closed or transferred, and the raw evidence has no future
+  value.
 - Do not leave an audit as `distilled`; distillation must end in archive or delete.
 - Before deleting an audit, confirm that no unique stable fact exists only in the audit.
+
+### Audit Closeout Gate
+
+Before changing an audit from active to archived or deleting it, verify:
+
+- The audit has frontmatter with `artifact_type: audit`, `status`, `updated`, `scope`, and
+  `source_of_truth`.
+- Every finding has `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
+  `Verification`, and `Closeout`.
+- No finding remains `open`, `planned`, `in_progress`, or unverified `fixed`.
+- No Critical/High finding remains unresolved.
+- Remaining follow-up work is owned by active plans through `source_audit` and `covered_findings`.
+
+If any check fails, keep the audit in `docs/audits/` with `status: active`, update the fields that
+can be updated safely, and report `Audit: blocked` or `Audit: keep active` with the reason.
 
 ### Capability Closeout
 
@@ -126,9 +149,10 @@ events or vague historical labels. Dev Distill must end with a concrete closeout
    - If a plan drove the work, choose archive or delete.
    - If archiving a plan, move it to `docs/plans/archived/`, set `status: archived`, and keep it out of default context.
    - If deleting a plan, first confirm no unique useful information exists only there.
-   - If an audit drove the work, choose archive or delete.
-   - If archiving an audit, move it to `docs/audits/archived/` and set `status: archived`.
-   - If deleting an audit, first confirm stable facts are captured in capability docs, ADRs, tests, or code.
+   - If an audit drove the work, run the Audit Closeout Gate.
+   - If archiving an audit, move it to `docs/audits/archived/` and set `status: archived` only after the gate passes.
+   - If deleting an audit, first confirm stable facts are captured in capability docs, ADRs, tests, code, or active plans, and that the gate passes.
+   - If the audit is partially handled, keep it active and update finding statuses and owner plan/branch references.
    - If a capability doc was updated from an audit, remove investigation narrative and keep only current facts.
 
 ## ADR Gate

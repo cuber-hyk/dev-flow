@@ -14,20 +14,27 @@ Changes made:
 Verification:
 - <command/check/result>
 
-Changelog:
-- Updated CHANGELOG.md under [Unreleased] -> Added/Changed/Deprecated/Removed/Fixed/Security
-- or Not needed: <concrete reason>
+Changelog gate:
+- executed: Updated CHANGELOG.md under [Unreleased] -> Added/Changed/Deprecated/Removed/Fixed/Security
+- or not needed: <concrete reason>
+- or blocked: <reason>
 
-Distill:
-- Updated <CONTEXT/capability/ADR/context-map/tests/lifecycle artifact>
-- or Not needed: <concrete reason>
+Distill gate:
+- executed: Updated <CONTEXT/capability/ADR/context-map/tests/lifecycle artifact>
+- or not needed: <concrete reason>
+- or blocked: <reason>
+
+Check gate:
+- passed: <command/result>
+- or not needed: <concrete reason>
+- or blocked: <reason>
 
 Review:
 - git status --short --branch --untracked-files=all: <summary>
 - git diff: shown above/summarized
 
 Waiting for approval:
-- Say "审核通过" or "可以合并" to let me commit, merge, and clean up.
+- Say "���ͨ��" or "���Ժϲ�" to let me commit, merge, and clean up.
 - Push will not be performed unless separately requested and confirmed.
 ```
 

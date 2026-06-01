@@ -27,6 +27,8 @@ Dev Branch does:
 - Run the changelog gate and use `dev-changelog` when release notes are needed.
 - Run the distill gate and use `dev-distill` when durable repository knowledge, ADRs, lifecycle
   closure, or documentation routing changed.
+- Run the check gate before review when changelog, distill, documentation routing, lifecycle
+  artifacts, capability docs, ADRs, context-map, or templates changed.
 - Show `git status --short --branch` and `git diff` before any commit.
 - Wait for explicit user approval before commit, merge, or cleanup.
 - Commit, merge back to main, and delete the task branch only after approval.
@@ -138,7 +140,8 @@ If none can be detected reliably, ask the user.
 7. Changelog gate:
    - Decide whether the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
    - If yes, use `dev-changelog` rules to update `CHANGELOG.md` under `## [Unreleased]`.
-   - If no, report `Changelog: not needed` with a concrete reason.
+   - If no, report `Changelog gate: not needed` with a concrete reason.
+   - If the changelog decision is blocked, stop before the review gate.
    - Do not write changelog entries for pure internal refactors, formatting, test-only changes, or tiny invisible tweaks.
 
 8. Distill gate:
@@ -151,17 +154,26 @@ If none can be detected reliably, ask the user.
      - context-map routing, AGENTS/CLAUDE guidance, or validation rules;
      - regression-prone rules that should become tests.
    - If yes, use `dev-distill` rules now, before the review gate.
-   - If no, report `Distill: not needed` with a concrete reason.
+   - If no, report `Distill gate: not needed` with a concrete reason.
+   - If `dev-distill` reports blocked lifecycle closeout, unresolved audit findings, missing ADR/test
+     follow-up, or routing inconsistency, stop before the review gate.
    - Close or route active plan/audit artifacts as part of the same branch when they belong to this task.
    - Do not defer same-task knowledge updates until after commit unless the user explicitly asks.
 
-9. Review gate:
+9. Check gate:
+   - Run this gate before review when changelog, distill, documentation routing, lifecycle
+     artifacts, capability docs, ADRs, context-map, templates, or validation rules changed.
+   - Use `dev-check` rules or `cuberhyk-dev-flow validate-docs <project>` to verify routing and lifecycle health.
+   - If no docs or lifecycle artifacts changed, report `Check gate: not needed` with a concrete reason.
+   - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
+
+10. Review gate:
    - Run `git status --short --branch --untracked-files=all`.
    - Run `git diff`.
-   - Summarize changed files, verification, changelog decision, and distill decision.
+   - Summarize changed files, verification, changelog gate, distill gate, and check gate.
    - Stop and wait for explicit user approval.
 
-10. After explicit approval only:
+11. After explicit approval only:
    - Stage only task-related files.
    - Commit with a concise message.
    - Switch back to the main branch.
@@ -170,7 +182,7 @@ If none can be detected reliably, ask the user.
    - Delete the task branch.
    - Do not push unless the user separately asks and confirms.
 
-11. Close:
+12. Close:
    - Recommend `dev-check` after documentation/lifecycle changes.
 
 ## Approval Language

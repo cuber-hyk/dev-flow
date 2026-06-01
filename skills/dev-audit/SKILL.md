@@ -78,11 +78,21 @@ If a persistent audit is required and `docs/audits/` is missing, recommend or ru
 When creating an audit file:
 
 1. Use `docs/audits/YYYY-MM-DD-topic-audit.md`.
-2. Keep it evidence-based: scope, questions, fact sources, findings, severity, verification, open questions, and closeout.
-3. Include frontmatter with `artifact_type`, `status`, `created`, `updated`, `scope`, and `source_of_truth`.
-4. Confirm the file exists after writing it.
-5. Run `git status --short --branch --untracked-files=all`.
-6. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the audit is not tracked and ask before changing ignore policy.
+2. Use the structure from `templates/docs/audits/_template.md`; do not write free-form persistent audit reports.
+3. Keep it evidence-based: scope, questions, fact sources, findings, severity, verification, open questions, and closeout.
+4. Include frontmatter with `artifact_type`, `status`, `created`, `updated`, `scope`, and `source_of_truth`.
+5. Set `artifact_type: audit` and `status: active` for newly created audit files.
+6. Give every finding a stable `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
+   `Verification`, and `Closeout` field.
+7. Use only these finding statuses: `open`, `planned`, `in_progress`, `fixed`, `verified`,
+   `accepted_risk`, `wont_fix`, and `not_reproducible`.
+8. Start actionable findings as `open` unless they are immediately rejected as `not_reproducible`
+   or explicitly accepted as `accepted_risk` / `wont_fix`.
+9. Do not mark the audit `archived`; audit closeout belongs to `dev-distill` after all findings are
+   closed or transferred.
+10. Confirm the file exists after writing it.
+11. Run `git status --short --branch --untracked-files=all`.
+12. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the audit is not tracked and ask before changing ignore policy.
 
 ## Document Routing
 
@@ -120,6 +130,8 @@ When creating an audit file:
 
 5. Report findings:
    - Lead with findings, ordered by severity.
+   - Assign each persistent finding a stable ID that future plans and branches can reference.
+   - Include a finding status for persistent reports; use `open` for work that still needs routing or fixes.
    - Include file paths, functions, APIs, routes, tables, or commands as evidence.
    - Separate confirmed issues from risks and open questions.
    - State what was not verified.
@@ -139,7 +151,8 @@ When creating an audit file:
 
 8. Close the loop:
    - If fixes are needed, recommend `dev-plan`.
-   - If fixes are likely to change durable facts, note that `dev-branch` should run its distill gate before review.
+   - If a plan is created from the audit later, it must reference `source_audit` and `covered_findings`.
+   - If fixes are likely to change durable facts or lifecycle artifacts, note that `dev-branch` should run distill and check gates before review.
    - After implementation or doc correction, recommend `dev-check`.
 
 ## Output Template

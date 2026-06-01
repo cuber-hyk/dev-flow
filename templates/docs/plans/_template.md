@@ -5,6 +5,9 @@ created: {{DATE}}
 updated: {{DATE}}
 owner: agent
 plan_readiness: ready
+source_audit: ""
+covered_findings: []
+deferred_findings: []
 ---
 
 # Plan Title
@@ -51,6 +54,9 @@ ask the user first and create/update this plan only after confirmation.
 
 - Capability updates:
 - Audit output:
+- Source audit:
+- Covered findings:
+- Deferred findings:
 - ADR gate: needed/not needed/maybe; reason:
 - Tests:
 

@@ -137,10 +137,16 @@ If `docs/audits/` is missing and a persistent report is required, recommend or r
 When creating a report:
 
 1. Include frontmatter with `artifact_type`, `status`, `created`, `updated`, `scope`, and `source_of_truth`.
-2. Include project map, risk map, passes, findings, rejected candidates, verification, not-verified areas, and next steps.
-3. Confirm the file exists.
-4. Run `git status --short --branch --untracked-files=all`.
-5. Report whether git sees the file.
+2. Use `artifact_type: audit` and `status: active`; exploratory review reports are audit artifacts.
+3. Use the findings table structure from `templates/docs/audits/_template.md` for persistent reports.
+4. Give every finding a stable `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
+   `Verification`, and `Closeout` field.
+5. Use only these finding statuses: `open`, `planned`, `in_progress`, `fixed`, `verified`,
+   `accepted_risk`, `wont_fix`, and `not_reproducible`.
+6. Include project map, risk map, passes, findings, rejected candidates, verification, not-verified areas, and next steps.
+7. Confirm the file exists.
+8. Run `git status --short --branch --untracked-files=all`.
+9. Report whether git sees the file.
 
 ## Output Template
 

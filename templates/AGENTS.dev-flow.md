@@ -6,7 +6,7 @@ Use cuberhyk-dev-flow for non-trivial development work.
 Default user-facing flow:
 
 1. `dev-plan`: enter relevant repository context, identify unresolved decisions, and create a verifiable plan.
-2. `dev-branch`: implement in a task branch, run changelog and distill gates, then wait for review before commit/merge.
+2. `dev-branch`: implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
 
 Audit-driven flow:
 
@@ -60,7 +60,7 @@ Branch execution rules:
 - Unrelated or ambiguous source/config/test/generated changes must stop the workflow until the user decides how to handle them.
 - Before commit or merge, show `git status --short --branch --untracked-files=all` and `git diff`, then wait for explicit approval.
 - Run the changelog gate before review; update `CHANGELOG.md` only when the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
-- Run the distill gate before review; update durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it. If no durable update is needed, report `Distill: not needed` with a concrete reason.
+- Run changelog, distill, and check gates before review. Update durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it. If no durable update is needed, report concrete "not needed" reasons. If any gate is blocked, stop before commit or merge approval.
 - Never push automatically.
 
 Changelog rules:

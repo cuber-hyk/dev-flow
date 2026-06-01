@@ -29,10 +29,13 @@ Passes:
 - Judge: <summary>
 
 Findings:
-- [P1/P2/P3, Confirmed/Strong/Risk, category] <finding>
+- [ID, P1/P2/P3, open/planned/in_progress/fixed/verified/accepted_risk/wont_fix/not_reproducible, Confirmed/Strong/Risk, category] <finding>
   Scenario: <realistic trigger>
   Evidence: <code/test/config/runtime evidence>
+  Owner Plan: <path or none>
+  Branch/Commit: <branch, commit, or none>
   Verification: <how verified>
+  Closeout: <what must happen before this finding is closed>
   Impact: <failure result>
   Fix direction: <short direction>
 - or No realistic failures found.

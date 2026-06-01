@@ -12,8 +12,12 @@ Context loaded:
 - <file or source>
 
 Findings:
-- [P1/P2/P3, Confirmed/Strong/Risk] <finding>
+- [ID, P1/P2/P3, open/planned/in_progress/fixed/verified/accepted_risk/wont_fix/not_reproducible, Confirmed/Strong/Risk] <finding>
   Evidence: <file/function/command/runtime result>
+  Owner Plan: <path or none>
+  Branch/Commit: <branch, commit, or none>
+  Verification: <command/check/result or not verified>
+  Closeout: <what must happen before this finding is closed>
   Impact: <user/business/technical impact>
   Fix direction: <short direction or none>
 - or No findings.

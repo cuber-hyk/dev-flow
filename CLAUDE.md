@@ -7,7 +7,7 @@ cuberhyk-dev-flow is a compact lifecycle workflow for coding agents. It is inten
 For normal non-trivial development, prefer the short user flow:
 
 1. `cuberhyk-dev-flow:dev-plan` - Enter relevant context, identify decision points, and create a verifiable plan.
-2. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run changelog and distill gates, then wait for review before commit/merge.
+2. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
 
 For audit-driven work:
 
@@ -33,7 +33,7 @@ For project setup and health checks:
 - `dev-plan` includes an orient gate, then checks plan readiness before writing a formal plan. It does not audit, implement, or archive.
 - `dev-audit` includes an orient gate, then writes findings for bounded audits with clear scope or questions. It does not implement fixes or update capability docs with stable facts.
 - `dev-exploratory-review` maps a project or bounded scope, builds a risk map, runs focused probes/tests when useful, and uses a four-pass harness to discover realistic failures. It does not implement fixes or comment on style, naming, formatting, or subjective preferences.
-- `dev-branch` does not skip review, mix unrelated changes, or push automatically. It must run changelog and distill gates before the review gate.
+- `dev-branch` does not skip review, mix unrelated changes, or push automatically. It must run changelog, distill, and check gates before the review gate.
 - `dev-changelog` does not replace ADRs, capability docs, task plans, or git history.
 - `dev-distill` does not re-plan or re-implement.
 - `dev-init` only bootstraps memory structure.
@@ -48,7 +48,7 @@ Persistent artifacts:
 - `dev-branch` may carry clearly related Dev Flow plan/audit artifacts onto the task branch, but must stop for unrelated existing changes.
 - `dev-branch` must show `git status --short --branch --untracked-files=all` and `git diff`, then wait for explicit approval before commit, merge, or cleanup.
 - `dev-branch` must run the changelog gate before review. It updates `CHANGELOG.md` through `dev-changelog` only for notable user/operator/release changes.
-- `dev-branch` must run the distill gate before review. It updates durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise it reports `Distill: not needed` with a concrete reason.
+- `dev-branch` must run changelog, distill, and check gates before review. It updates durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise it reports concrete "not needed" reasons. If any gate is blocked, it stops before commit or merge approval.
 - `dev-changelog` writes to `## [Unreleased]` using `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, and `Security`; tiny internal-only changes should report `Changelog: not needed`.
 
 Plan readiness:

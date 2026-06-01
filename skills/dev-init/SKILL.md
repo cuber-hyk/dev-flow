@@ -35,7 +35,7 @@ Ask the agent to use this skill:
 dev-init 接入当前项目的 Dev Flow 文档结构
 ```
 
-For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-plan` for feature work or `dev-audit` for review work. Those skills enter relevant context, and `dev-branch` runs the distill gate before review when stable project knowledge changes.
+For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-plan` for feature work or `dev-audit` for review work. Those skills enter relevant context, and `dev-branch` runs changelog, distill, and check gates before review.
 
 ## Internal Command
 

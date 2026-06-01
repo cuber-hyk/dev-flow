@@ -17,7 +17,7 @@ Skills:
 Use the shared skills in this short flow for non-trivial development work:
 
 1. `dev-plan` enters relevant context, identifies decision points, and turns the task into a verifiable goal, scope, steps, risks, and checks.
-2. `dev-branch` executes implementation in a task branch, runs changelog and distill gates, and waits for review before commit/merge.
+2. `dev-branch` executes implementation in a task branch, runs changelog, distill, and check gates, and waits for review before commit/merge.
 
 Use this flow for audit-driven work:
 
@@ -44,7 +44,7 @@ Persistent artifacts:
 - `dev-branch` may carry related Dev Flow plan/audit artifacts onto the task branch, but must stop for unrelated existing changes.
 - `dev-branch` must show status and diff, then wait for explicit approval before commit, merge, cleanup, or push.
 - `dev-branch` must run the changelog gate before review. Use `dev-changelog` only when a change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
-- `dev-branch` must run the distill gate before review. Update durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise report `Distill: not needed` with a concrete reason.
+- `dev-branch` must run changelog, distill, and check gates before review. Update durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise report concrete "not needed" reasons. If any gate is blocked, stop before commit or merge approval.
 - `dev-changelog` uses `CHANGELOG.md` -> `## [Unreleased]` and Keep a Changelog categories. Do not log tiny internal-only changes.
 - After creating a plan or audit file, run `git status --short --branch --untracked-files=all` and report whether git sees the artifact.
 

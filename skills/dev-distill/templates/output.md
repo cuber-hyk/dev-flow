@@ -13,7 +13,10 @@ No durable update needed:
 
 Artifact closeout:
 - Plan: archived/deleted/not applicable/blocked; <path or reason>
-- Audit: archived/deleted/not applicable/blocked; <path or reason>
+- Audit: keep active/archived/deleted/not applicable/blocked; <path or reason>
+  Open findings: <IDs or none>
+  Transferred to plans: <plan paths and finding IDs or none>
+  Verification status: <all closed/partially handled/not verified>
 - ADR: accepted/archived/deleted/not needed/blocked; <path or reason>
 
 Verification:

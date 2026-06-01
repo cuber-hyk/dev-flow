@@ -36,7 +36,7 @@ Dev Plan does not:
 - Store plans, audits, or findings in `docs/capabilities/`.
 - Hide product or business decisions as assumptions.
 - Create an executable plan while critical decisions are still unresolved.
-- Archive final knowledge; `dev-branch` runs the distill gate before review, or use `dev-distill` standalone for knowledge-only closeout.
+- Archive final knowledge; `dev-branch` runs changelog, distill, and check gates before review, or use `dev-distill` standalone for knowledge-only closeout.
 
 ## Orient Gate
 
@@ -220,6 +220,8 @@ When creating a plan file:
    - List only assumptions that affect implementation.
    - List confirmed decisions, including user-confirmed product/business choices.
    - Ask the user if an assumption is risky and cannot be resolved from code.
+   - If the plan comes from an audit, record the source audit path and the exact finding IDs covered
+     by this plan.
 
 7. Identify fact sources:
    - Relevant docs.
@@ -234,7 +236,8 @@ When creating a plan file:
 
 9. Define artifact routing:
    - State whether the task will create or update a plan, audit, capability doc, ADR, tests, or none.
-   - If the task comes from an audit, reference the audit path and keep findings in `docs/audits/`.
+   - If the task comes from an audit, reference the audit path, list `covered_findings`, list
+     `deferred_findings`, and keep findings in `docs/audits/`.
    - Include whether `docs/ai/context-map.md` may need an update after implementation.
    - If the task involves a hard-to-reverse decision, fact-source change, architecture choice,
      algorithm policy, or cross-module rule, flag that `dev-distill` must run the ADR gate.

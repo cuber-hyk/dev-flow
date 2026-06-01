@@ -32,7 +32,9 @@ Acceptance criteria:
 
 Artifact routing:
 - Plan: <path or none>
-- Audit: <path or none>
+- Source audit: <path or none>
+- Covered findings: <IDs or none>
+- Deferred findings: <IDs or none>
 - Capability docs: <path or none>
 - Changelog: needed/not needed/maybe; reason
 - Distill: needed/not needed/maybe; reason

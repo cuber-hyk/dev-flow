@@ -22,6 +22,6 @@ Required behavior:
 5. Run existing tests or focused probes when practical; create temporary probe tests only when they verify a realistic failure.
 6. Report only issues with realistic failure scenarios and evidence.
 7. Do not implement fixes or comment on style, naming, formatting, or subjective preferences.
-8. Persist non-trivial or follow-up-worthy reviews to `docs/audits/YYYY-MM-DD-short-topic-exploratory-review.md`.
+8. Persist non-trivial or follow-up-worthy reviews to `docs/audits/YYYY-MM-DD-short-topic-exploratory-review.md` using the audit template structure and stable finding statuses.
 9. End by recommending `/dev-plan` for confirmed fixes, `/dev-branch` for reviewed implementation, or `/dev-check` for routing validation.
 10. Follow the skill's `templates/output.md` final response shape.

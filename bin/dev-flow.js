@@ -11,6 +11,28 @@ const pluginRoot = path.resolve(__dirname, '..')
 const templatesRoot = path.join(pluginRoot, 'templates')
 const pluginName = 'cuberhyk-dev-flow'
 const legacyPluginNames = ['dev-flow']
+const skillNames = [
+  'dev-init',
+  'dev-check',
+  'dev-orient',
+  'dev-plan',
+  'dev-audit',
+  'dev-exploratory-review',
+  'dev-branch',
+  'dev-changelog',
+  'dev-distill',
+]
+const allowedFindingStatuses = [
+  'open',
+  'planned',
+  'in_progress',
+  'fixed',
+  'verified',
+  'accepted_risk',
+  'wont_fix',
+  'not_reproducible',
+]
+const unresolvedFindingStatuses = ['open', 'planned', 'in_progress', 'fixed', 'not_verified']
 const agentSectionStart = '<!-- cuberhyk-dev-flow:start -->'
 const agentSectionEnd = '<!-- cuberhyk-dev-flow:end -->'
 
@@ -61,7 +83,7 @@ function writeTemplateIfMissing(source, target, vars, created) {
 }
 
 function readText(file) {
-  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
+  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '') : ''
 }
 
 function readJson(file) {
@@ -238,24 +260,9 @@ function validatePluginRoot(root = pluginRoot) {
     '.codex-plugin/plugin.json',
     '.cursor-plugin/plugin.json',
     '.opencode/INSTALL.md',
-    'commands/dev-init.md',
-    'commands/dev-check.md',
-    'commands/dev-orient.md',
-    'commands/dev-plan.md',
-    'commands/dev-audit.md',
-    'commands/dev-branch.md',
-    'commands/dev-exploratory-review.md',
-    'commands/dev-changelog.md',
-    'commands/dev-distill.md',
-    'skills/dev-orient/SKILL.md',
-    'skills/dev-plan/SKILL.md',
-    'skills/dev-audit/SKILL.md',
-    'skills/dev-branch/SKILL.md',
-    'skills/dev-exploratory-review/SKILL.md',
-    'skills/dev-changelog/SKILL.md',
-    'skills/dev-distill/SKILL.md',
-    'skills/dev-init/SKILL.md',
-    'skills/dev-check/SKILL.md',
+    ...skillNames.map((name) => `commands/${name}.md`),
+    ...skillNames.map((name) => `skills/${name}/SKILL.md`),
+    ...skillNames.map((name) => `skills/${name}/templates/output.md`),
     'templates/AGENTS.dev-flow.md',
     'templates/CHANGELOG.md',
     'templates/CONTEXT.md',
@@ -383,107 +390,63 @@ function initProject() {
   }
 }
 
-function validateDocs() {
-  const targetRoot = path.resolve(process.argv[3] || process.cwd())
-  const warnings = []
-  const errors = []
-
-  const recommended = [
-    'CONTEXT.md',
-    'docs/ai/context-map.md',
-    'docs/capabilities',
-    'docs/plans',
-    'docs/plans/archived',
-    'docs/audits',
-    'docs/audits/archived',
-    'docs/adr',
-    'docs/adr/archived',
-  ]
-
-  for (const item of recommended) {
-    if (!fs.existsSync(path.join(targetRoot, item))) warnings.push(`Missing recommended path: ${item}`)
-  }
-
-  if (isGitRepository(targetRoot)) {
-    const ignored = gitIgnoredPaths(targetRoot, [
-      'AGENTS.md',
-      'CONTEXT.md',
-      'docs/ai/context-map.md',
-      'docs/capabilities',
-      'docs/capabilities/.gitkeep',
-      'docs/plans',
-      'docs/plans/.gitkeep',
-      'docs/plans/archived',
-      'docs/plans/archived/.gitkeep',
-      'docs/audits',
-      'docs/audits/.gitkeep',
-      'docs/audits/archived',
-      'docs/audits/archived/.gitkeep',
-      'docs/adr',
-      'docs/adr/.gitkeep',
-      'docs/adr/archived',
-      'docs/adr/archived/.gitkeep',
-    ])
-
-    for (const item of ignored) {
-      warnings.push(
-        `Git ignore hides Dev Flow path: ${item}; add a minimal allow rule or report that artifacts there will not be tracked.`
-      )
-    }
-  }
-
-  const capabilityFiles = walkMarkdown(path.join(targetRoot, 'docs/capabilities'))
-  for (const file of capabilityFiles) {
-    const rel = path.relative(targetRoot, file).split(path.sep).join('/')
-    const text = readText(file)
-    if (/(audit|audits|plan|plans|审查|审核|计划)/i.test(path.basename(file))) {
-      errors.push(`Process artifact appears to be stored in capabilities: ${rel}`)
-    }
-    if (/artifact_type:\s*(audit|plan)/i.test(text)) {
-      errors.push(`Capability file declares audit/plan artifact_type: ${rel}`)
-    }
-    if (/##\s*(Findings|审查|问题清单|Audit)/i.test(text)) {
-      warnings.push(`Capability file may contain audit findings; keep only current facts: ${rel}`)
-    }
-  }
-
-  for (const dir of ['docs/plans', 'docs/audits']) {
-    const files = walkMarkdown(path.join(targetRoot, dir))
-    for (const file of files) {
-      const rel = path.relative(targetRoot, file).split(path.sep).join('/')
-      const text = readText(file)
-      if (!/^---[\s\S]*?status:/m.test(text)) {
-        warnings.push(`Process artifact should include frontmatter status: ${rel}`)
-      }
-    }
-  }
-
-  const contextMap = readText(path.join(targetRoot, 'docs/ai/context-map.md'))
-  if (contextMap) {
-    const mentionsProcessDirs = /docs\/(plans|audits)|archived\//i.test(contextMap)
-    const marksNonDefault = /do not read|不默认读取|not read by default/i.test(contextMap)
-    if (mentionsProcessDirs && !marksNonDefault) {
-      warnings.push('context-map references plans/audits/archived without a non-default-read rule.')
-    }
-  }
-
-  console.log(`cuberhyk-dev-flow docs validation: ${targetRoot}`)
-  if (errors.length === 0 && warnings.length === 0) {
-    console.log('No issues found.')
-    return
-  }
-  if (errors.length > 0) {
-    console.log('Errors:')
-    for (const item of errors) console.log(`- ${item}`)
-  }
-  if (warnings.length > 0) {
-    console.log('Warnings:')
-    for (const item of warnings) console.log(`- ${item}`)
-  }
-  if (errors.length > 0) process.exitCode = 1
+function hasHeading(text, heading) {
+  return new RegExp(`^##\\s+${heading}\\s*$`, 'im').test(text)
 }
 
-function validateDocsV2() {
+function extractMarkdownTables(text) {
+  const lines = text.split(/\r?\n/)
+  const tables = []
+  for (let index = 0; index < lines.length; index += 1) {
+    const header = lines[index]
+    const separator = lines[index + 1]
+    if (!header?.trim().startsWith('|') || !separator?.trim().startsWith('|')) continue
+    if (!/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(separator)) continue
+    const rows = []
+    let cursor = index + 2
+    while (cursor < lines.length && lines[cursor].trim().startsWith('|')) {
+      rows.push(lines[cursor])
+      cursor += 1
+    }
+    const headers = header
+      .split('|')
+      .map((item) => item.trim().toLowerCase())
+      .filter(Boolean)
+    tables.push({ headers, rows })
+    index = cursor - 1
+  }
+  return tables
+}
+
+function auditFindingTables(text) {
+  return extractMarkdownTables(text).filter((table) =>
+    table.headers.some((header) => ['finding', 'findings', '问题', '问题描述'].includes(header))
+  )
+}
+
+function rowStatus(table, row) {
+  const statusIndex = table.headers.indexOf('status')
+  if (statusIndex < 0) return ''
+  const cells = row
+    .replace(/^\s*\|/, '')
+    .replace(/\|\s*$/, '')
+    .split('|')
+    .map((item) => item.trim().toLowerCase())
+  return cells[statusIndex] || ''
+}
+
+function auditHasUnresolvedSignals(text) {
+  const tableHasUnresolvedStatus = auditFindingTables(text).some((table) =>
+    table.rows.some((row) => unresolvedFindingStatuses.includes(rowStatus(table, row)))
+  )
+  const legacyUnresolvedSignals =
+    /(^|\n)#{2,4}\s*(Critical|High)\b|待进一步调查|推荐下一步|Recommended next step|Next step|Not verified|Open questions/i.test(
+      text
+    )
+  return tableHasUnresolvedStatus || legacyUnresolvedSignals
+}
+
+function validateDocs() {
   const targetRoot = path.resolve(process.argv[3] || process.cwd())
   const warnings = []
   const errors = []
@@ -567,7 +530,8 @@ function validateDocsV2() {
     for (const file of files) {
       const rel = path.relative(targetRoot, file).split(path.sep).join('/')
       if (path.basename(file) === '_template.md') continue
-      const fm = parseFrontmatter(readText(file))
+      const text = readText(file)
+      const fm = parseFrontmatter(text)
       if (!fm?.status) {
         warnings.push(`Process artifact should include frontmatter status: ${rel}`)
       } else if (!allowedStatuses.includes(fm.status)) {
@@ -583,14 +547,13 @@ function validateDocsV2() {
       if (!fm?.updated) warnings.push(`Process artifact should include frontmatter updated: ${rel}`)
       if (!fm?.artifact_type) warnings.push(`Process artifact should include frontmatter artifact_type: ${rel}`)
       if (rel.includes('/archived/') && fm?.status === 'active') {
-        warnings.push(`Archived artifact should not remain active: ${rel}`)
+        errors.push(`Archived artifact should not remain active: ${rel}`)
       }
       if (fm?.status === 'archived' && !rel.includes('/archived/')) {
         warnings.push(`Archived ${fm.artifact_type || 'artifact'} should be moved under an archived/ directory: ${rel}`)
       }
 
       if (fm?.artifact_type === 'plan') {
-        const text = readText(file)
         const hasUnresolvedDecision =
           /(decision point|待确认|需要用户确认|needs user confirmation|blocked by decision|option\s+[ab]|方案\s*[AB]|if choose|if selected|TBD|TODO decision)/i.test(
             text
@@ -599,6 +562,47 @@ function validateDocsV2() {
         if (hasUnresolvedDecision || readinessBlocked) {
           warnings.push(
             `Plan may contain unresolved decision points; keep decision requests in conversation and write only confirmed execution routes: ${rel}`
+          )
+        }
+      }
+
+      if (dir === 'docs/audits') {
+        const auditFields = ['artifact_type', 'status', 'created', 'updated', 'scope', 'source_of_truth']
+        for (const field of auditFields) {
+          if (!fm?.[field]) warnings.push(`Audit should include frontmatter ${field}: ${rel}`)
+        }
+        if (fm?.artifact_type && fm.artifact_type !== 'audit') {
+          warnings.push(`Audit artifact_type should be audit: ${rel}`)
+        }
+
+        const findingTables = auditFindingTables(text)
+        if (hasHeading(text, 'Findings') && findingTables.length === 0) {
+          warnings.push(`Audit Findings section should contain a markdown findings table: ${rel}`)
+        }
+        for (const table of findingTables) {
+          for (const requiredHeader of ['id', 'severity', 'status', 'finding', 'evidence']) {
+            if (!table.headers.includes(requiredHeader)) {
+              warnings.push(`Audit findings table should include ${requiredHeader.toUpperCase()} column: ${rel}`)
+            }
+          }
+          if (!table.headers.includes('owner plan')) {
+            warnings.push(`Audit findings table should include Owner Plan column for multi-plan follow-up: ${rel}`)
+          }
+          if (!table.headers.includes('branch/commit')) {
+            warnings.push(`Audit findings table should include Branch/Commit column for branch traceability: ${rel}`)
+          }
+          for (const row of table.rows) {
+            const status = rowStatus(table, row)
+            if (status && !allowedFindingStatuses.includes(status)) {
+              warnings.push(
+                `Audit finding has invalid status "${status}" in ${rel}; expected one of ${allowedFindingStatuses.join(', ')}`
+              )
+            }
+          }
+        }
+        if (rel.includes('/archived/') && auditHasUnresolvedSignals(text)) {
+          errors.push(
+            `Archived audit appears to contain unresolved findings or follow-up work; keep it active under docs/audits/: ${rel}`
           )
         }
       }
@@ -754,7 +758,7 @@ const command = process.argv[2] || 'install'
 try {
   if (command === 'install') install()
   else if (command === 'init-project') initProject()
-  else if (command === 'validate-docs') validateDocsV2()
+  else if (command === 'validate-docs') validateDocs()
   else if (command === 'validate') {
     validatePluginRoot(pluginRoot)
     console.log('cuberhyk-dev-flow package structure is valid.')

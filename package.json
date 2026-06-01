@@ -1,10 +1,10 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Multi-agent lifecycle workflow plugin with orient, decision, exploratory review, branch, changelog, distill, and review gates.",
   "type": "module",
   "bin": {
-    "cuberhyk-dev-flow": "./bin/dev-flow.js"
+    "cuberhyk-dev-flow": "bin/dev-flow.js"
   },
   "files": [
     ".claude-plugin/",

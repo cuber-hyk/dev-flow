@@ -22,7 +22,9 @@ Required behavior:
 5. Implement and verify the task with the smallest safe change.
 6. Run the changelog gate: update `CHANGELOG.md` only when the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
 7. Run the distill gate before review: update durable repository knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it.
-8. Show `git status --short --branch --untracked-files=all` and `git diff`.
-9. Wait for explicit approval before commit, merge, or branch cleanup.
-10. Never push automatically.
-11. Follow the skill's `templates/output.md` final response shape.
+8. Run the check gate before review when changelog, distill, docs routing, lifecycle artifacts, ADRs, context-map, capability docs, templates, or validation rules changed.
+9. Stop before review if changelog, distill, or check is blocked.
+10. Show `git status --short --branch --untracked-files=all` and `git diff`.
+11. Wait for explicit approval before commit, merge, or branch cleanup.
+12. Never push automatically.
+13. Follow the skill's `templates/output.md` final response shape.

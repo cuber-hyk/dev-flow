@@ -16,6 +16,8 @@ Dev Check does:
 - Detect process artifacts misplaced under `docs/capabilities/`.
 - Warn when plans, audits, ADRs, or capabilities lack required metadata.
 - Warn when plan/audit/ADR statuses violate the lifecycle protocol.
+- Warn when audit findings lack stable IDs or finding status.
+- Error when archived audits still contain unresolved findings or follow-up work.
 - Warn when likely long-term decisions appear only in plans, audits, or capabilities without ADR review.
 - Warn when `CHANGELOG.md` is missing `Unreleased`, release dates, or standard categories.
 - Warn when `docs/ai/context-map.md` points to missing paths or routes default context to process noise.
@@ -68,6 +70,14 @@ The validator checks:
 - Audit, review, findings, or plan artifacts stored under `docs/capabilities/`.
 - Capability docs without `source_of_truth`.
 - Plan and audit files without `status`, `updated`, or `artifact_type`.
+- Audit files without required frontmatter: `artifact_type`, `status`, `created`, `updated`, `scope`,
+  and `source_of_truth`.
+- Audit findings tables without `ID`, `Severity`, `Status`, `Finding`, `Evidence`, `Owner Plan`, or
+  `Branch/Commit` columns.
+- Invalid audit finding statuses. Allowed statuses are `open`, `planned`, `in_progress`, `fixed`,
+  `verified`, `accepted_risk`, `wont_fix`, and `not_reproducible`.
+- Archived audits that still contain unresolved finding statuses, Critical/High unresolved sections,
+  not-verified work, open questions, or next-step recommendations.
 - Invalid plan/audit statuses. Allowed persisted statuses are `active` and `archived`.
 - Invalid ADR statuses. Allowed persisted statuses are `proposed`, `accepted`, and `archived`.
 - Disallowed legacy statuses: `completed`, `distilled`, `superseded`, and `deprecated`.

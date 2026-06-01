@@ -54,7 +54,7 @@
               </div>
               <div class="process-lane">
                 <div class="lane-label">Close</div>
-                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Review Gate</span><span class="arrow">-></span><span class="node">Approve</span></div>
+                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Check Gate</span><span class="arrow">-></span><span class="node gate">Review Gate</span><span class="arrow">-></span><span class="node">Approve</span></div>
               </div>
             </div>
           </section>
@@ -75,6 +75,7 @@
             <div class="card-grid">
               <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 `CHANGELOG.md`。</p></article>
               <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理。</p></article>
+              <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG 和路由状态。</p></article>
               <article class="info-card"><h3>Review Gate</h3><p>展示 `git status` 和 `git diff`，用户明确批准后才提交、合并、删除分支。</p></article>
             </div>
           </section>
@@ -84,7 +85,7 @@
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
             <p>The canonical branch response shape lives in <code>skills/dev-branch/templates/output.md</code>. Use <code>Before Approval</code> before commit or merge approval, and <code>After Merge</code> only after the approved merge and cleanup complete.</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog: updated/not needed - reason&#10;Distill: updated/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
+              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
               <pre><code>Branch: task/YYYYMMDD-short-task-slug
 
 Existing changes before branch:
@@ -96,12 +97,16 @@ Changes made:
 Verification:
 - ...
 
-Changelog:
+Changelog gate:
 - Updated CHANGELOG.md under [Unreleased]
 - or Not needed: &lt;reason&gt;
 
-Distill:
+Distill gate:
 - Updated CONTEXT/capabilities/ADR/context-map/tests/lifecycle artifacts
+- or Not needed: &lt;reason&gt;
+
+Check gate:
+- Passed: &lt;command/result&gt;
 - or Not needed: &lt;reason&gt;
 
 Review:

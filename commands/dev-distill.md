@@ -17,7 +17,8 @@ Required behavior:
 
 1. Classify completed outcomes into durable facts, decisions, executable rules, and temporary process artifacts.
 2. Update only the correct durable destinations: `CONTEXT.md`, `docs/features.md`, `docs/capabilities/`, `docs/adr/`, and tests.
-3. Close process artifacts by moving retained plans/audits/ADRs into their `archived/` folders or deleting disposable ones.
-4. Do not re-plan, re-audit, or implement new fixes.
-5. End by recommending `/dev-check`.
-6. Follow the skill's `templates/output.md` final response shape.
+3. Run the Audit Closeout Gate before archiving or deleting audits; keep partially handled audits active.
+4. Close process artifacts by moving retained plans/audits/ADRs into their `archived/` folders or deleting disposable ones only when closeout gates pass.
+5. Do not re-plan, re-audit, or implement new fixes.
+6. End by recommending `/dev-check`.
+7. Follow the skill's `templates/output.md` final response shape.

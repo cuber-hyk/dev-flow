@@ -50,7 +50,7 @@ are unresolved, ask the user to confirm the route first. Do not put unresolved o
 | Artifact | Persisted statuses | Closeout |
 |---|---|---|
 | Plan | `active`, `archived` | Active files stay in `docs/plans/`; archived files move to `docs/plans/archived/`; delete when no future value remains. |
-| Audit | `active`, `archived` | Active files stay in `docs/audits/`; archived files move to `docs/audits/archived/`; delete when stable facts are captured elsewhere. |
+| Audit | `active`, `archived` | Active files stay in `docs/audits/`; archived files move to `docs/audits/archived/` only after all findings are verified, accepted, rejected, or transferred to active plans. |
 | Capability | `current` | Update in place; remove stale facts. |
 | ADR | `proposed`, `accepted`, `archived` | Proposed/accepted files stay in `docs/adr/`; archived files move to `docs/adr/archived/`; delete mistaken drafts. |
 
