@@ -20,3 +20,4 @@ Required behavior:
 3. If no, report `Changelog: not needed` with a concrete reason.
 4. When preparing a release, move `Unreleased` entries to `## [VERSION] - YYYY-MM-DD` and create a fresh `Unreleased`.
 5. Do not dump git commits into the changelog.
+6. Follow the skill's `templates/output.md` final response shape.

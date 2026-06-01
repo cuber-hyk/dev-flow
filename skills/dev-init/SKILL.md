@@ -106,6 +106,10 @@ Existing `AGENTS.md` receives only this marked block when missing:
    - Existing files left unchanged.
    - Recommended next step.
 
+## Output Template
+
+Use `templates/output.md` for the final response shape.
+
 ## Next-Step Prompt
 
 End with:

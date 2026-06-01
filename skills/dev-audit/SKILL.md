@@ -142,37 +142,9 @@ When creating an audit file:
    - If fixes are likely to change durable facts, note that `dev-branch` should run its distill gate before review.
    - After implementation or doc correction, recommend `dev-check`.
 
-## Output Shape
+## Output Template
 
-Use concise Markdown:
-
-```md
-Audit scope: ...
-
-Persistent audit: yes/no
-Audit file: docs/audits/YYYY-MM-DD-topic-audit.md or none
-
-Conclusion: ...
-
-Context loaded:
-- ...
-
-Findings:
-- [Severity] Finding - evidence
-
-Verification:
-- ...
-
-Artifact routing:
-- ...
-- ADR gate: needed/not needed/maybe; reason
-
-Git visibility:
-- ...
-
-Next step: ...
-```
-
+Use `templates/output.md` for the final response shape.
 ## Next-Step Prompt
 
 End with one of these:

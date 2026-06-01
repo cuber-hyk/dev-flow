@@ -250,48 +250,11 @@ When creating a plan file:
    - Blocked by decisions: ask the user to confirm the decision points.
    - Needs branch/spec: tell the user why before creating long-lived artifacts.
 
-## Output Shape
+## Output Template
 
-When ready to plan:
+Use `templates/output.md` for the final response shape.
 
-```md
-Plan readiness: ready
-
-Goal: ...
-
-Persistent plan: yes/no
-Plan file: docs/plans/YYYY-MM-DD-short-topic.md or none
-
-Scope:
-- ...
-
-Assumptions And Decisions:
-- ...
-
-Fact sources:
-- ...
-
-Context loaded:
-- ...
-
-Steps and verification:
-1. ...
-
-Acceptance criteria:
-- ...
-
-Artifact routing:
-- ...
-- ADR gate: needed/not needed/maybe; reason
-
-Git visibility:
-- ...
-
-Next step: ...
-```
-
-When blocked by decisions, use the decision request output instead.
-
+When blocked by decisions, use the `Blocked By Decisions` template and stop before creating or updating a plan file.
 ## Next-Step Prompt
 
 End with one of these:

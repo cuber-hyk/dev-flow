@@ -22,3 +22,4 @@ Required behavior:
 5. Persist non-trivial plans to `docs/plans/YYYY-MM-DD-short-topic.md` when repository workflow or task risk calls for it.
 6. Do not implement, audit, archive, or distill.
 7. End by recommending `/dev-branch`, direct implementation, or the next required Dev Flow step.
+8. Follow the skill's `templates/output.md` final response shape.

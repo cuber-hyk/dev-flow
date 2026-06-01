@@ -82,9 +82,13 @@
           <section id="review" class="page-section">
             <h2>审核输出必须包含什么</h2>
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
+            <p>The canonical branch response shape lives in <code>skills/dev-branch/templates/output.md</code>. Use <code>Before Approval</code> before commit or merge approval, and <code>After Merge</code> only after the approved merge and cleanup complete.</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>review output shape</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Changes made: ...&#10;Verification: ...&#10;Changelog: updated/not needed - reason&#10;Distill: updated/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
+              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog: updated/not needed - reason&#10;Distill: updated/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
               <pre><code>Branch: task/YYYYMMDD-short-task-slug
+
+Existing changes before branch:
+- ...
 
 Changes made:
 - ...
@@ -105,7 +109,8 @@ Review:
 - git diff
 
 Waiting for approval:
-- Say "审核通过" or "可以合并" to commit, merge, and clean up.</code></pre>
+- Say "审核通过" or "可以合并" to let me commit, merge, and clean up.
+- Push will not be performed unless separately requested and confirmed.</code></pre>
             </div>
           </section>
         </div>

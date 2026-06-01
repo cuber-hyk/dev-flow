@@ -20,3 +20,4 @@ Required behavior:
 3. Identify the relevant code and documentation entry points.
 4. Do not create a detailed plan, audit, implementation, or distillation.
 5. End by recommending `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-init`, or direct implementation when appropriate.
+6. Follow the skill's `templates/output.md` final response shape.

@@ -39,6 +39,7 @@
         <aside class="toc" aria-label="页面目录">
           <a href="#skills">技能职责</a>
           <a href="#skill-md">技能详情</a>
+          <a href="#output-templates">Output templates</a>
           <a href="#routing">文档路由</a>
           <a href="#lifecycle">生命周期</a>
           <a href="#adr">ADR Gate</a>
@@ -58,6 +59,7 @@
                   <tr><td><code>dev-orient</code></td><td>低噪声进入仓库上下文。</td><td>计划、审查、实现或沉淀。</td></tr>
                   <tr><td><code>dev-plan</code></td><td>内置 orient gate，识别决策点，制定计划。</td><td>实现或归档知识。</td></tr>
                   <tr><td><code>dev-audit</code></td><td>内置 orient gate，输出证据化发现。</td><td>修复问题。</td></tr>
+                  <tr><td><code>dev-exploratory-review</code></td><td>开放式风险发现，建立项目地图与风险地图，只报告真实失败路径。</td><td>实现修复或评论风格偏好。</td></tr>
                   <tr><td><code>dev-branch</code></td><td>分支实现、验证、changelog/distill/review gates。</td><td>静默混入无关改动或自动 push。</td></tr>
                   <tr><td><code>dev-changelog</code></td><td>维护面向人的发布说明。</td><td>记录每个 commit 或内部微调。</td></tr>
                   <tr><td><code>dev-distill</code></td><td>沉淀长期知识并关闭过程产物。</td><td>重新规划、重新审查或实现。</td></tr>
@@ -176,6 +178,27 @@
                 </div>
               </article>
               <article class="skill-source-card">
+                <header><h3>dev-exploratory-review</h3><span class="source-path">skills/dev-exploratory-review/SKILL.md</span></header>
+                <div class="source-body">
+                  <p class="skill-summary">结论：负责开放式风险发现，先建立项目地图和风险地图，再报告有真实失败路径的问题。</p>
+                  <p class="source-label">适合场景</p>
+                  <ul class="source-list">
+                    <li>用户不知道问题在哪里，需要检查整个项目、模块、功能、流程或当前分支。</li>
+                    <li>需要多轮验证正确性、数据完整性、安全、并发、性能或用户可见失败风险。</li>
+                  </ul>
+                  <p class="source-label">核心流程</p>
+                  <ul class="source-list">
+                    <li>先建立 project map 和 risk map。</li>
+                    <li>按 Project Mapper、Risk Prober、Adversarial Verifier、Judge 四轮审查。</li>
+                    <li>只输出有现实触发路径和证据的问题。</li>
+                  </ul>
+                  <p class="source-label">不会做</p>
+                  <ul class="source-list"><li>不实现修复，不报告命名、格式或主观偏好问题。</li></ul>
+                  <p class="source-label">下一步</p>
+                  <p class="next-step"><code>dev-plan</code> / <code>dev-branch</code></p>
+                </div>
+              </article>
+              <article class="skill-source-card">
                 <header><h3>dev-branch</h3><span class="source-path">skills/dev-branch/SKILL.md</span></header>
                 <div class="source-body">
                   <p class="skill-summary">结论：负责在隔离分支实现、验证和审核闭环，但不自动提交、合并或 push。</p>
@@ -238,6 +261,27 @@
                   <p class="next-step"><code>dev-check</code></p>
                 </div>
               </article>
+            </div>
+          </section>
+
+          <section id="output-templates" class="page-section">
+            <h2>Output templates</h2>
+            <p>Every skill now has a dedicated final-response template under <code>skills/&lt;skill&gt;/templates/output.md</code>. <code>SKILL.md</code> defines behavior and gates; <code>templates/output.md</code> defines the response shape agents should use at the end of the skill.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Skill</th><th>Template</th><th>Important shape</th></tr></thead>
+                <tbody>
+                  <tr><td><code>dev-init</code></td><td><code>skills/dev-init/templates/output.md</code></td><td>Target, created paths, unchanged paths, verification, next step.</td></tr>
+                  <tr><td><code>dev-check</code></td><td><code>skills/dev-check/templates/output.md</code></td><td>Errors, warnings, recommendations, validation result, next step.</td></tr>
+                  <tr><td><code>dev-orient</code></td><td><code>skills/dev-orient/templates/output.md</code></td><td>Context loaded, entry points, fact sources, artifact destinations.</td></tr>
+                  <tr><td><code>dev-plan</code></td><td><code>skills/dev-plan/templates/output.md</code></td><td>Ready-to-plan shape plus blocked-by-decisions shape.</td></tr>
+                  <tr><td><code>dev-audit</code></td><td><code>skills/dev-audit/templates/output.md</code></td><td>Scope, findings, evidence, verification, routing.</td></tr>
+                  <tr><td><code>dev-exploratory-review</code></td><td><code>skills/dev-exploratory-review/templates/output.md</code></td><td>Scope, project map, risk map, passes, findings, probes.</td></tr>
+                  <tr><td><code>dev-branch</code></td><td><code>skills/dev-branch/templates/output.md</code></td><td>Before Approval and After Merge shapes.</td></tr>
+                  <tr><td><code>dev-changelog</code></td><td><code>skills/dev-changelog/templates/output.md</code></td><td>Updated, not needed, release prepared, or blocked.</td></tr>
+                  <tr><td><code>dev-distill</code></td><td><code>skills/dev-distill/templates/output.md</code></td><td>Durable updates plus plan, audit, and ADR closeout.</td></tr>
+                </tbody>
+              </table>
             </div>
           </section>
 

@@ -153,30 +153,9 @@ tradeoff, or temporary audit/plan notes.
 
 If the ADR gate fails, update the relevant capability doc or tests instead.
 
-## Output Shape
+## Output Template
 
-Use concise Markdown:
-
-```md
-Distillation conclusion: ...
-
-Updated / recommended updates:
-- ...
-
-No durable update needed:
-- ...
-
-Artifact closeout:
-- Plan: archived/deleted/not applicable
-- Audit: archived/deleted/not applicable
-- ADR: accepted/archived/deleted/not needed
-
-Verification:
-- ...
-
-Next step: ...
-```
-
+Use `templates/output.md` for the final response shape.
 ## Next-Step Prompt
 
 End with one of these:

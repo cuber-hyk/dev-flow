@@ -131,16 +131,6 @@ Changelog: not needed - <reason>
    - Run `git status --short --branch --untracked-files=all`.
    - Report whether git sees the file.
 
-## Output Shape
+## Output Template
 
-```md
-Changelog: updated/not needed
-File: CHANGELOG.md or none
-Category: Added/Changed/Deprecated/Removed/Fixed/Security or none
-Entry:
-- ...
-Reason:
-- ...
-Git visibility:
-- ...
-```
+Use `templates/output.md` for the final response shape.

@@ -20,3 +20,4 @@ Required behavior:
 3. Close process artifacts by moving retained plans/audits/ADRs into their `archived/` folders or deleting disposable ones.
 4. Do not re-plan, re-audit, or implement new fixes.
 5. End by recommending `/dev-check`.
+6. Follow the skill's `templates/output.md` final response shape.

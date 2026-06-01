@@ -20,3 +20,4 @@ Required behavior:
 3. Report concrete findings with paths.
 4. Do not perform code audits or implementation work.
 5. End by recommending the next fitting Dev Flow skill.
+6. Follow the skill's `templates/output.md` final response shape.

@@ -21,3 +21,4 @@ Required behavior:
 4. Persist non-trivial or follow-up-worthy audits to `docs/audits/YYYY-MM-DD-short-topic-audit.md`.
 5. Do not implement fixes, write feature plans, or update capability docs directly unless the user specifically asked for documentation repair.
 6. End by recommending `/dev-plan` for fixes, `/dev-branch` for reviewed implementation, or `/dev-check` for routing validation.
+7. Follow the skill's `templates/output.md` final response shape.

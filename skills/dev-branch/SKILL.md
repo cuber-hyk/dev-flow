@@ -186,43 +186,8 @@ Treat these as approval to commit and merge:
 
 Approval to commit/merge is not approval to push. Push requires a separate explicit request and confirmation.
 
-## Output Shape Before Approval
+## Output Template
 
-```md
-Branch: task/YYYYMMDD-short-task-slug
+Use `templates/output.md` for the final response shape.
 
-Existing changes before branch:
-- ...
-
-Changes made:
-- ...
-
-Verification:
-- ...
-
-Changelog:
-- Updated CHANGELOG.md under [Unreleased] -> Added/Changed/Deprecated/Removed/Fixed/Security
-- or Not needed: <reason>
-
-Distill:
-- Updated CONTEXT/capabilities/ADR/context-map/tests/lifecycle artifacts
-- or Not needed: <reason>
-
-Review:
-- git status --short --branch: ...
-- git diff: shown above/summarized
-
-Waiting for approval:
-- Say "审核通过" or "可以合并" to let me commit, merge, and clean up.
-```
-
-## Output Shape After Merge
-
-```md
-Merged into: main
-Commit: <hash>
-Task branch deleted: yes/no
-Push: not performed
-Current status: clean/...
-Next step: dev-check/none
-```
+Use the `Before Approval` section before commit/merge approval. Use the `After Merge` section only after the approved commit, merge, and branch cleanup have completed.

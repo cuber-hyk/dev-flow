@@ -102,28 +102,15 @@ The validator checks:
    - ADR warning -> use `dev-distill` to run the ADR gate.
    - Clean state and new task -> use `dev-orient`.
 
-## Output Shape
+## Output Template
 
-Use concise Markdown:
-
-```md
-检查目标: ...
-
-结果:
-- ...
-
-建议:
-- ...
-
-下一步: ...
-```
-
+Use `templates/output.md` for the final response shape.
 ## Next-Step Prompt
 
 End with one of these:
 
-- `检查通过；下一步可以使用 dev-orient 开始具体任务。`
-- `发现结构缺口；建议先使用 dev-init 初始化缺失目录或模板。`
-- `发现审查需求；建议使用 dev-audit 生成结构化审查报告。`
-- `发现产物生命周期问题；建议使用 dev-distill 关闭、归档或删除相关计划/审查文档。`
-- `发现可能需要 ADR 的长期决策；建议使用 dev-distill 运行 ADR gate。`
+- `���ͨ������һ������ʹ�� dev-orient ��ʼ��������`
+- `���ֽṹȱ�ڣ�������ʹ�� dev-init ��ʼ��ȱʧĿ¼��ģ�塣`
+- `����������󣻽���ʹ�� dev-audit ���ɽṹ����鱨�档`
+- `���ֲ��������������⣻����ʹ�� dev-distill �رա��鵵��ɾ����ؼƻ�/����ĵ���`
+- `���ֿ�����Ҫ ADR �ĳ��ھ��ߣ�����ʹ�� dev-distill ���� ADR gate��`

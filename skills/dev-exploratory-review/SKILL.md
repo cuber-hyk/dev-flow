@@ -142,66 +142,9 @@ When creating a report:
 4. Run `git status --short --branch --untracked-files=all`.
 5. Report whether git sees the file.
 
-## Output Shape
+## Output Template
 
-Use concise Markdown:
-
-```md
-Review mode: dev-exploratory-review
-Review scope:
-- Type: repository-wide | path-bounded | feature-bounded | flow-bounded | change-bounded | doc-bounded
-- Boundary: ...
-- Expansions: ...
-
-Persistent report: yes/no
-Report file: docs/audits/YYYY-MM-DD-topic-exploratory-review.md or none
-
-Conclusion: ...
-
-Context loaded:
-- ...
-
-Project map:
-- ...
-
-Risk map:
-- ...
-
-Passes:
-- Project Mapper: ...
-- Risk Prober: ...
-- Adversarial Verifier: ...
-- Judge: ...
-
-Findings:
-- [P1/P2/P3, evidence label, category] Finding
-  Scenario:
-  Evidence:
-  Verification:
-  Impact:
-  Fix direction:
-
-Rejected candidates:
-- Candidate: ...
-  Reason:
-
-Tests/probes:
-- ...
-
-Not verified:
-- ...
-
-Artifact routing:
-- Fixes: dev-plan
-- Implementation: dev-branch
-- Stable knowledge / ADR gate: needed/not needed/maybe; reason
-
-Git visibility:
-- ...
-
-Next step: ...
-```
-
+Use `templates/output.md` for the final response shape.
 ## Next-Step Prompt
 
 End with one of these:

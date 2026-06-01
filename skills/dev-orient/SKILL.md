@@ -93,11 +93,15 @@ If the project has no Dev Flow memory structure, report that it needs initializa
    - Assumptions and uncertainties.
    - Recommended next skill.
 
+## Output Template
+
+Use `templates/output.md` for the final response shape.
+
 ## Next-Step Prompt
 
 End with one of these:
 
-- `建议下一步使用 dev-plan，把目标、步骤和验收方式固定下来；实现阶段可使用 dev-branch 做分支审核。`
-- `这是审查任务；建议下一步使用 dev-audit，把审查范围、证据和发现归位到 docs/audits/。`
-- `这是小任务，可以跳过 dev-plan，直接执行并在结束时考虑 dev-distill。`
-- `上下文不足，需要先向用户澄清，再进入 dev-plan 或 dev-audit。`
+- `������һ��ʹ�� dev-plan����Ŀ�ꡢ��������շ�ʽ�̶�������ʵ�ֽ׶ο�ʹ�� dev-branch ����֧��顣`
+- `����������񣻽�����һ��ʹ�� dev-audit������鷶Χ��֤�ݺͷ��ֹ�λ�� docs/audits/��`
+- `����С���񣬿������� dev-plan��ֱ��ִ�в��ڽ���ʱ���� dev-distill��`
+- `�����Ĳ��㣬��Ҫ�����û����壬�ٽ��� dev-plan �� dev-audit��`

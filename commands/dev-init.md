@@ -20,3 +20,4 @@ Required behavior:
 3. Use `cuberhyk-dev-flow init-project [project-dir]` when a stable file creation mechanism is available.
 4. Do not overwrite existing `AGENTS.md`; append the marked Dev Flow section only when it is absent.
 5. End by recommending `/dev-check`.
+6. Follow the skill's `templates/output.md` final response shape.

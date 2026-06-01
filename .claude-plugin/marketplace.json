@@ -8,7 +8,7 @@
     {
       "name": "cuberhyk-dev-flow",
       "description": "Init, check, orient, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "source": "./",
       "author": {
         "name": "cuber-hyk"

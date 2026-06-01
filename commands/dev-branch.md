@@ -25,3 +25,4 @@ Required behavior:
 8. Show `git status --short --branch --untracked-files=all` and `git diff`.
 9. Wait for explicit approval before commit, merge, or branch cleanup.
 10. Never push automatically.
+11. Follow the skill's `templates/output.md` final response shape.

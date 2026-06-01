@@ -129,6 +129,26 @@ flowchart TD
 | Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
 | Review Gate | `dev-branch` | Show status and diff before any commit, merge, branch delete, or push. | User approval request. |
 
+## Output Templates
+
+Each skill has a dedicated final-response template:
+
+```text
+skills/<skill-name>/templates/output.md
+```
+
+`SKILL.md` keeps the workflow rules and points to the template. Slash commands also require the
+same template shape, so `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, `/dev-distill`,
+and the other commands produce consistent responses across agent harnesses.
+
+Use the templates as the source of truth for response structure:
+
+- `dev-branch` has separate `Before Approval` and `After Merge` sections.
+- `dev-plan` has separate ready and decision-blocked shapes.
+- `dev-changelog` always reports updated, not needed, release prepared, or blocked.
+- `dev-distill` always reports durable updates and plan/audit/ADR closeout.
+- `dev-check` always reports errors, warnings, recommendations, and the next step.
+
 ## Plan Readiness Gate
 
 `dev-plan` does not start by writing a plan. It first orients, then asks whether the task is
@@ -482,7 +502,7 @@ Local package test before publishing:
 
 ```bash
 npm pack
-npx ./cuberhyk-dev-flow-0.7.0.tgz install
+npx ./cuberhyk-dev-flow-0.7.1.tgz install
 ```
 
 ## Validation
