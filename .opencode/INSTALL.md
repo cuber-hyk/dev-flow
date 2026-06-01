@@ -33,5 +33,8 @@ use skill tool to load cuberhyk-dev-flow/dev-check
 use skill tool to load cuberhyk-dev-flow/dev-orient
 use skill tool to load cuberhyk-dev-flow/dev-plan
 use skill tool to load cuberhyk-dev-flow/dev-audit
+use skill tool to load cuberhyk-dev-flow/dev-exploratory-review
+use skill tool to load cuberhyk-dev-flow/dev-branch
+use skill tool to load cuberhyk-dev-flow/dev-changelog
 use skill tool to load cuberhyk-dev-flow/dev-distill
 ```

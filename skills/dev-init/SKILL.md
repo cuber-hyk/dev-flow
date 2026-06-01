@@ -1,6 +1,6 @@
 ﻿---
 name: dev-init
-description: Initialize Dev Flow repository memory for a new or existing project. Use when a user wants to set up cuberhyk-dev-flow, quickly connect an existing project to Dev Flow, create the recommended AGENTS/CONTEXT/docs/ai/docs/capabilities/docs/plans/docs/audits/docs/adr structure, install document templates, or asks how to start using the workflow. Runs or recommends the underlying cuberhyk-dev-flow init-project command for file creation. Do not use for task planning, audits, implementation, or distillation.
+description: Initialize Dev Flow repository memory for a new or existing project. Use when a user wants to set up cuberhyk-dev-flow, quickly connect an existing project, create the recommended AGENTS/CONTEXT/CHANGELOG/docs memory structure, install templates, or learn how to start the workflow. Runs or recommends the underlying cuberhyk-dev-flow init-project command. Do not use for task planning, audits, implementation, changelog maintenance, or distillation.
 ---
 
 # Dev Init
@@ -35,7 +35,7 @@ Ask the agent to use this skill:
 dev-init 接入当前项目的 Dev Flow 文档结构
 ```
 
-For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-orient`, `dev-audit`, and `dev-distill` to generate stable, project-specific knowledge from real code.
+For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-plan` for feature work or `dev-audit` for review work. Those skills enter relevant context, and `dev-branch` runs the distill gate before review when stable project knowledge changes.
 
 ## Internal Command
 
@@ -57,13 +57,16 @@ The command creates missing paths only; it does not overwrite existing files.
 
 ```text
 AGENTS.md
+CHANGELOG.md
 CONTEXT.md
 docs/ai/context-map.md
 docs/capabilities/
 docs/plans/
+docs/plans/archived/
 docs/audits/
 docs/audits/archived/
 docs/adr/
+docs/adr/archived/
 docs/capabilities/_template.md
 docs/plans/_template.md
 docs/audits/_template.md
@@ -88,7 +91,8 @@ Existing `AGENTS.md` receives only this marked block when missing:
    - Check for `AGENTS.md` and whether it already has the Dev Flow marked section.
    - Check for `CONTEXT.md`.
    - Check for `docs/ai/context-map.md`.
-   - Check for `docs/capabilities/`, `docs/plans/`, `docs/audits/`, `docs/audits/archived/`, and `docs/adr/`.
+   - Check for `docs/capabilities/`, `docs/plans/`, `docs/plans/archived/`, `docs/audits/`,
+     `docs/audits/archived/`, `docs/adr/`, and `docs/adr/archived/`.
    - Check for `_template.md` files in capabilities, plans, audits, and adr.
 
 3. Initialize:

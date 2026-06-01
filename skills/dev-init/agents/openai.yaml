@@ -1,4 +1,4 @@
 interface:
   display_name: "Dev Init"
-  short_description: "Initialize Dev Flow project memory"
+  short_description: "Set up Dev Flow docs"
   default_prompt: "Use $dev-init to create the recommended Dev Flow memory structure for this project."

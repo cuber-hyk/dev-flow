@@ -25,6 +25,11 @@ State exactly what was reviewed.
 | Severity | Finding | Evidence | Recommended next step |
 |---|---|---|---|
 
+## ADR Gate
+
+- Needed: yes/no/maybe
+- Reason:
+
 ## Verification
 
 - Commands run:
@@ -37,8 +42,9 @@ State exactly what was reviewed.
 
 ## Closeout
 
-During `dev-distill`, choose one:
+During `dev-distill`, choose one final action:
 
-- `distilled`: stable facts moved to capability docs, ADRs, or tests.
-- `archived`: evidence retained outside default context.
-- delete: useful conclusions are represented elsewhere and evidence has no future value.
+- Archive: set `status: archived` and move to `docs/audits/archived/` when evidence has trace value.
+- Delete: remove this file when stable conclusions are represented elsewhere and evidence has no future value.
+
+Do not use `distilled` as a final state.

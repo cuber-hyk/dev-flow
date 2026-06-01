@@ -4,6 +4,7 @@ status: active
 created: {{DATE}}
 updated: {{DATE}}
 owner: agent
+plan_readiness: ready
 ---
 
 # Plan Title
@@ -17,9 +18,25 @@ State the verifiable outcome in one sentence.
 - In scope:
 - Out of scope:
 
-## Assumptions And Unknowns
+## Plan Readiness
+
+- Goal clear:
+- Scope clear:
+- Source of truth known:
+- Critical decisions confirmed:
+- Validation path known:
+
+Do not use this template for unresolved decision requests. If critical decisions are unresolved,
+ask the user first and create/update this plan only after confirmation.
+
+## Assumptions And Decisions
 
 - 
+
+## Decision Points Checked
+
+| Decision | Chosen route | Confirmed by | ADR gate |
+|---|---|---|---|
 
 ## Steps And Verification
 
@@ -34,7 +51,7 @@ State the verifiable outcome in one sentence.
 
 - Capability updates:
 - Audit output:
-- ADR:
+- ADR gate: needed/not needed/maybe; reason:
 - Tests:
 
 ## Git Visibility
@@ -44,4 +61,9 @@ State the verifiable outcome in one sentence.
 
 ## Closeout
 
-Mark this plan `completed`, `superseded`, or `archived` during `dev-distill`.
+During `dev-distill`, choose one final action:
+
+- Archive: move this file to `docs/plans/archived/` and set `status: archived` when the plan has trace value.
+- Delete: remove this file when it has no independent future value.
+
+Do not use `completed` or `superseded` as final states.

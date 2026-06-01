@@ -64,6 +64,10 @@ function readText(file) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : ''
 }
 
+function readJson(file) {
+  return JSON.parse(readText(file).replace(/^\uFEFF/, ''))
+}
+
 function walkMarkdown(dir) {
   if (!fs.existsSync(dir)) return []
   const result = []
@@ -135,13 +139,16 @@ function removeDir(target) {
 }
 
 function defaultPluginDir() {
-  return process.env.DEV_FLOW_PLUGIN_DIR || path.join(os.homedir(), 'plugins', pluginName)
+  return (
+    process.env.DEV_FLOW_PLUGIN_DIR ||
+    path.join(os.homedir(), 'plugins', 'cuberhyk-plugins', 'plugins', pluginName)
+  )
 }
 
 function defaultCodexMarketplacePath() {
   return (
     process.env.DEV_FLOW_CODEX_MARKETPLACE ||
-    path.join(os.homedir(), '.agents', 'plugins', 'marketplace.json')
+    path.join(os.homedir(), 'plugins', 'cuberhyk-plugins', '.agents', 'plugins', 'marketplace.json')
   )
 }
 
@@ -163,7 +170,7 @@ function installCodexMarketplace(pluginDir) {
   }
 
   if (fs.existsSync(marketplacePath)) {
-    marketplace = JSON.parse(fs.readFileSync(marketplacePath, 'utf8'))
+    marketplace = readJson(marketplacePath)
     marketplace.plugins ||= []
     marketplace.interface ||= { displayName: marketplace.name || 'Personal' }
   }
@@ -172,7 +179,7 @@ function installCodexMarketplace(pluginDir) {
     name: pluginName,
     source: {
       source: 'local',
-      path: toPosixRelative(marketplaceRoot, pluginDir),
+      path: './plugins/cuberhyk-dev-flow',
     },
     policy: {
       installation: 'AVAILABLE',
@@ -196,19 +203,61 @@ function installCodexMarketplace(pluginDir) {
   return marketplacePath
 }
 
+function installClaudeMarketplace(pluginDir) {
+  const marketplaceRoot = path.resolve(pluginDir, '..', '..')
+  const marketplacePath = path.join(marketplaceRoot, '.claude-plugin', 'marketplace.json')
+  fs.mkdirSync(path.dirname(marketplacePath), { recursive: true })
+
+  const marketplace = {
+    name: 'cuberhyk-plugins',
+    description: 'Local marketplace for cuber-hyk coding-agent plugins',
+    owner: {
+      name: 'cuber-hyk',
+    },
+    plugins: [
+      {
+        name: pluginName,
+        description:
+          'Init, check, orient, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses',
+        version: readJson(path.join(pluginDir, 'package.json')).version,
+        source: './plugins/cuberhyk-dev-flow',
+        author: {
+          name: 'cuber-hyk',
+        },
+      },
+    ],
+  }
+
+  fs.writeFileSync(marketplacePath, `${JSON.stringify(marketplace, null, 2)}\n`)
+  return marketplacePath
+}
+
 function validatePluginRoot(root = pluginRoot) {
   const required = [
     '.claude-plugin/plugin.json',
     '.codex-plugin/plugin.json',
     '.cursor-plugin/plugin.json',
     '.opencode/INSTALL.md',
+    'commands/dev-init.md',
+    'commands/dev-check.md',
+    'commands/dev-orient.md',
+    'commands/dev-plan.md',
+    'commands/dev-audit.md',
+    'commands/dev-branch.md',
+    'commands/dev-exploratory-review.md',
+    'commands/dev-changelog.md',
+    'commands/dev-distill.md',
     'skills/dev-orient/SKILL.md',
     'skills/dev-plan/SKILL.md',
     'skills/dev-audit/SKILL.md',
+    'skills/dev-branch/SKILL.md',
+    'skills/dev-exploratory-review/SKILL.md',
+    'skills/dev-changelog/SKILL.md',
     'skills/dev-distill/SKILL.md',
     'skills/dev-init/SKILL.md',
     'skills/dev-check/SKILL.md',
     'templates/AGENTS.dev-flow.md',
+    'templates/CHANGELOG.md',
     'templates/CONTEXT.md',
     'templates/docs/ai/context-map.md',
     'templates/docs/capabilities/_template.md',
@@ -262,15 +311,18 @@ function initProject() {
     'docs/ai',
     'docs/capabilities',
     'docs/plans',
+    'docs/plans/archived',
     'docs/audits',
     'docs/audits/archived',
     'docs/adr',
+    'docs/adr/archived',
   ]
 
   for (const dir of dirs) ensureDir(path.join(targetRoot, dir), created)
 
   ensureAgents(targetRoot, vars, created)
   writeTemplateIfMissing('CONTEXT.md', path.join(targetRoot, 'CONTEXT.md'), vars, created)
+  writeTemplateIfMissing('CHANGELOG.md', path.join(targetRoot, 'CHANGELOG.md'), vars, created)
   writeTemplateIfMissing(
     'docs/ai/context-map.md',
     path.join(targetRoot, 'docs/ai/context-map.md'),
@@ -305,9 +357,11 @@ function initProject() {
   const gitkeepDirs = [
     'docs/capabilities',
     'docs/plans',
+    'docs/plans/archived',
     'docs/audits',
     'docs/audits/archived',
     'docs/adr',
+    'docs/adr/archived',
   ]
 
   for (const dir of gitkeepDirs) {
@@ -339,9 +393,11 @@ function validateDocs() {
     'docs/ai/context-map.md',
     'docs/capabilities',
     'docs/plans',
+    'docs/plans/archived',
     'docs/audits',
     'docs/audits/archived',
     'docs/adr',
+    'docs/adr/archived',
   ]
 
   for (const item of recommended) {
@@ -357,12 +413,16 @@ function validateDocs() {
       'docs/capabilities/.gitkeep',
       'docs/plans',
       'docs/plans/.gitkeep',
+      'docs/plans/archived',
+      'docs/plans/archived/.gitkeep',
       'docs/audits',
       'docs/audits/.gitkeep',
       'docs/audits/archived',
       'docs/audits/archived/.gitkeep',
       'docs/adr',
       'docs/adr/.gitkeep',
+      'docs/adr/archived',
+      'docs/adr/archived/.gitkeep',
     ])
 
     for (const item of ignored) {
@@ -430,13 +490,16 @@ function validateDocsV2() {
 
   const recommended = [
     'AGENTS.md',
+    'CHANGELOG.md',
     'CONTEXT.md',
     'docs/ai/context-map.md',
     'docs/capabilities',
     'docs/plans',
+    'docs/plans/archived',
     'docs/audits',
     'docs/audits/archived',
     'docs/adr',
+    'docs/adr/archived',
   ]
 
   for (const item of recommended) {
@@ -446,18 +509,23 @@ function validateDocsV2() {
   if (isGitRepository(targetRoot)) {
     const ignored = gitIgnoredPaths(targetRoot, [
       'AGENTS.md',
+      'CHANGELOG.md',
       'CONTEXT.md',
       'docs/ai/context-map.md',
       'docs/capabilities',
       'docs/capabilities/.gitkeep',
       'docs/plans',
       'docs/plans/.gitkeep',
+      'docs/plans/archived',
+      'docs/plans/archived/.gitkeep',
       'docs/audits',
       'docs/audits/.gitkeep',
       'docs/audits/archived',
       'docs/audits/archived/.gitkeep',
       'docs/adr',
       'docs/adr/.gitkeep',
+      'docs/adr/archived',
+      'docs/adr/archived/.gitkeep',
     ])
 
     for (const item of ignored) {
@@ -489,9 +557,10 @@ function validateDocsV2() {
   }
 
   const statusRules = {
-    'docs/plans': ['active', 'completed', 'superseded', 'archived'],
-    'docs/audits': ['active', 'distilled', 'archived'],
+    'docs/plans': ['active', 'archived'],
+    'docs/audits': ['active', 'archived'],
   }
+  const disallowedLifecycleStatuses = ['completed', 'distilled', 'superseded', 'deprecated']
 
   for (const [dir, allowedStatuses] of Object.entries(statusRules)) {
     const files = walkMarkdown(path.join(targetRoot, dir))
@@ -506,16 +575,38 @@ function validateDocsV2() {
           `Process artifact has invalid status "${fm.status}" in ${rel}; expected one of ${allowedStatuses.join(', ')}`
         )
       }
+      if (fm?.status && disallowedLifecycleStatuses.includes(fm.status)) {
+        warnings.push(
+          `Process artifact uses disallowed lifecycle status "${fm.status}" in ${rel}; use active, archived, or delete the file.`
+        )
+      }
       if (!fm?.updated) warnings.push(`Process artifact should include frontmatter updated: ${rel}`)
       if (!fm?.artifact_type) warnings.push(`Process artifact should include frontmatter artifact_type: ${rel}`)
       if (rel.includes('/archived/') && fm?.status === 'active') {
         warnings.push(`Archived artifact should not remain active: ${rel}`)
       }
+      if (fm?.status === 'archived' && !rel.includes('/archived/')) {
+        warnings.push(`Archived ${fm.artifact_type || 'artifact'} should be moved under an archived/ directory: ${rel}`)
+      }
+
+      if (fm?.artifact_type === 'plan') {
+        const text = readText(file)
+        const hasUnresolvedDecision =
+          /(decision point|待确认|需要用户确认|needs user confirmation|blocked by decision|option\s+[ab]|方案\s*[AB]|if choose|if selected|TBD|TODO decision)/i.test(
+            text
+          )
+        const readinessBlocked = /plan_readiness:\s*(blocked|not_ready|not-ready)/i.test(text)
+        if (hasUnresolvedDecision || readinessBlocked) {
+          warnings.push(
+            `Plan may contain unresolved decision points; keep decision requests in conversation and write only confirmed execution routes: ${rel}`
+          )
+        }
+      }
     }
   }
 
   const adrFiles = walkMarkdown(path.join(targetRoot, 'docs/adr'))
-  const adrStatuses = ['proposed', 'accepted', 'superseded', 'deprecated']
+  const adrStatuses = ['proposed', 'accepted', 'archived']
   for (const file of adrFiles) {
     const rel = path.relative(targetRoot, file).split(path.sep).join('/')
     if (path.basename(file) === '_template.md') continue
@@ -524,7 +615,62 @@ function validateDocsV2() {
     else if (!adrStatuses.includes(fm.status)) {
       warnings.push(`ADR has invalid status "${fm.status}" in ${rel}; expected one of ${adrStatuses.join(', ')}`)
     }
+    if (fm?.status && disallowedLifecycleStatuses.includes(fm.status)) {
+      warnings.push(
+        `ADR uses disallowed lifecycle status "${fm.status}" in ${rel}; use proposed, accepted, archived, or delete the file.`
+      )
+    }
     if (!fm?.updated) warnings.push(`ADR should include frontmatter updated: ${rel}`)
+    if (rel.includes('/archived/') && fm?.status !== 'archived') {
+      warnings.push(`ADR under archived/ should use status: archived: ${rel}`)
+    }
+    if (fm?.status === 'archived' && !rel.includes('/archived/')) {
+      warnings.push(`Archived ADR should be moved under docs/adr/archived/: ${rel}`)
+    }
+  }
+
+  const changelogPath = path.join(targetRoot, 'CHANGELOG.md')
+  if (fs.existsSync(changelogPath)) {
+    const changelog = readText(changelogPath)
+    const allowedCategories = ['Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Security']
+    if (!/^## \[Unreleased\]/m.test(changelog)) {
+      warnings.push('CHANGELOG.md should contain a top-level ## [Unreleased] section.')
+    }
+    const releasedHeadings = [...changelog.matchAll(/^## \[([^\]]+)\](?:\s*-\s*(.*))?$/gm)]
+    for (const [, version, date] of releasedHeadings) {
+      if (version === 'Unreleased') continue
+      if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date.trim())) {
+        warnings.push(`CHANGELOG.md release heading should use ISO date: ## [${version}] - YYYY-MM-DD`)
+      }
+    }
+    const categoryHeadings = [...changelog.matchAll(/^### (.+)$/gm)].map((match) => match[1].trim())
+    for (const heading of categoryHeadings) {
+      if (!allowedCategories.includes(heading)) {
+        warnings.push(
+          `CHANGELOG.md uses non-standard category "${heading}"; expected ${allowedCategories.join(', ')}.`
+        )
+      }
+    }
+    if (/git log|commit history|commit log/i.test(changelog)) {
+      warnings.push('CHANGELOG.md appears to reference raw commit history; keep changelog entries human-readable.')
+    }
+  }
+
+  const decisionPattern =
+    /(decision|decided|choose|chosen|adopt|architecture|source of truth|fact source|migration|algorithm|policy|ADR|决策|决定|选择|采用|架构|事实源|算法|策略)/
+  const adrReviewedPattern = /(ADR gate|ADR|docs\/adr|adr_required|adr_reviewed)/i
+  for (const dir of ['docs/plans', 'docs/audits', 'docs/capabilities']) {
+    const files = walkMarkdown(path.join(targetRoot, dir))
+    for (const file of files) {
+      const rel = path.relative(targetRoot, file).split(path.sep).join('/')
+      if (path.basename(file) === '_template.md') continue
+      const text = readText(file)
+      if (decisionPattern.test(text) && !adrReviewedPattern.test(text)) {
+        warnings.push(
+          `Possible long-term decision without ADR gate review: ${rel}; run dev-distill if this is a hard-to-reverse tradeoff.`
+        )
+      }
+    }
   }
 
   const contextMap = readText(path.join(targetRoot, 'docs/ai/context-map.md'))
@@ -568,30 +714,33 @@ function install() {
 
   if (path.resolve(pluginDir) === path.resolve(sourceRoot)) {
     const marketplacePath = installCodexMarketplace(pluginDir)
-    printSuccess(pluginDir, marketplacePath)
+    const claudeMarketplacePath = installClaudeMarketplace(pluginDir)
+    printSuccess(pluginDir, marketplacePath, claudeMarketplacePath)
     return
   }
 
   removeDir(pluginDir)
   copyRecursive(sourceRoot, pluginDir)
   const marketplacePath = installCodexMarketplace(pluginDir)
-  printSuccess(pluginDir, marketplacePath)
+  const claudeMarketplacePath = installClaudeMarketplace(pluginDir)
+  printSuccess(pluginDir, marketplacePath, claudeMarketplacePath)
 }
 
-function printSuccess(pluginDir, marketplacePath) {
+function printSuccess(pluginDir, marketplacePath, claudeMarketplacePath) {
   console.log('cuberhyk-dev-flow installed.')
   console.log(`Plugin directory: ${pluginDir}`)
   console.log(`Codex marketplace: ${marketplacePath}`)
+  console.log(`Claude marketplace: ${claudeMarketplacePath}`)
   console.log('')
   console.log('Claude Code local test:')
   console.log(`  claude --plugin-dir "${pluginDir}"`)
   console.log('')
   console.log('Claude Code marketplace install:')
-  console.log(`  /plugin marketplace add "${pluginDir}"`)
+  console.log(`  /plugin marketplace add "${path.resolve(pluginDir, '..', '..')}"`)
   console.log('  /plugin install cuberhyk-dev-flow@cuberhyk-plugins')
   console.log('')
   console.log('Codex:')
-  console.log('  Open /plugins and install cuberhyk-dev-flow from your personal marketplace.')
+  console.log('  Open /plugins and install cuberhyk-dev-flow from the cuberhyk-plugins marketplace.')
 }
 
 function paths() {

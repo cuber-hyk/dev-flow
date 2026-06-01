@@ -1,181 +1,478 @@
-﻿# cuberhyk-dev-flow
+# cuberhyk-dev-flow
 
-cuberhyk-dev-flow is a compact lifecycle workflow plugin for coding agents. It provides six skills:
+cuberhyk-dev-flow is a lifecycle workflow plugin for coding agents. It helps agents enter a
+repository with low noise, plan only after decision readiness, audit with evidence, implement in a
+reviewed branch, update release notes only when useful, and distill durable knowledge before the
+task is committed.
 
-- `dev-init`: initialize the recommended Dev Flow memory structure.
-- `dev-check`: validate documentation routing and lifecycle health.
-- `dev-orient`: enter repository context without reading noise.
-- `dev-plan`: define a minimal, verifiable task plan.
-- `dev-audit`: review features, workflows, or docs and route findings to `docs/audits/`.
-- `dev-distill`: preserve durable project knowledge after work is complete.
+It is designed for larger projects where repeated AI sessions can otherwise accumulate too many
+plans, TODOs, audit reports, stale notes, and half-remembered decisions.
 
-Open the visual usage guide:
-
-```text
-docs/usage.html
-```
-
-## Workflow
-
-1. Init: create the recommended memory structure when a project has not adopted Dev Flow yet.
-2. Check: validate documentation routing before or after important workflow changes.
-3. Orient: understand project rules, context map, vocabulary, capability docs, relevant code entry points, and artifact destinations.
-4. Plan: define goal, scope, assumptions, risks, steps, verification, and lifecycle closeout.
-5. Audit: when the task is a review, write findings and evidence to `docs/audits/`.
-6. Implement: make the smallest safe change and verify it.
-7. Distill: update durable docs, ADRs, or tests; archive or delete process artifacts; discard process noise.
-8. Check: run validation again after documentation changes.
-
-## Repository Memory
-
-Use the same destinations across all skills:
-
-| Content | Destination |
-|---|---|
-| Agent rules and workflow | `AGENTS.md` or `CLAUDE.md` |
-| Stable domain vocabulary | `CONTEXT.md` |
-| AI context routing | `docs/ai/context-map.md` |
-| Current module facts | `docs/capabilities/*.md` |
-| Persistent task plans | `docs/plans/*.md` |
-| Audit reports and review findings | `docs/audits/*.md` |
-| Distilled audit history | `docs/audits/archived/*.md` |
-| Hard-to-reverse decisions | `docs/adr/*.md` |
-| Executable business rules | tests |
-
-`docs/capabilities/` is for current facts only. Do not put task plans or audit reports there.
-
-Lifecycle rules:
-
-| Artifact | Status flow |
-|---|---|
-| Plan | `active` -> `completed`, `superseded`, or `archived` |
-| Audit | `active` -> `distilled`, `archived`, or deleted |
-| Capability | current facts only; no investigation logs |
-| ADR | `proposed` -> `accepted`, `superseded`, or `deprecated` |
-
-## Existing Project Quick Start
-
-For an existing project, ask the agent to use `dev-init` first. The skill will inspect the target project and call the underlying initialization command when appropriate.
+Open the official static website:
 
 ```text
-dev-init 接入当前项目的 Dev Flow 文档结构
+docs/index.html
 ```
 
-`dev-init` creates missing files only. Existing `AGENTS.md` is not overwritten; the skill appends a marked Dev Flow section only when that section is absent.
+Legacy `docs/usage.html` redirects to the new multi-page site.
 
-Then continue with:
+## Core Idea
+
+The plugin separates four kinds of information:
+
+| Kind | Purpose | Default context? |
+|---|---|---|
+| Current facts | What the system does now | Yes, when relevant |
+| Decisions | Why an important long-term choice was made | Only for decision tasks |
+| Process artifacts | Plans and audits that helped the task happen | No |
+| Executable truth | Tests and code that enforce behavior | Yes, through targeted reading |
+
+Guiding rule:
 
 ```text
-dev-check 检查文档结构和 gitignore 规则
-dev-orient 进入当前项目上下文
-dev-audit 审查当前项目的功能边界、文档缺口和稳定事实
-dev-distill 把稳定事实沉淀到 CONTEXT、capabilities、ADR 或测试
-dev-check 复查文档归位和生命周期状态
+Current facts stay current. Process artifacts get closed. Old process noise is not default context.
 ```
 
-The CLI command `cuberhyk-dev-flow init-project [project-dir]` is the implementation detail that `dev-init` uses to create directories and templates. Users normally invoke the skill, not the command.
+## User-Facing Flow
 
-Validate documentation routing through the skill:
+The daily user flow is intentionally short:
 
 ```text
-dev-check 检查当前项目的 Dev Flow 文档结构
+/dev-plan <what you want to do>
+/dev-branch <implement the approved plan>
 ```
 
-`dev-check` uses the underlying `validate-docs` command to check for missing memory directories, plan/audit metadata, ADR status, capability `source_of_truth`, process artifacts stored under `docs/capabilities/`, context-map references to missing paths, context maps that route default context to plans/audits/archived files, and gitignore rules that hide Dev Flow document paths.
+For review-driven work:
 
-## Templates
+```text
+/dev-audit <what to inspect>
+/dev-plan <turn findings into a fix plan>
+/dev-branch <implement the fix plan>
+```
 
-`dev-init` installs concise templates:
+For open-ended risk discovery:
 
-| Template | Purpose |
-|---|---|
-| `AGENTS.md` Dev Flow block | Tells future agents how to enter the workflow without replacing local policy. |
-| `CONTEXT.md` | Stable vocabulary and business concepts. |
-| `docs/ai/context-map.md` | Low-noise context routing and default exclusion rules. |
-| `docs/capabilities/_template.md` | Current module facts, fact sources, entry points, and verification notes. |
-| `docs/plans/_template.md` | Goals, scope, assumptions, steps, verification, acceptance criteria, git visibility, and closeout. |
-| `docs/audits/_template.md` | Scope, evidence, findings, verification, git visibility, and closeout. |
-| `docs/adr/_template.md` | Context, decision, alternatives, consequences, and status history. |
+```text
+/dev-exploratory-review <optional project path, module, feature, flow, branch, or files>
+/dev-plan <turn confirmed failures into a fix plan>
+/dev-branch <implement the fix plan>
+```
 
-## Skill Boundaries
+For repository health:
 
-| Skill | Use it for | It must not do | Typical next skill |
+```text
+/dev-init   # first-time project adoption
+/dev-check  # routing, lifecycle, git visibility, changelog, ADR hints
+```
+
+`dev-orient`, `dev-changelog`, and `dev-distill` still exist as standalone skills, but normal users
+do not need to remember them for every task. `dev-plan`, `dev-audit`, and
+`dev-exploratory-review` include built-in orientation. `dev-branch` includes changelog and distill
+gates before review.
+
+## Flow Diagram
+
+```mermaid
+flowchart TD
+  P["/dev-plan task"] --> PO["Orient Gate"]
+  PO --> PD{"Decision points clear?"}
+  PD -- "No" --> U["Ask user to decide"]
+  U --> P
+  PD -- "Yes" --> PF["Plan in chat or docs/plans/"]
+  PF --> B["/dev-branch"]
+
+  A["/dev-audit target"] --> AO["Orient Gate"]
+  AO --> AR["Audit findings in chat or docs/audits/"]
+  AR --> P
+
+  E["/dev-exploratory-review scope"] --> EM["Project + Risk Map"]
+  EM --> EV["Probe + Verify"]
+  EV --> ER["Realistic failures in chat or docs/audits/"]
+  ER --> P
+
+  B --> I["Implement smallest change"]
+  I --> V["Verify"]
+  V --> C{"Changelog Gate"}
+  C --> CU["Update CHANGELOG.md if notable"]
+  C --> CN["Report not needed if invisible"]
+  CU --> D{"Distill Gate"}
+  CN --> D
+  D --> DU["Update CONTEXT, capability, ADR, tests, or lifecycle artifacts"]
+  D --> DN["Report not needed if no durable knowledge"]
+  DU --> R["Review Gate: status + diff"]
+  DN --> R
+  R --> M["User approval -> commit, merge, cleanup"]
+  M --> K["Optional /dev-check"]
+```
+
+## Skills
+
+| Skill | Responsibility | Must not do | Typical next step |
 |---|---|---|---|
-| `dev-init` | First-time setup and template installation | Overwrite project policy or write plans/audits | `dev-check` |
-| `dev-check` | Validate routing, metadata, and lifecycle health | Deep business/code audit | `dev-init`, `dev-orient`, `dev-audit`, or `dev-distill` |
-| `dev-orient` | Enter current context and choose relevant docs/code | Plan, audit, implement, or distill | `dev-plan` or `dev-audit` |
-| `dev-plan` | Turn a task or audit finding into a persistent plan under `docs/plans/` | Audit, implement, or archive | implementation |
-| `dev-audit` | Review correctness/completeness and write findings under `docs/audits/` | Implement fixes or update capability facts | `dev-plan` or `dev-distill` |
-| `dev-distill` | Move stable knowledge to durable docs/tests and close artifacts | Re-plan, re-audit, or implement | `dev-check` |
+| `dev-init` | Create the minimum repository memory structure and templates. | Infer all project knowledge, write plans, or audit code. | `dev-check` |
+| `dev-check` | Validate document routing, lifecycle status, changelog shape, ADR hints, and git visibility. | Do deep business review or rewrite docs. | `dev-init`, `dev-plan`, `dev-audit`, or `dev-distill` |
+| `dev-orient` | Enter repository context by reading only stable entry docs and relevant capability docs. | Plan, audit, implement, or distill. | `dev-plan` or `dev-audit` |
+| `dev-plan` | Run orient gate, check decision readiness, then create a verifiable plan. | Implement, audit, close artifacts, or silently decide product/business choices. | `dev-branch` |
+| `dev-audit` | Run orient gate, produce evidence-based findings for bounded audits, and persist non-trivial audits. | Implement fixes, discover unknown risks across a project, or update capability facts directly. | `dev-plan` or `dev-branch` |
+| `dev-exploratory-review` | Map a project or bounded scope, build a risk map, run focused probes/tests, and report only realistic failures. | Implement fixes or comment on style, naming, formatting, or subjective preferences. | `dev-plan` or `dev-branch` |
+| `dev-branch` | Implement inside an isolated Git branch with changelog, distill, and review gates before commit. | Mix unrelated changes, skip review, push automatically, or defer same-task distillation. | `dev-check` |
+| `dev-changelog` | Maintain `CHANGELOG.md` for notable user/operator/release changes. | Replace git history, ADRs, capability docs, task plans, or log tiny internal changes. | `dev-branch` review gate |
+| `dev-distill` | Move durable knowledge to the right long-lived place and close plans/audits. | Re-plan, re-audit, or implement. | `dev-check` |
 
-## Persistent Artifacts
+## Gate Responsibilities
 
-`dev-plan` may keep small, low-risk plans in conversation. It creates or updates `docs/plans/YYYY-MM-DD-short-topic.md` when the user asks for a plan document, repository workflow requires one, the task is high-risk/cross-module/multi-turn, or the plan comes from audit follow-up work.
+| Gate | Where it runs | Purpose | Output |
+|---|---|---|---|
+| Orient Gate | `dev-plan`, `dev-audit`, or standalone `dev-orient` | Load AGENTS/CLAUDE, CONTEXT, context-map, relevant capability docs, and key code only. | Context sources and likely artifact routes. |
+| Decision Gate | `dev-plan` | Identify unresolved product, data, lifecycle, cleanup, or architecture decisions before planning. | Decision request or confirmed execution route. |
+| Changelog Gate | `dev-branch`, or standalone `dev-changelog` | Decide whether the change is notable for users, operators, public APIs, data, security, install, config, compatibility, or release notes. | Updated `CHANGELOG.md` or a concrete "not needed" reason. |
+| Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
+| Review Gate | `dev-branch` | Show status and diff before any commit, merge, branch delete, or push. | User approval request. |
 
-For example, `dev-plan 制定相关计划` can stay chat-only for a tiny one-turn task, but should create `docs/plans/` for non-trivial implementation work.
+## Plan Readiness Gate
 
-`dev-audit` may keep small, low-risk reviews in conversation. It creates or updates `docs/audits/YYYY-MM-DD-topic-audit.md` when the user asks for an audit report, repository workflow requires one, the audit is non-trivial/cross-module/correctness-sensitive, or findings need follow-up.
+`dev-plan` does not start by writing a plan. It first orients, then asks whether the task is
+plan-ready.
 
-For example, `dev-audit 请帮我审查 xxx` can stay chat-only for a tiny check, but should create `docs/audits/` when evidence, findings, or follow-up work matter.
+A task is plan-ready only when:
 
-After creating a persistent plan or audit, the agent must run:
+- the goal is clear;
+- scope and non-goals are clear enough to prevent drift;
+- the relevant source of truth is known or discoverable from code/docs;
+- key product, business, data, state, cleanup, or architecture decisions are confirmed;
+- the validation path is known or can be defined.
+
+If critical decisions are unresolved, `dev-plan` must stop at a decision request and ask the user
+to confirm the route. It should not create or update a formal plan file yet.
+
+Decision points must be called out when:
+
+- multiple reasonable approaches exist;
+- the choice affects user experience or visible workflow;
+- the choice affects business semantics;
+- the choice affects data meaning, source of truth, or state transitions;
+- the choice performs irreversible or hard-to-undo cleanup;
+- the choice changes long-term architecture direction;
+- the choice may require an ADR later.
+
+Formal plan files should contain one confirmed execution route. Avoid unresolved `Option A /
+Option B` branches in executable steps.
+
+## Reviewed Branch Gate
+
+`dev-branch` runs implementation inside an isolated Git branch.
+
+It does not require a perfectly clean worktree. It requires an attributable worktree:
+
+- Related Dev Flow artifacts such as `docs/plans/*.md` or `docs/audits/*.md` may move onto the
+  task branch when they clearly belong to the task.
+- Unrelated or ambiguous source, config, dependency, test, generated, or documentation changes
+  must stop the workflow. The agent must show `git status` and `git diff` and ask the user how to
+  handle them.
+- A plan created by `dev-plan` before `dev-branch` does not need to be committed first.
+
+Branch naming rule:
+
+```text
+task/YYYYMMDD-short-task-slug
+```
+
+Before commit or merge, `dev-branch` must show:
+
+```bash
+git status --short --branch --untracked-files=all
+git diff
+```
+
+Review output must include:
+
+- branch name;
+- existing changes before branch;
+- changed files;
+- verification;
+- changelog decision;
+- distill decision;
+- status and diff summary;
+- explicit approval request.
+
+Approval to commit and merge is not approval to push. `dev-branch` must never run `git push`
+unless the user separately asks and confirms push.
+
+## Changelog Gate
+
+`dev-changelog` maintains `CHANGELOG.md` using Keep a Changelog conventions:
+
+```text
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+### Security
+```
+
+Write a changelog entry when a change affects:
+
+- users or visible product behavior;
+- operators, installation, setup, configuration, or deployment;
+- public APIs, commands, skills, manifests, or package behavior;
+- data meaning, migrations, compatibility, or persistence;
+- security, auth, permissions, secrets, or data exposure;
+- release notes or upgrade behavior.
+
+Usually do not write a changelog entry for:
+
+- pure internal refactors with no visible behavior change;
+- formatting, comments, or naming cleanup;
+- test-only changes;
+- documentation wording fixes with no workflow change;
+- tiny invisible visual tweaks;
+- temporary process artifacts such as plans or audits.
+
+`dev-branch` must report one of these in review output:
+
+```text
+Changelog: updated - CHANGELOG.md -> Fixed
+Changelog: not needed - internal refactor only, no user-visible behavior change
+```
+
+## Distill Gate
+
+`dev-branch` runs distillation before the review gate when the same task produced durable
+knowledge. This keeps the code change, docs update, ADR decision, tests, changelog entry, and
+artifact closeout in one reviewed diff.
+
+Run distillation when the task changes:
+
+- domain vocabulary;
+- feature behavior or public workflow;
+- module responsibility, source of truth, API, schema, state, lifecycle, or algorithm policy;
+- important hard-to-reverse decisions that need the ADR gate;
+- active plan or audit artifacts that should be archived or deleted;
+- context-map routing, AGENTS/CLAUDE guidance, or validation rules;
+- regression-prone rules that should become tests.
+
+Report one of these in review output:
+
+```text
+Distill: updated - docs/capabilities/study-stats.md and docs/ai/context-map.md
+Distill: not needed - no durable behavior, vocabulary, routing, or lifecycle change
+```
+
+## Repository Memory Layout
+
+`dev-init` creates missing paths only. Existing project policy is not overwritten.
+
+```text
+AGENTS.md
+CHANGELOG.md
+CONTEXT.md
+docs/ai/context-map.md
+docs/capabilities/
+docs/plans/
+docs/plans/archived/
+docs/audits/
+docs/audits/archived/
+docs/adr/
+docs/adr/archived/
+```
+
+Recommended destinations:
+
+| Content | Destination | Rule |
+|---|---|---|
+| Agent workflow and local rules | `AGENTS.md` or `CLAUDE.md` | Project policy and Dev Flow bootstrapping. |
+| Human-readable release notes | `CHANGELOG.md` | Notable user/operator/release changes only; never a raw commit log. |
+| Stable vocabulary | `CONTEXT.md` | Domain words reused across modules. |
+| Context routing | `docs/ai/context-map.md` | Which docs/code to read for each task type. |
+| Current module facts | `docs/capabilities/*.md` | Current responsibilities, facts, APIs, data sources, and verification. |
+| Active plans | `docs/plans/*.md` | Process artifact that is still driving work; never default context. |
+| Archived plans | `docs/plans/archived/*.md` | Historical process record; read only when tracing history. |
+| Active audit reports | `docs/audits/*.md` | Process artifact with unresolved findings; never capability truth. |
+| Archived audit evidence | `docs/audits/archived/*.md` | Historical evidence; read only when tracing history. |
+| Current or proposed decisions | `docs/adr/*.md` | Proposed or accepted decisions with real tradeoffs. |
+| Archived decisions | `docs/adr/archived/*.md` | Historical decision reasoning; read only when tracing history. |
+| Executable rules | Tests | Prefer tests for regression-prone behavior. |
+
+`docs/capabilities/` is current-only. Do not put plans, audit reports, investigation logs, or old
+implementation paths there.
+
+## Lifecycle Protocol
+
+The lifecycle is intentionally small. `completed`, `distilled`, `superseded`, and `deprecated` are
+not long-lived states in this workflow.
+
+| Artifact | Allowed persisted status | Final action | Storage rule |
+|---|---|---|---|
+| Plan | `active`, `archived` | archive or delete | Active plans live in `docs/plans/`; archived plans live in `docs/plans/archived/`. |
+| Audit | `active`, `archived` | archive or delete | Active audits live in `docs/audits/`; archived audits live in `docs/audits/archived/`. |
+| Capability | `current` | update in place | Keep current facts only; remove stale facts and process narrative. |
+| ADR | `proposed`, `accepted`, `archived` | accept, archive, or delete | Proposed/accepted ADRs live in `docs/adr/`; archived ADRs live in `docs/adr/archived/`. |
+
+Default closeout:
+
+```text
+Plan has trace value -> move to docs/plans/archived/ and set status: archived
+Plan has no trace value -> delete the file
+
+Audit evidence may be useful later -> move to docs/audits/archived/ and set status: archived
+Audit conclusions are captured elsewhere and evidence has no future value -> delete the file
+
+ADR is current -> keep in docs/adr/ as proposed or accepted
+ADR no longer applies but explains history -> move to docs/adr/archived/ and set status: archived
+ADR was mistaken, duplicate, or never useful -> delete the file
+```
+
+## ADR Gate
+
+ADR creation should be agent-initiated when the gate passes. Users should not need to remind the
+agent every time.
+
+Create or recommend an ADR only when all are true:
+
+- the decision is important and hard to reverse;
+- future maintainers may ask why the choice was made;
+- there were real alternatives;
+- the tradeoff affects architecture, data ownership, business rules, APIs, workflow policy, or
+  multiple modules.
+
+Do not write an ADR for ordinary bug fixes, small UI changes, local refactors without meaningful
+tradeoff, or temporary audit/plan notes.
+
+## Persistent Artifact Rules
+
+Small, low-risk plans and audits may stay in conversation.
+
+Create or update `docs/plans/YYYY-MM-DD-short-topic.md` when:
+
+- the user asks for a plan document, persistent plan, TODO document, or written plan;
+- repository workflow requires a plan artifact;
+- the task is high-risk, cross-module, architecture-affecting, audit-follow-up, multi-turn, or
+  reviewable branch work;
+- an audit produced findings that need implementation sequencing.
+
+Do not create or update a persistent plan while a critical decision point is still unresolved.
+
+Create or update `docs/audits/YYYY-MM-DD-topic-audit.md` when:
+
+- the user asks for an audit report, review report, findings document, or checklist;
+- repository workflow requires an audit artifact;
+- the audit is non-trivial, cross-module, correctness-sensitive, security-sensitive, algorithmic, or
+  data-related;
+- findings need follow-up, distillation, or archival.
+
+After creating any persistent plan or audit, the agent must run:
 
 ```bash
 git status --short --branch --untracked-files=all
 ```
 
-If `.gitignore` hides the file, the agent must add the smallest safe allow rule or report that the artifact is not tracked.
+If `.gitignore` hides the artifact, the agent must add the smallest safe allow rule or clearly
+report that the artifact is not tracked.
 
-## Command Flow
+## Existing Project Quick Start
 
-First-time project setup:
-
-```text
-dev-init 接入当前项目
-dev-check 检查文档结构
-```
-
-Feature development:
+For an existing project:
 
 ```text
-dev-check -> dev-orient -> dev-plan -> implementation -> dev-distill -> dev-check
+/dev-init 接入当前项目的 Dev Flow 文档结构
+/dev-check 检查文档结构、生命周期状态、CHANGELOG 和 gitignore 规则
+/dev-plan 我要开发某个功能，请先进入上下文、识别决策点、再制定计划
+/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill gate
+/dev-check 复查文档归位和生命周期状态
 ```
 
-Audit-driven work:
+For audit-driven adoption:
 
 ```text
-dev-check -> dev-orient -> dev-audit -> dev-plan -> implementation -> dev-distill -> dev-check
+/dev-init 接入当前项目的 Dev Flow 文档结构
+/dev-check 检查文档结构
+/dev-audit 审查当前项目的功能边界、文档缺口、事实源和测试缺口
+/dev-plan 基于审查发现制定修复计划
+/dev-branch 按修复计划创建任务分支、实现并等待审核
+/dev-check 复查生命周期状态
 ```
 
-## Claude Code
+`dev-init` creates missing files only. Existing `AGENTS.md` is not overwritten; the skill appends a
+marked Dev Flow section only when that section is absent.
 
-Local test:
+## Commands
+
+Use skills in normal agent conversations. CLI commands are implementation primitives for agents:
 
 ```bash
-claude --plugin-dir /path/to/dev-flow
+cuberhyk-dev-flow install
+cuberhyk-dev-flow validate
+cuberhyk-dev-flow init-project [project-dir]
+cuberhyk-dev-flow validate-docs [project-dir]
+cuberhyk-dev-flow paths
 ```
 
-Invoke skills:
+`init-project` backs the `dev-init` skill. `validate-docs` backs the `dev-check` skill.
+
+## Installation
+
+### Local Marketplace
+
+Recommended local marketplace root:
 
 ```text
-/cuberhyk-dev-flow:dev-orient
-/cuberhyk-dev-flow:dev-plan
-/cuberhyk-dev-flow:dev-audit
-/cuberhyk-dev-flow:dev-distill
-/cuberhyk-dev-flow:dev-init
-/cuberhyk-dev-flow:dev-check
+~/plugins/cuberhyk-plugins
 ```
 
-Local marketplace install:
+Inside it:
 
 ```text
-/plugin marketplace add /path/to/dev-flow
+.agents/plugins/marketplace.json
+plugins/cuberhyk-dev-flow/
+```
+
+Install from this repository:
+
+```bash
+cd /path/to/dev-flow
+node ./bin/dev-flow.js install
+```
+
+### Claude Code
+
+Add the marketplace root, then install the plugin:
+
+```text
+/plugin marketplace add ~/plugins/cuberhyk-plugins
 /plugin install cuberhyk-dev-flow@cuberhyk-plugins
 ```
 
-## npx Installer
+Invoke skills with short Claude Code commands:
 
-After publishing to npm:
+```text
+/dev-init
+/dev-check
+/dev-orient
+/dev-plan
+/dev-audit
+/dev-branch
+/dev-changelog
+/dev-distill
+```
+
+Namespaced forms such as `/cuberhyk-dev-flow:dev-init` may also appear in some Claude Code
+versions or cache states. They are equivalent; prefer the short `/dev-*` commands once this
+plugin version is installed.
+
+### Codex
+
+Open `/plugins`, add or select the `cuberhyk-plugins` marketplace, then install
+`cuberhyk-dev-flow`.
+
+If Codex still shows an old `dev-flow` plugin, disable or remove `dev-flow@personal`, then restart
+Codex or start a new session. Skills are loaded at session start and usually do not hot-refresh
+inside an existing conversation.
+
+### npm
+
+After publishing:
 
 ```bash
 npx cuberhyk-dev-flow install
@@ -185,59 +482,78 @@ Local package test before publishing:
 
 ```bash
 npm pack
-npx ./cuberhyk-dev-flow-0.4.4.tgz install
+npx ./cuberhyk-dev-flow-0.7.0.tgz install
 ```
 
-The installer copies this plugin to:
+## Validation
+
+Validate plugin package structure:
+
+```bash
+npm run validate
+```
+
+Validate a project using Dev Flow docs:
+
+```bash
+cuberhyk-dev-flow validate-docs /path/to/project
+```
+
+The docs validator checks:
+
+- missing memory files and directories;
+- plan/audit files without required metadata;
+- invalid lifecycle statuses;
+- active artifacts stored under archived directories;
+- audit or plan artifacts accidentally placed under `docs/capabilities/`;
+- capability docs without `source_of_truth`;
+- context-map references to missing paths;
+- context-map default routing to plans, audits, or archived files;
+- gitignore rules that hide Dev Flow document paths;
+- changelog structure, `Unreleased`, release date format, and standard categories;
+- likely decision language in plans/audits/capabilities that may need an ADR.
+
+## Examples
+
+Feature development:
 
 ```text
-~/plugins/cuberhyk-dev-flow
+/dev-plan 开发学习统计的连续学习天数。先进入上下文，识别是否有统计口径决策点，再制定计划。
+/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill gate。
 ```
 
-and updates the Codex personal marketplace at:
+Audit-driven development:
 
 ```text
-~/.agents/plugins/marketplace.json
+/dev-audit 审查学习统计模块的统计口径、事实源、测试缺口和文档归位。
+/dev-plan 基于审查发现制定修复计划。
+/dev-branch 按修复计划创建任务分支、实现并等待审核。
 ```
 
-## Codex
-
-Install from a Codex marketplace or add the plugin to a personal marketplace.
-
-The Codex plugin manifest lives at:
+Decision example:
 
 ```text
-.codex-plugin/plugin.json
+/dev-plan 计划修复极速刷词是否写入正式学习状态的问题。
 ```
 
-## Cursor
+Expected behavior:
 
-The Cursor plugin manifest lives at:
-
-```text
-.cursor-plugin/plugin.json
-```
-
-## Gemini CLI
-
-The Gemini extension manifest lives at:
-
-```text
-gemini-extension.json
-```
-
-## OpenCode
-
-See:
-
-```text
-.opencode/INSTALL.md
-```
+- If product meaning is not confirmed, `dev-plan` asks whether rapid mode should be read-only,
+  write official word state, or use a separate lightweight state.
+- The agent may recommend one route, but it must wait for confirmation before writing an executable
+  plan.
+- After confirmation, the plan contains the chosen route only.
+- During `dev-branch`, if the decision is hard to reverse and has real tradeoffs, the distill gate
+  runs the ADR gate before review.
 
 ## Design Principle
 
-cuberhyk-dev-flow is not a large methodology bundle. It is a small lifecycle loop:
+cuberhyk-dev-flow is intentionally small. It is not a full project-management system. It is a
+repeatable lifecycle loop for agents:
 
 ```text
-dev-init -> dev-check -> dev-orient -> dev-plan/dev-audit -> implementation -> dev-distill -> dev-check
+initialize memory -> validate routing -> plan/audit with orient gate -> branch -> changelog gate -> distill gate -> review gate -> validate again
 ```
+
+Its job is to make future AI sessions cheaper, cleaner, and less likely to treat old process
+artifacts as current truth.

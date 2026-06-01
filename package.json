@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.4.4",
-  "description": "Multi-agent lifecycle workflow plugin: init, check, orient, plan, audit, and distill coding work.",
+  "version": "0.7.0",
+  "description": "Multi-agent lifecycle workflow plugin with orient, decision, exploratory review, branch, changelog, distill, and review gates.",
   "type": "module",
   "bin": {
     "cuberhyk-dev-flow": "./bin/dev-flow.js"
@@ -11,6 +11,7 @@
     ".codex-plugin/",
     ".cursor-plugin/",
     ".opencode/",
+    "commands/",
     "skills/",
     "templates/",
     "AGENTS.md",

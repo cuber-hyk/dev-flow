@@ -1,31 +1,147 @@
 ---
 name: dev-plan
-description: Create a minimal, verifiable development plan after repository orientation. Use for non-trivial bug fixes, features, refactors, audit follow-up fixes, docs work, tests, or user requests that invoke dev-plan. Small plans may stay in conversation. Create or update docs/plans for explicit plan documents, repository workflow requirements, high-risk/cross-module/multi-turn work, audit follow-up work, or reviewable branch workflows. Do not execute implementation changes, write audit reports, or distill completed knowledge.
+description: Create a minimal, verifiable development plan with a built-in low-noise orientation gate. Use for non-trivial bug fixes, features, refactors, audit follow-up fixes, docs work, tests, or user requests that invoke dev-plan. First enter relevant repository context, then check whether goals, boundaries, and decision points are clear. If product, business, data, state, irreversible cleanup, or architecture decisions are unresolved, ask for user confirmation before writing an executable plan. Small plans may stay in conversation. Create or update docs/plans for explicit plan documents, repository workflow requirements, high-risk/cross-module/multi-turn work, audit follow-up work, or reviewable branch workflows. Do not execute implementation changes, write audit reports, or distill completed knowledge.
 ---
 
 # Dev Plan
 
-Use this skill to turn oriented context or audit findings into a verifiable development plan.
+Use this skill to enter the relevant project context, then turn the task or audit findings into a
+confirmed, verifiable execution plan.
+
+Core principle:
+
+> Plan files are for confirmed execution routes, not unresolved product or architecture disagreements.
 
 ## Boundary
 
 Dev Plan does:
 
-- Convert the user request or audit findings into a verifiable goal.
-- State assumptions and unresolved questions.
-- Identify scope, fact sources, risks, validation, and acceptance criteria.
+- Run a low-noise orientation gate before planning unless the same context was already loaded in this turn.
+- Confirm whether the task is ready to plan.
+- Identify decision points before writing a formal plan.
+- Separate code facts, engineering recommendations, and product/business decisions.
+- Ask the user to decide when a decision cannot be derived from code facts.
+- Convert confirmed decisions into a verifiable goal, scope, steps, risks, validation, and acceptance criteria.
 - Decide whether the plan can stay in conversation or must be written to `docs/plans/`.
-- Create or update a persistent plan under `docs/plans/` when the persistence rule applies.
+- Create or update a persistent plan under `docs/plans/` only when the task is plan-ready and the persistence rule applies.
 - Verify that any created plan file exists and is visible to git.
-- Recommend whether implementation can start.
+- Recommend whether implementation can start directly or should use `dev-branch`.
 
 Dev Plan does not:
 
-- Read broad unrelated context; use `dev-orient` first when needed.
+- Replace standalone `dev-orient` for context-only sessions or deep repository mapping.
+- Read broad unrelated context, old plans, old audits, or archived files by default.
 - Perform audits or write findings; use `dev-audit`.
 - Edit implementation code.
 - Store plans, audits, or findings in `docs/capabilities/`.
-- Archive final knowledge; use `dev-distill` after implementation.
+- Hide product or business decisions as assumptions.
+- Create an executable plan while critical decisions are still unresolved.
+- Archive final knowledge; `dev-branch` runs the distill gate before review, or use `dev-distill` standalone for knowledge-only closeout.
+
+## Orient Gate
+
+`dev-plan` includes the practical subset of `dev-orient` so users do not have to run two commands
+for normal planning.
+
+Before the plan readiness gate, do this:
+
+1. Read repository instructions such as `AGENTS.md`, `CLAUDE.md`, or equivalent agent guidance.
+2. Read `CONTEXT.md` when present to learn stable vocabulary.
+3. Read `docs/ai/context-map.md` when present to identify relevant capability docs and code entry points.
+4. Read only task-relevant `docs/capabilities/*.md`.
+5. Inspect only the code, tests, routes, schemas, or configs needed to understand the task.
+6. Identify likely artifact destinations: plan, audit, capability, ADR, changelog, tests, or none.
+
+Do not read these by default:
+
+- `docs/plans/` except the active plan for this exact task.
+- `docs/audits/` except the active audit that directly produced this planning task.
+- `archived/` directories.
+- Generated files, build output, dependency folders, or unrelated historical notes.
+
+If the repository has no Dev Flow structure, recommend `dev-init` before creating persistent
+artifacts. If orientation reveals that the task is actually an audit, recommend `dev-audit` instead
+of forcing a plan.
+
+## Plan Readiness Gate
+
+Before writing a formal plan, check whether the route is confirmed.
+
+Plan readiness requires:
+
+- Goal is clear.
+- Scope and non-goals are clear enough to prevent drift.
+- Relevant source of truth is known or discoverable from code/docs.
+- No critical decision point is unresolved.
+- Validation path is known or can be defined.
+
+If readiness fails because a decision is unresolved, output a decision request instead of a formal
+plan. Do not create or update a plan file yet.
+
+## Decision Point Rule
+
+Explicitly identify a decision point when any of these are true:
+
+- Multiple reasonable approaches exist.
+- The choice affects product experience.
+- The choice affects business semantics.
+- The choice affects data meaning, data ownership, or source of truth.
+- The choice affects state transitions or lifecycle rules.
+- The choice performs irreversible or hard-to-undo cleanup.
+- The choice changes long-term architecture direction.
+- The choice changes user habits or visible workflows.
+- The choice may require an ADR later.
+
+For each decision point, state:
+
+- Decision question.
+- Recommended option.
+- Alternative options.
+- Impact and tradeoffs.
+- What can be inferred from code facts.
+- What requires user confirmation.
+- ADR gate: needed/not needed/maybe.
+
+Recommendations are allowed, but must be labeled as recommendations. Do not present them as
+confirmed decisions.
+
+## Decision Request Output
+
+When decision points block planning, stop before creating the plan and use this shape:
+
+```md
+Plan readiness: blocked by decision points
+
+Goal:
+- ...
+
+Known facts:
+- ...
+
+Decision points:
+1. Question:
+   - Recommendation:
+   - Alternatives:
+   - Impact:
+   - Needs user confirmation because:
+   - ADR gate:
+
+After you confirm:
+- I will create/update the executable plan under docs/plans/... if persistence is needed.
+```
+
+Ask only the minimum number of questions needed to unblock the plan. Prefer one concise question
+when possible.
+
+## Confirmed Decisions In Plans
+
+After the user confirms a decision:
+
+- Move the decision into `Assumptions And Decisions`.
+- Record the chosen route and why.
+- Remove unresolved `Option A / Option B` branches from executable steps.
+- Keep the plan single-route and actionable.
+- Mark ADR gate when the confirmed decision is hard to reverse or long-lived.
 
 ## Persistent Plan Rule
 
@@ -50,71 +166,97 @@ If a persistent plan is required and `docs/plans/` is missing, recommend or run 
 
 When creating a plan file:
 
-1. Use `docs/plans/YYYY-MM-DD-short-topic.md`.
-2. Keep it actionable: goal, scope, assumptions, fact sources, steps, verification, risks, acceptance criteria, artifact routing, and closeout.
-3. Include frontmatter with `artifact_type`, `status`, `created`, `updated`, and `owner`.
-4. Confirm the file exists after writing it.
-5. Run `git status --short --branch --untracked-files=all`.
-6. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the plan is not tracked and ask before changing ignore policy.
+1. Confirm the plan readiness gate passed.
+2. Use `docs/plans/YYYY-MM-DD-short-topic.md`.
+3. Keep it actionable: goal, scope, assumptions and decisions, fact sources, steps, verification, risks, acceptance criteria, artifact routing, and closeout.
+4. Include frontmatter with `artifact_type`, `status`, `created`, `updated`, and `owner`.
+5. Confirm the file exists after writing it.
+6. Run `git status --short --branch --untracked-files=all`.
+7. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the plan is not tracked and ask before changing ignore policy.
 
 ## Document Routing
 
 | Artifact | Destination | Rule |
 |---|---|---|
-| Task plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Create when the persistent plan rule applies. |
+| Decision request | Conversation only | Use when decisions block planning; do not write as executable plan. |
+| Task plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Create only after plan readiness passes and the persistent plan rule applies. |
 | Audit/review report | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using `dev-audit`. |
 | Current module facts | `docs/capabilities/*.md` | Do not write plans or audit findings here. |
-| Important decision | `docs/adr/YYYY-MM-DD-short-title.md` | Recommend only when there is a real tradeoff. |
+| Important decision | `docs/adr/YYYY-MM-DD-short-title.md` | Recommend only when there is a real tradeoff; `dev-distill` runs the ADR gate. |
 | Executable rule | tests | Prefer tests over prose-only rules when practical. |
 
 ## Workflow
 
-1. Confirm the task frame:
+1. Run the orient gate:
+   - Load repository instructions and stable vocabulary.
+   - Use `docs/ai/context-map.md` and capability docs to find relevant source files.
+   - Avoid historical plan/audit noise unless directly relevant.
+   - Report the key context sources used.
+
+2. Confirm the task frame:
    - Task type: bug, feature, refactor, audit follow-up, docs, test, or research.
    - Goal in one sentence.
    - Non-goals in one sentence when scope could drift.
 
-2. Decide plan persistence:
+3. Run the plan readiness gate:
+   - Goal clear?
+   - Scope clear?
+   - Source of truth known?
+   - Critical decisions confirmed?
+   - Validation path known?
+
+4. Identify decision points:
+   - List only decisions that affect implementation route.
+   - Separate code facts from recommendations and user-owned decisions.
+   - If unresolved decisions block execution, output the decision request and stop.
+
+5. Decide plan persistence after decisions are confirmed:
    - If the persistent plan rule applies, set `persistent_plan: yes`.
    - If the plan can stay in conversation, set `persistent_plan: no` and explain why it is small enough.
    - If creating a persistent plan, use `docs/plans/YYYY-MM-DD-short-topic.md`.
    - If a relevant active plan already exists, update it instead of creating a duplicate.
 
-3. Make assumptions explicit:
+6. Make assumptions and decisions explicit:
    - List only assumptions that affect implementation.
+   - List confirmed decisions, including user-confirmed product/business choices.
    - Ask the user if an assumption is risky and cannot be resolved from code.
 
-4. Identify fact sources:
+7. Identify fact sources:
    - Relevant docs.
    - Relevant files, APIs, tables, state stores, or tests.
    - The single source of truth if the task touches business logic.
 
-5. Create the smallest useful plan:
+8. Create the smallest useful plan:
    - 3 to 7 steps.
    - Each step has a verification method.
    - Prefer proving the existing issue before modifying code.
+   - Do not include unresolved option branches in executable steps.
 
-6. Define artifact routing:
+9. Define artifact routing:
    - State whether the task will create or update a plan, audit, capability doc, ADR, tests, or none.
    - If the task comes from an audit, reference the audit path and keep findings in `docs/audits/`.
    - Include whether `docs/ai/context-map.md` may need an update after implementation.
+   - If the task involves a hard-to-reverse decision, fact-source change, architecture choice,
+     algorithm policy, or cross-module rule, flag that `dev-distill` must run the ADR gate.
 
-7. Verify plan file when created:
+10. Verify plan file when created:
    - Confirm the path exists.
    - Run `git status --short --branch --untracked-files=all`.
    - Report whether git sees the file.
    - If ignored, add a minimal allow rule only when safe; otherwise ask the user.
 
-8. Decide execution readiness:
+11. Decide execution readiness:
    - Ready: continue implementing.
-   - Needs clarification: ask one concise question.
+   - Blocked by decisions: ask the user to confirm the decision points.
    - Needs branch/spec: tell the user why before creating long-lived artifacts.
 
 ## Output Shape
 
-Use concise Markdown:
+When ready to plan:
 
 ```md
+Plan readiness: ready
+
 Goal: ...
 
 Persistent plan: yes/no
@@ -123,7 +265,13 @@ Plan file: docs/plans/YYYY-MM-DD-short-topic.md or none
 Scope:
 - ...
 
-Assumptions / unknowns:
+Assumptions And Decisions:
+- ...
+
+Fact sources:
+- ...
+
+Context loaded:
 - ...
 
 Steps and verification:
@@ -134,6 +282,7 @@ Acceptance criteria:
 
 Artifact routing:
 - ...
+- ADR gate: needed/not needed/maybe; reason
 
 Git visibility:
 - ...
@@ -141,12 +290,14 @@ Git visibility:
 Next step: ...
 ```
 
+When blocked by decisions, use the decision request output instead.
+
 ## Next-Step Prompt
 
 End with one of these:
 
-- `Plan is small enough to stay in conversation; next step is implementation, then dev-distill if durable knowledge changes.`
-- `Persistent plan created and git visibility checked; next step is implementation, then dev-distill.`
+- `Decision points block a reliable plan; confirm the listed choices, then I will create the executable plan.`
+- `Plan readiness passed and the plan is small enough to stay in conversation; next step is dev-branch for reviewed implementation.`
+- `Persistent plan created and git visibility checked; next step is dev-branch for reviewed implementation.`
 - `Plan file is ignored by git; fix tracking before implementation or confirm that the plan should remain untracked.`
-- `One key uncertainty remains; confirm it before implementation.`
-- `This is audit follow-up work; after implementation, use dev-distill to close the plan and audit, then use dev-check.`
+- `This is audit follow-up work; use dev-branch so implementation, verification, changelog, distill, and review happen in one branch.`
