@@ -24,19 +24,19 @@ Dev Branch does:
 - Create a task branch.
 - Implement the requested task when the route is clear.
 - Run meaningful verification.
-- Run the changelog gate and use `dev-changelog` when release notes are needed.
-- Run the distill gate and use `dev-distill` when durable repository knowledge, ADRs, lifecycle
+- Run the changelog gate and use the `/dev-changelog` skill when release notes are needed.
+- Run the distill gate and use the `/dev-distill` skill when durable repository knowledge, ADRs, lifecycle
   closure, or documentation routing changed.
 - Run the check gate before review when changelog, distill, documentation routing, lifecycle
   artifacts, capability docs, ADRs, context-map, or templates changed.
 - Show `git status --short --branch` and `git diff` before any commit.
 - Wait for explicit user approval before commit, merge, or cleanup.
 - Commit, merge back to main, and delete the task branch only after approval.
-- Recommend `dev-check` after merge when documentation or lifecycle artifacts changed.
+- Recommend the `/dev-check` skill after merge when documentation or lifecycle artifacts changed.
 
 Dev Branch does not:
 
-- Replace `dev-orient` or `dev-plan` for unclear non-trivial tasks.
+- Replace the `/dev-orient` or `/dev-plan` skills for unclear non-trivial tasks.
 - Hide unresolved product, data, state, cleanup, or architecture decisions.
 - Mix unrelated source/config/test/generated changes into the task branch.
 - Commit, merge, delete a branch, or push before the review gate passes.
@@ -66,7 +66,7 @@ Classify existing changes:
 | Unrelated or ambiguous changes | Source code, config, dependencies, tests, generated files, unrelated docs, unknown user edits | Stop, show status/diff, and ask the user whether to keep, commit elsewhere, stash, discard, or include them. |
 | Clean worktree | No changes | Continue. |
 
-If a plan file was created by `dev-plan` before `dev-branch`, it may remain uncommitted and move
+If a plan file was created by the `/dev-plan` skill before the `/dev-branch` skill, it may remain uncommitted and move
 onto the task branch. Do not commit it early.
 
 ## Plan And Decision Gate
@@ -74,7 +74,7 @@ onto the task branch. Do not commit it early.
 Before implementation, decide whether planning is needed:
 
 - If the task is small, explicit, and low-risk, proceed after basic orientation.
-- If the task is non-trivial, cross-module, correctness-sensitive, or already has a persistent plan, use or recommend `dev-plan`.
+- If the task is non-trivial, cross-module, correctness-sensitive, or already has a persistent plan, use or recommend the `/dev-plan` skill.
 - If unresolved decisions exist, stop and ask the user. Do not create an executable branch plan from unresolved choices.
 - If a persistent plan exists, read only the active plan for this task and verify it is plan-ready.
 
@@ -113,7 +113,7 @@ If none can be detected reliably, ask the user.
 
 2. Inspect repository:
    - Run `git rev-parse --is-inside-work-tree`.
-   - If not a Git repository, stop and explain that `dev-branch` requires Git. Recommend initializing a repository only if the user asks.
+   - If not a Git repository, stop and explain that the `/dev-branch` skill requires Git. Recommend initializing a repository only if the user asks.
    - Run `git status --short --branch --untracked-files=all` and `git diff`.
 
 3. Classify existing changes:
@@ -127,8 +127,8 @@ If none can be detected reliably, ask the user.
    - If related uncommitted Dev Flow artifacts existed, confirm they are now on the task branch.
 
 5. Execute task:
-   - Use `dev-orient` first if context is not loaded.
-   - Use `dev-plan` first if the task is not plan-ready.
+   - Use the `/dev-orient` skill first if context is not loaded.
+   - Use the `/dev-plan` skill first if the task is not plan-ready.
    - Make the smallest necessary implementation changes.
    - Keep existing code style.
    - Avoid unrelated refactors or compatibility fallback paths.
@@ -139,7 +139,7 @@ If none can be detected reliably, ask the user.
 
 7. Changelog gate:
    - Decide whether the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
-   - If yes, use `dev-changelog` rules to update `CHANGELOG.md` under `## [Unreleased]`.
+   - If yes, use the `/dev-changelog` skill rules to update `CHANGELOG.md` under `## [Unreleased]`.
    - If no, report `Changelog gate: not needed` with a concrete reason.
    - If the changelog decision is blocked, stop before the review gate.
    - Do not write changelog entries for pure internal refactors, formatting, test-only changes, or tiny invisible tweaks.
@@ -153,9 +153,9 @@ If none can be detected reliably, ask the user.
      - plan or audit artifacts that should be archived or deleted;
      - context-map routing, AGENTS/CLAUDE guidance, or validation rules;
      - regression-prone rules that should become tests.
-   - If yes, use `dev-distill` rules now, before the review gate.
+   - If yes, use the `/dev-distill` skill rules now, before the review gate.
    - If no, report `Distill gate: not needed` with a concrete reason.
-   - If `dev-distill` reports blocked lifecycle closeout, unresolved audit findings, missing ADR/test
+   - If the `/dev-distill` skill reports blocked lifecycle closeout, unresolved audit findings, missing ADR/test
      follow-up, or routing inconsistency, stop before the review gate.
    - Close or route active plan/audit artifacts as part of the same branch when they belong to this task.
    - Do not defer same-task knowledge updates until after commit unless the user explicitly asks.
@@ -163,7 +163,7 @@ If none can be detected reliably, ask the user.
 9. Check gate:
    - Run this gate before review when changelog, distill, documentation routing, lifecycle
      artifacts, capability docs, ADRs, context-map, templates, or validation rules changed.
-   - Use `dev-check` rules or `cuberhyk-dev-flow validate-docs <project>` to verify routing and lifecycle health.
+   - Use the `/dev-check` skill rules or `cuberhyk-dev-flow validate-docs <project>` to verify routing and lifecycle health.
    - If no docs or lifecycle artifacts changed, report `Check gate: not needed` with a concrete reason.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 
@@ -183,7 +183,7 @@ If none can be detected reliably, ask the user.
    - Do not push unless the user separately asks and confirms.
 
 12. Close:
-   - Recommend `dev-check` after documentation/lifecycle changes.
+   - Recommend the `/dev-check` skill after documentation/lifecycle changes.
 
 ## Approval Language
 

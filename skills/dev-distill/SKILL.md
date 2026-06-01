@@ -1,11 +1,11 @@
 ---
 name: dev-distill
-description: Distill completed development, audit, review, debugging, or documentation work into durable repository knowledge. Use after implementation or from dev-branch's pre-review distill gate when task outcomes may change domain vocabulary, feature docs, capability docs, ADRs, audit reports, plan records, context maps, or tests. Classifies information, writes it to the right destination, then closes plans and audits by archiving or deleting them. Do not use for initial orientation, task planning, auditing, or implementation.
+description: Distill completed development, audit, review, debugging, or documentation work into durable repository knowledge. Use after implementation or from the `/dev-branch` skill's pre-review distill gate when task outcomes may change domain vocabulary, feature docs, capability docs, ADRs, audit reports, plan records, context maps, or tests. Classifies information, writes it to the right destination, then closes plans and audits by archiving or deleting them. Do not use for initial orientation, task planning, auditing, or implementation.
 ---
 
 # Dev Distill
 
-Use this skill after implementation, or inside `dev-branch` before the review gate, to keep
+Use this skill after implementation, or inside the `/dev-branch` skill before the review gate, to keep
 repository memory accurate without accumulating process noise.
 
 ## Boundary
@@ -18,14 +18,14 @@ Dev Distill does:
 - Recommend tests for business rules and regression-prone logic.
 - Close process artifacts after durable knowledge is captured.
 - Update `docs/ai/context-map.md` when new capabilities, ADRs, or core entry points are added.
-- Recommend `dev-check` after lifecycle cleanup.
-- Keep same-task knowledge updates in the same reviewed branch when invoked by `dev-branch`.
+- Recommend the `/dev-check` skill after lifecycle cleanup.
+- Keep same-task knowledge updates in the same reviewed branch when invoked by the `/dev-branch` skill.
 
 Dev Distill does not:
 
-- Enter a repository from scratch; use `dev-orient`.
-- Create the implementation plan; use `dev-plan`.
-- Perform the audit; use `dev-audit`.
+- Enter a repository from scratch; use the `/dev-orient` skill.
+- Create the implementation plan; use the `/dev-plan` skill.
+- Perform the audit; use the `/dev-audit` skill.
 - Redo implementation work.
 - Write broad postmortems unless explicitly requested.
 
@@ -184,6 +184,6 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
-- `Knowledge distillation is complete; use dev-check to verify routing and lifecycle cleanup.`
-- `No durable knowledge was produced; no doc update is needed. Start the next non-trivial task with dev-orient.`
-- `A test or ADR is still needed; complete that follow-up before final merge or release.`
+- "Knowledge distillation is complete; use the `/dev-check` skill to verify routing and lifecycle cleanup."
+- "No durable knowledge was produced; no doc update is needed. Start the next non-trivial task with the `/dev-orient` skill."
+- "A test or ADR is still needed; complete that follow-up before final merge or release."

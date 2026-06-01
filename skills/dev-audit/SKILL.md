@@ -1,13 +1,13 @@
 ---
 name: dev-audit
-description: Create a structured bounded audit or review report with a built-in low-noise orientation gate. Use when the user asks to audit, review, inspect correctness, evaluate completeness, find risks, produce findings, or invokes dev-audit with a clear audit scope or questions. For open-ended project or scope review where the agent must map unknown risks, run probes/tests, and discover realistic failures, use dev-exploratory-review instead. Small audits may stay in conversation. Create or update docs/audits for explicit audit reports, repository workflow requirements, non-trivial/cross-module/correctness-sensitive audits, or findings that need follow-up. Recommend dev-plan for fixes and let dev-branch run distill before review when stable knowledge changes. Do not implement fixes, create feature plans, or write capability documentation.
+description: Create a structured bounded audit or review report with a built-in low-noise orientation gate. Use when the user asks to audit, review, inspect correctness, evaluate completeness, find risks, produce findings, or invokes dev-audit with a clear audit scope or questions. For open-ended project or scope review where the agent must map unknown risks, run probes/tests, and discover realistic failures, use the `/dev-exploratory-review` skill instead. Small audits may stay in conversation. Create or update docs/audits for explicit audit reports, repository workflow requirements, non-trivial/cross-module/correctness-sensitive audits, or findings that need follow-up. Recommend the `/dev-plan` skill for fixes and let the `/dev-branch` skill run distill before review when stable knowledge changes. Do not implement fixes, create feature plans, or write capability documentation.
 ---
 
 # Dev Audit
 
 Use this skill to perform a bounded audit and route findings correctly.
 
-For open-ended project or scope review where the problem location is unknown, use `dev-exploratory-review`.
+For open-ended project or scope review where the problem location is unknown, use the `/dev-exploratory-review` skill.
 
 ## Boundary
 
@@ -20,19 +20,19 @@ Dev Audit does:
 - Decide whether the audit can stay in conversation or must be written to `docs/audits/`.
 - Create or update a persistent audit report under `docs/audits/` when the persistence rule applies.
 - Verify that any created audit file exists and is visible to git.
-- Recommend `dev-plan` for fixes and `dev-branch` for reviewed implementation.
+- Recommend the `/dev-plan` skill for fixes and the `/dev-branch` skill for reviewed implementation.
 
 Dev Audit does not:
 
 - Implement fixes.
-- Create feature plans; use `dev-plan`.
+- Create feature plans; use the `/dev-plan` skill.
 - Put findings into `docs/capabilities/`.
-- Archive/delete audits after findings are handled; use `dev-distill`.
+- Archive/delete audits after findings are handled; use the `/dev-distill` skill.
 - Treat old plans or audits as current truth.
 
 ## Orient Gate
 
-`dev-audit` includes the practical subset of `dev-orient` so users can start an audit with one
+The `/dev-audit` skill includes the practical subset of the `/dev-orient` skill so users can start an audit with one
 command.
 
 Before inspecting findings, do this:
@@ -52,7 +52,7 @@ Do not read these by default:
 - Generated files, build output, dependency folders, or unrelated historical notes.
 
 If the repository has no Dev Flow structure and the audit is expected to produce persistent output,
-recommend `dev-init` before writing the audit report.
+recommend the `/dev-init` skill before writing the audit report.
 
 ## Persistent Audit Rule
 
@@ -73,7 +73,7 @@ Keep the audit in conversation when all of these are true:
 - Repository workflow does not require an audit file for this kind of task.
 - No finding needs later implementation, distillation, or archival.
 
-If a persistent audit is required and `docs/audits/` is missing, recommend or run `dev-init` when appropriate, then create the audit. If initialization is not allowed, report that the persistent audit cannot be written.
+If a persistent audit is required and `docs/audits/` is missing, recommend or run the `/dev-init` skill when appropriate, then create the audit. If initialization is not allowed, report that the persistent audit cannot be written.
 
 When creating an audit file:
 
@@ -88,7 +88,7 @@ When creating an audit file:
    `accepted_risk`, `wont_fix`, and `not_reproducible`.
 8. Start actionable findings as `open` unless they are immediately rejected as `not_reproducible`
    or explicitly accepted as `accepted_risk` / `wont_fix`.
-9. Do not mark the audit `archived`; audit closeout belongs to `dev-distill` after all findings are
+9. Do not mark the audit `archived`; audit closeout belongs to the `/dev-distill` skill after all findings are
    closed or transferred.
 10. Confirm the file exists after writing it.
 11. Run `git status --short --branch --untracked-files=all`.
@@ -99,8 +99,8 @@ When creating an audit file:
 | Output | Destination | Rule |
 |---|---|---|
 | Audit report | `docs/audits/YYYY-MM-DD-topic-audit.md` | Create when the persistent audit rule applies. |
-| Current module facts discovered during audit | `docs/capabilities/*.md` | Do not write directly unless the user asked for doc fixes; otherwise recommend `dev-distill`. |
-| Fix plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Use `dev-plan` when findings need implementation. |
+| Current module facts discovered during audit | `docs/capabilities/*.md` | Do not write directly unless the user asked for doc fixes; otherwise recommend the `/dev-distill` skill. |
+| Fix plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Use the `/dev-plan` skill when findings need implementation. |
 | Decision | `docs/adr/YYYY-MM-DD-short-title.md` | Use only when the ADR gate passes. |
 | Executable rule | tests | Prefer tests for regression-prone rules. |
 
@@ -141,7 +141,7 @@ When creating an audit file:
    - Chat-only audit: summarize findings in the response when the audit is small enough.
    - Never store the report under `docs/capabilities/`.
    - If findings imply a hard-to-reverse decision, fact-source change, architecture choice,
-     algorithm policy, or cross-module rule, flag that `dev-distill` must run the ADR gate.
+     algorithm policy, or cross-module rule, flag that the `/dev-distill` skill must run the ADR gate.
 
 7. Verify audit file when created:
    - Confirm the path exists.
@@ -150,10 +150,10 @@ When creating an audit file:
    - If ignored, add a minimal allow rule only when safe; otherwise ask the user.
 
 8. Close the loop:
-   - If fixes are needed, recommend `dev-plan`.
+   - If fixes are needed, recommend the `/dev-plan` skill.
    - If a plan is created from the audit later, it must reference `source_audit` and `covered_findings`.
-   - If fixes are likely to change durable facts or lifecycle artifacts, note that `dev-branch` should run distill and check gates before review.
-   - After implementation or doc correction, recommend `dev-check`.
+   - If fixes are likely to change durable facts or lifecycle artifacts, note that the `/dev-branch` skill should run distill and check gates before review.
+   - After implementation or doc correction, recommend the `/dev-check` skill.
 
 ## Output Template
 
@@ -162,9 +162,9 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
-- `Audit is small enough to stay in conversation; use dev-check if routing needs verification.`
-- `Persistent audit report created and git visibility checked; next step is dev-plan for fixes or dev-branch if implementation is already clear.`
-- `Audit file is ignored by git; fix tracking before follow-up work or confirm that the audit should remain untracked.`
-- `Audit found issues that need fixes; use dev-plan to turn them into verifiable steps.`
-- `Audit produced only stable documentation facts; use dev-branch if changes are needed, otherwise use dev-check to confirm routing remains clean.`
-- `Audit found no follow-up work; use dev-check to confirm routing remains clean.`
+- "Audit is small enough to stay in conversation; use the `/dev-check` skill if routing needs verification."
+- "Persistent audit report created and git visibility checked; next step is the `/dev-plan` skill for fixes or the `/dev-branch` skill if implementation is already clear."
+- "Audit file is ignored by git; fix tracking before follow-up work or confirm that the audit should remain untracked."
+- "Audit found issues that need fixes; use the `/dev-plan` skill to turn them into verifiable steps."
+- "Audit produced only stable documentation facts; use the `/dev-branch` skill if changes are needed, otherwise use the `/dev-check` skill to confirm routing remains clean."
+- "Audit found no follow-up work; use the `/dev-check` skill to confirm routing remains clean."

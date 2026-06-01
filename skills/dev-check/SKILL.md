@@ -1,11 +1,15 @@
 ---
 name: dev-check
-description: Validate Dev Flow documentation routing and lifecycle health. Use when a user asks to check whether AGENTS, CONTEXT, CHANGELOG, context-map, capabilities, plans, audits, ADRs, templates, or Dev Flow directories are correctly organized, or after dev-init/dev-audit/dev-branch/dev-changelog/dev-distill to verify repository memory. Runs or recommends cuberhyk-dev-flow validate-docs. Do not use for implementing features, writing plans, branch execution, changelog writing, or performing deep code audits.
+description: Validate Dev Flow documentation routing and lifecycle health. Use when a user asks to check whether AGENTS, CONTEXT, CHANGELOG, context-map, capabilities, plans, audits, ADRs, templates, or Dev Flow directories are correctly organized, or after the `/dev-init`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, or `/dev-distill` skills to verify repository memory. Runs or recommends cuberhyk-dev-flow validate-docs. Do not use for implementing features, writing plans, branch execution, changelog writing, or performing deep code audits.
 ---
+
+[toc]
+
+
 
 # Dev Check
 
-Use this skill to verify that Dev Flow memory is organized correctly.
+Use this skill to verify that Dev Flow memory is organized correctly[.
 
 ## Boundary
 
@@ -26,10 +30,10 @@ Dev Check does:
 
 Dev Check does not:
 
-- Perform a deep business or code audit; use `dev-audit`.
+- Perform a deep business or code audit; use the `/dev-audit` skill.
 - Rewrite capability docs.
 - Archive or delete files automatically.
-- Replace `dev-distill`; use `dev-distill` to close artifacts and update durable facts.
+- Replace the `/dev-distill` skill; use the `/dev-distill` skill to close artifacts and update durable facts.
 
 ## Command
 
@@ -89,7 +93,7 @@ The validator checks:
   `docs/capabilities/`, `docs/plans/`, `docs/audits/`, or `docs/adr/`.
 - `CHANGELOG.md` structure, including `Unreleased`, release date format, and standard categories.
 - Likely ADR-worthy decision language in plans, audits, or capability docs that has not been
-  reviewed by `dev-distill`.
+  reviewed by the `/dev-distill` skill.
 
 ## Workflow
 
@@ -106,11 +110,11 @@ The validator checks:
    - Git ignore warnings mean agents may create correct-looking docs that are not versioned.
 
 4. Recommend next step:
-   - Missing structure -> use `dev-init`.
-   - Audit/review needed -> use `dev-audit`.
-   - Active plan/audit cleanup -> use `dev-distill`.
-   - ADR warning -> use `dev-distill` to run the ADR gate.
-   - Clean state and new task -> use `dev-orient`.
+   - Missing structure -> use the `/dev-init` skill.
+   - Audit/review needed -> use the `/dev-audit` skill.
+   - Active plan/audit cleanup -> use the `/dev-distill` skill.
+   - ADR warning -> use the `/dev-distill` skill to run the ADR gate.
+   - Clean state and new task -> use the `/dev-orient` skill.
 
 ## Output Template
 
@@ -119,8 +123,8 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
-- `���ͨ������һ������ʹ�� dev-orient ��ʼ��������`
-- `���ֽṹȱ�ڣ�������ʹ�� dev-init ��ʼ��ȱʧĿ¼��ģ�塣`
-- `����������󣻽���ʹ�� dev-audit ���ɽṹ����鱨�档`
-- `���ֲ��������������⣻����ʹ�� dev-distill �رա��鵵��ɾ����ؼƻ�/����ĵ���`
-- `���ֿ�����Ҫ ADR �ĳ��ھ��ߣ�����ʹ�� dev-distill ���� ADR gate��`
+- "Validation passed; use the `/dev-orient` skill to start the next concrete task."
+- "Missing Dev Flow structure; use the `/dev-init` skill to create missing directories and templates."
+- "Audit or review is needed; use the `/dev-audit` skill to create a structured report."
+- "Active plan or audit cleanup is needed; use the `/dev-distill` skill to close, archive, or delete the related artifacts."
+- "A long-term decision may need ADR review; use the `/dev-distill` skill to run the ADR gate."

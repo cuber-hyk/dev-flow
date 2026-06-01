@@ -18,7 +18,7 @@ Dev Exploratory Review does:
 - Create temporary probe tests or scripts when they are the simplest way to verify a suspected failure.
 - Use a four-pass review harness for non-trivial work.
 - Report findings only when a realistic scenario can fail.
-- Recommend `dev-plan` for fixes and `dev-branch` for reviewed implementation.
+- Recommend the `/dev-plan` skill for fixes and the `/dev-branch` skill for reviewed implementation.
 
 Dev Exploratory Review does not:
 
@@ -27,7 +27,7 @@ Dev Exploratory Review does not:
 - Treat theoretical suspicion as a finding without a credible failure path.
 - Browse the whole repository endlessly when the user supplied a narrower scope.
 - Preserve temporary probe tests unless they are intentionally promoted to follow-up work.
-- Replace `dev-audit` for bounded audits that already have clear questions.
+- Replace the `/dev-audit` skill for bounded audits that already have clear questions.
 
 ## Scope Handling
 
@@ -132,7 +132,7 @@ Create or update `docs/audits/YYYY-MM-DD-topic-exploratory-review.md` when any o
 - Probe tests/scripts were created and should be traceable.
 - Repository workflow requires persistent audit/review artifacts.
 
-If `docs/audits/` is missing and a persistent report is required, recommend or run `dev-init` when appropriate before writing the report.
+If `docs/audits/` is missing and a persistent report is required, recommend or run the `/dev-init` skill when appropriate before writing the report.
 
 When creating a report:
 
@@ -155,8 +155,8 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
-- `Exploratory review found confirmed issues; use dev-plan to turn them into verifiable fix steps.`
-- `Exploratory review found only strong unconfirmed risks; use dev-plan if you want to validate and fix them.`
-- `Exploratory review found no realistic failures in the reviewed scope; use dev-check if routing needs verification.`
-- `Persistent exploratory review report created and git visibility checked; next step is dev-plan for fixes or dev-branch if implementation is already clear.`
-- `Probe artifacts remain in the worktree; decide whether to keep them as regression tests before implementation.`
+- "Exploratory review found confirmed issues; use the `/dev-plan` skill to turn them into verifiable fix steps."
+- "Exploratory review found only strong unconfirmed risks; use the `/dev-plan` skill if you want to validate and fix them."
+- "Exploratory review found no realistic failures in the reviewed scope; use the `/dev-check` skill if routing needs verification."
+- "Persistent exploratory review report created and git visibility checked; next step is the `/dev-plan` skill for fixes or the `/dev-branch` skill if implementation is already clear."
+- "Probe artifacts remain in the worktree; decide whether to keep them as regression tests before implementation."

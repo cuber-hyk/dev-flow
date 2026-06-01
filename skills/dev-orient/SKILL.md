@@ -1,6 +1,6 @@
 ---
 name: dev-orient
-description: Enter and orient within a repository using low-noise, repo-native context. Use at the start of a new coding session or before non-trivial work to inspect repository state, read AGENTS/CONTEXT/context-map/capability docs, identify relevant code entry points, identify likely documentation destinations such as docs/plans, docs/audits, docs/capabilities, or docs/adr, and recommend whether to continue with dev-plan, dev-audit, or dev-branch. Do not use for detailed planning, auditing, implementation, branch execution, or knowledge distillation.
+description: Enter and orient within a repository using low-noise, repo-native context. Use at the start of a new coding session or before non-trivial work to inspect repository state, read AGENTS/CONTEXT/context-map/capability docs, identify relevant code entry points, identify likely documentation destinations such as docs/plans, docs/audits, docs/capabilities, or docs/adr, and recommend whether to continue with the `/dev-plan`, `/dev-audit`, or `/dev-branch` skills. Do not use for detailed planning, auditing, implementation, branch execution, or knowledge distillation.
 ---
 
 # Dev Orient
@@ -20,7 +20,7 @@ Dev Orient does:
 Dev Orient does not:
 
 - Produce a detailed implementation plan.
-- Perform audits or write findings; use `dev-audit`.
+- Perform audits or write findings; use the `/dev-audit` skill.
 - Edit code or docs, except when explicitly asked to fix the context system itself.
 - Create TODO files, reports, ADRs, or long audits.
 - Distill task outcomes after implementation.
@@ -41,8 +41,8 @@ Dev Orient does not:
 
 | Artifact | Active location | Closed state/action | Default read? |
 |---|---|---|---|
-| Plan | `docs/plans/*.md` with `status: active` | `docs/plans/archived/*.md` with `status: archived` or deleted by `dev-distill` | No |
-| Audit | `docs/audits/*.md` with `status: active` | `docs/audits/archived/*.md` with `status: archived` or deleted by `dev-distill` | No |
+| Plan | `docs/plans/*.md` with `status: active` | `docs/plans/archived/*.md` with `status: archived` or deleted by the `/dev-distill` skill | No |
+| Audit | `docs/audits/*.md` with `status: active` | `docs/audits/archived/*.md` with `status: archived` or deleted by the `/dev-distill` skill | No |
 | Capability | `docs/capabilities/*.md` | Always current; no historical findings | Yes, when relevant |
 | ADR | `docs/adr/*.md` for `proposed`/`accepted`; `docs/adr/archived/*.md` for `archived` | `proposed`, `accepted`, or `archived` | Only for decision tasks |
 
@@ -50,7 +50,7 @@ Do not use `completed`, `distilled`, `superseded`, or `deprecated` as final docu
 Completion and distillation are events; closed plans and audits must be archived or deleted.
 
 If the project has no Dev Flow memory structure, report that it needs initialization and recommend
-`dev-init`.
+the `/dev-init` skill.
 
 ## Workflow
 
@@ -69,7 +69,7 @@ If the project has no Dev Flow memory structure, report that it needs initializa
      `docs/plans/archived/`, `docs/audits/`, `docs/audits/archived/`, `docs/adr/`, and
      `docs/adr/archived/` exist.
    - Note whether `_template.md` files exist for capabilities, plans, audits, and ADRs.
-   - If a needed destination is missing, recommend `dev-init`.
+   - If a needed destination is missing, recommend the `/dev-init` skill.
 
 4. Choose task-specific context:
    - Use `docs/ai/context-map.md` to select capability docs.
@@ -101,7 +101,7 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
-- `������һ��ʹ�� dev-plan����Ŀ�ꡢ��������շ�ʽ�̶�������ʵ�ֽ׶ο�ʹ�� dev-branch ����֧��顣`
-- `����������񣻽�����һ��ʹ�� dev-audit������鷶Χ��֤�ݺͷ��ֹ�λ�� docs/audits/��`
-- `����С���񣬿������� dev-plan��ֱ��ִ�в��ڽ���ʱ���� dev-distill��`
-- `�����Ĳ��㣬��Ҫ�����û����壬�ٽ��� dev-plan �� dev-audit��`
+- "Context is loaded; use the `/dev-plan` skill to lock goal, boundaries, and verification before implementation, then use the `/dev-branch` skill for reviewed branch work."
+- "This is review work; use the `/dev-audit` skill to define scope, evidence, and findings under `docs/audits/` when persistence is needed."
+- "This is a small clear task; direct implementation is possible, and the `/dev-distill` skill may be needed at closeout if durable knowledge changes."
+- "Context is insufficient or decisions are unclear; clarify with the user before using the `/dev-plan` or `/dev-audit` skill."

@@ -25,22 +25,22 @@ Dev Plan does:
 - Decide whether the plan can stay in conversation or must be written to `docs/plans/`.
 - Create or update a persistent plan under `docs/plans/` only when the task is plan-ready and the persistence rule applies.
 - Verify that any created plan file exists and is visible to git.
-- Recommend whether implementation can start directly or should use `dev-branch`.
+- Recommend whether implementation can start directly or should use the `/dev-branch` skill.
 
 Dev Plan does not:
 
-- Replace standalone `dev-orient` for context-only sessions or deep repository mapping.
+- Replace the standalone `/dev-orient` skill for context-only sessions or deep repository mapping.
 - Read broad unrelated context, old plans, old audits, or archived files by default.
-- Perform audits or write findings; use `dev-audit`.
+- Perform audits or write findings; use the `/dev-audit` skill.
 - Edit implementation code.
 - Store plans, audits, or findings in `docs/capabilities/`.
 - Hide product or business decisions as assumptions.
 - Create an executable plan while critical decisions are still unresolved.
-- Archive final knowledge; `dev-branch` runs changelog, distill, and check gates before review, or use `dev-distill` standalone for knowledge-only closeout.
+- Archive final knowledge; the `/dev-branch` skill runs changelog, distill, and check gates before review, or use the `/dev-distill` skill standalone for knowledge-only closeout.
 
 ## Orient Gate
 
-`dev-plan` includes the practical subset of `dev-orient` so users do not have to run two commands
+The `/dev-plan` skill includes the practical subset of the `/dev-orient` skill so users do not have to run two commands
 for normal planning.
 
 Before the plan readiness gate, do this:
@@ -59,8 +59,8 @@ Do not read these by default:
 - `archived/` directories.
 - Generated files, build output, dependency folders, or unrelated historical notes.
 
-If the repository has no Dev Flow structure, recommend `dev-init` before creating persistent
-artifacts. If orientation reveals that the task is actually an audit, recommend `dev-audit` instead
+If the repository has no Dev Flow structure, recommend the `/dev-init` skill before creating persistent
+artifacts. If orientation reveals that the task is actually an audit, recommend the `/dev-audit` skill instead
 of forcing a plan.
 
 ## Plan Readiness Gate
@@ -153,7 +153,7 @@ Create or update `docs/plans/YYYY-MM-DD-short-topic.md` when any of these are tr
 - Repository workflow instructions require plan artifacts under `docs/plans/`.
 - The task is high-risk, cross-module, architecture-affecting, audit-follow-up work, expected to span multiple turns, or likely to need later review.
 - The user asks to use a branch/task workflow that needs a reviewable plan before implementation.
-- A previous `dev-audit` produced findings that need implementation sequencing.
+- A previous `/dev-audit` skill run produced findings that need implementation sequencing.
 
 Keep the plan in conversation when all of these are true:
 
@@ -162,7 +162,7 @@ Keep the plan in conversation when all of these are true:
 - Repository workflow does not require a plan file for this kind of task.
 - No audit finding or branch workflow requires a reviewable artifact.
 
-If a persistent plan is required and `docs/plans/` is missing, recommend or run `dev-init` when appropriate, then create the plan. If initialization is not allowed, report that the persistent plan cannot be written.
+If a persistent plan is required and `docs/plans/` is missing, recommend or run the `/dev-init` skill when appropriate, then create the plan. If initialization is not allowed, report that the persistent plan cannot be written.
 
 When creating a plan file:
 
@@ -180,9 +180,9 @@ When creating a plan file:
 |---|---|---|
 | Decision request | Conversation only | Use when decisions block planning; do not write as executable plan. |
 | Task plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Create only after plan readiness passes and the persistent plan rule applies. |
-| Audit/review report | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using `dev-audit`. |
+| Audit/review report | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using the `/dev-audit` skill. |
 | Current module facts | `docs/capabilities/*.md` | Do not write plans or audit findings here. |
-| Important decision | `docs/adr/YYYY-MM-DD-short-title.md` | Recommend only when there is a real tradeoff; `dev-distill` runs the ADR gate. |
+| Important decision | `docs/adr/YYYY-MM-DD-short-title.md` | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
 | Executable rule | tests | Prefer tests over prose-only rules when practical. |
 
 ## Workflow
@@ -240,7 +240,7 @@ When creating a plan file:
      `deferred_findings`, and keep findings in `docs/audits/`.
    - Include whether `docs/ai/context-map.md` may need an update after implementation.
    - If the task involves a hard-to-reverse decision, fact-source change, architecture choice,
-     algorithm policy, or cross-module rule, flag that `dev-distill` must run the ADR gate.
+     algorithm policy, or cross-module rule, flag that the `/dev-distill` skill must run the ADR gate.
 
 10. Verify plan file when created:
    - Confirm the path exists.
@@ -262,8 +262,8 @@ When blocked by decisions, use the `Blocked By Decisions` template and stop befo
 
 End with one of these:
 
-- `Decision points block a reliable plan; confirm the listed choices, then I will create the executable plan.`
-- `Plan readiness passed and the plan is small enough to stay in conversation; next step is dev-branch for reviewed implementation.`
-- `Persistent plan created and git visibility checked; next step is dev-branch for reviewed implementation.`
-- `Plan file is ignored by git; fix tracking before implementation or confirm that the plan should remain untracked.`
-- `This is audit follow-up work; use dev-branch so implementation, verification, changelog, distill, and review happen in one branch.`
+- "Decision points block a reliable plan; confirm the listed choices, then I will create the executable plan."
+- "Plan readiness passed and the plan is small enough to stay in conversation; next step is the `/dev-branch` skill for reviewed implementation."
+- "Persistent plan created and git visibility checked; next step is the `/dev-branch` skill for reviewed implementation."
+- "Plan file is ignored by git; fix tracking before implementation or confirm that the plan should remain untracked."
+- "This is audit follow-up work; use the `/dev-branch` skill so implementation, verification, changelog, distill, and review happen in one branch."

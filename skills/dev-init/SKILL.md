@@ -17,7 +17,7 @@ Dev Init does:
 - Create missing files from the plugin `templates/` directory.
 - Append a marked Dev Flow section to `AGENTS.md` when it already exists; create `AGENTS.md` only when missing.
 - Explain what was created and what remains user-owned.
-- Recommend `dev-check` after initialization.
+- Recommend the `/dev-check` skill after initialization.
 
 Dev Init does not:
 
@@ -25,7 +25,7 @@ Dev Init does not:
 - Read broad project code.
 - Overwrite existing `AGENTS.md`, `CLAUDE.md`, or business docs.
 - Replace project-specific agent policy; only append the marked Dev Flow section when absent.
-- Replace `dev-orient`; use `dev-orient` after initialization for task-specific context.
+- Replace the `/dev-orient` skill; use the `/dev-orient` skill after initialization for task-specific context.
 
 ## User-Facing Use
 
@@ -35,7 +35,7 @@ Ask the agent to use this skill:
 dev-init 接入当前项目的 Dev Flow 文档结构
 ```
 
-For an existing project, `dev-init` creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with `dev-plan` for feature work or `dev-audit` for review work. Those skills enter relevant context, and `dev-branch` runs changelog, distill, and check gates before review.
+For an existing project, the `/dev-init` skill creates only the missing memory structure and templates. It does not infer all capability docs or ADRs in one step; follow with the `/dev-plan` skill for feature work or the `/dev-audit` skill for review work. Those skills enter relevant context, and the `/dev-branch` skill runs changelog, distill, and check gates before review.
 
 ## Internal Command
 
@@ -114,4 +114,4 @@ Use `templates/output.md` for the final response shape.
 
 End with:
 
-- `初始化完成；建议下一步使用 dev-check 检查文档归位，再用 dev-orient 开始具体任务。`
+- "Initialization is complete; use the `/dev-check` skill to verify routing, then use the `/dev-orient` skill to start a concrete task."
