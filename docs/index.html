@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cuberhyk-dev-flow - AI Agent 开发生命周期插件</title>
+    <meta
+      name="description"
+      content="cuberhyk-dev-flow 是一套面向 Claude Code、Codex 等 AI Agent 的开发生命周期插件。"
+    />
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body data-page="home">
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html" aria-label="cuberhyk-dev-flow 首页">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 4.5 7.2 12 11.4l7.5-4.2L12 3Z" />
+              <path d="M4.5 11.2 12 15.4l7.5-4.2" />
+              <path d="M4.5 15.2 12 19.4l7.5-4.2" />
+            </svg>
+          </span>
+          <span>cuberhyk-dev-flow</span>
+        </a>
+        <nav class="nav-links" aria-label="主导航">
+          <a data-nav="home" href="index.html">首页</a>
+          <a data-nav="start" href="getting-started.html">快速开始</a>
+          <a data-nav="workflow" href="workflow.html">工作流</a>
+          <a data-nav="reference" href="reference.html">文档</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="button github-button" href="https://github.com/cuber-hyk/dev-flow">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.93c.46.08.63-.2.63-.44v-1.58c-2.57.56-3.11-1.1-3.11-1.1-.42-1.07-1.03-1.36-1.03-1.36-.84-.57.06-.56.06-.56.93.07 1.42.96 1.42.96.83 1.41 2.17 1 2.7.77.08-.6.32-1 .58-1.23-2.05-.23-4.2-1.03-4.2-4.56 0-1 .36-1.84.95-2.49-.1-.23-.41-1.18.09-2.45 0 0 .78-.25 2.54.95a8.75 8.75 0 0 1 4.62 0c1.76-1.2 2.53-.95 2.53-.95.5 1.27.19 2.22.1 2.45.59.65.94 1.48.94 2.49 0 3.54-2.16 4.32-4.22 4.55.33.28.63.85.63 1.72v2.55c0 .24.16.52.64.43A9.2 9.2 0 0 0 12 2.8Z" />
+            </svg>
+            在 GitHub 上查看
+          </a>
+          <button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero home-hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <h1>
+              <span class="title-line">让 AI 开发流程</span>
+              <span class="value-line">变得可控、可审查、</span><span class="value-line">可沉淀</span>
+            </h1>
+            <p class="hero-lede">
+              cuberhyk-dev-flow 是一套为 AI Coding 场景设计的工作流插件。
+              通过 <strong>Orient</strong>、<strong>Plan</strong>、<strong>Branch</strong>、<strong>Changelog</strong>、<strong>Distill</strong>
+              等关键 Gate，帮助你将每一次改动都变成可理解、可验证、可复用的知识。
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="getting-started.html">开始使用</a>
+              <a class="button" href="workflow.html">查看工作流</a>
+            </div>
+            <p class="hero-meta">适用于 Claude Code · Codex · Cursor · Gemini · 本地代理</p>
+          </div>
+
+          <div class="system-diagram">
+            <svg viewBox="0 0 820 380" role="img" aria-labelledby="home-flow-title home-flow-desc">
+              <title id="home-flow-title">Dev Flow gate 流程图</title>
+              <desc id="home-flow-desc">从 dev-plan 进入 Orient 和 Decision gate，再由 dev-branch 执行 Changelog、Distill 和 Review gate。</desc>
+              <defs>
+                <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                  <path d="M0 0 9 4.5 0 9Z" fill="#0d9488" />
+                </marker>
+                <linearGradient id="nodeGradient" x1="0" x2="1" y1="0" y2="1">
+                  <stop stop-color="#ffffff" />
+                  <stop offset="1" stop-color="#eefbf8" />
+                </linearGradient>
+              </defs>
+
+              <g class="orbit" aria-hidden="true">
+                <circle cx="414" cy="178" r="72" />
+                <circle cx="414" cy="178" r="120" />
+                <circle cx="414" cy="178" r="168" />
+              </g>
+
+              <g class="diagram-lines">
+                <path d="M176 92H270" marker-end="url(#arrow)" />
+                <path d="M332 92H424" marker-end="url(#arrow)" />
+                <path d="M488 92H580" marker-end="url(#arrow)" />
+                <path d="M704 130v65q0 26-26 26H552" marker-end="url(#arrow)" />
+                <path d="M704 130v122q0 26-26 26H552" marker-end="url(#arrow)" />
+                <path d="M704 130v184q0 26-26 26H552" marker-end="url(#arrow)" />
+                <path class="return-line" d="M678 358H244q-34 0-34-34V132" marker-end="url(#arrow)" />
+              </g>
+
+              <g class="command-node">
+                <rect x="28" y="54" width="148" height="76" rx="8" />
+                <path d="M88 66h28v28H88zM95 74h14M95 82h14M95 90h8" />
+                <text x="102" y="113">/dev-plan</text>
+              </g>
+
+              <g class="gate-node" transform="translate(272 48)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M38 18a20 20 0 1 0 20 20M38 28a10 10 0 1 0 10 10M38 38l18-18" />
+                <text x="38" y="99">Orient</text>
+                <text x="38" y="119">Gate</text>
+              </g>
+
+              <g class="gate-node" transform="translate(426 48)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M20 44h36M28 26l-12 18 12 18 12-18-12-18ZM52 26 40 44l12 18 12-18-12-18ZM38 22v48" />
+                <text x="38" y="99">Decision</text>
+                <text x="38" y="119">Gate</text>
+              </g>
+
+              <g class="command-node">
+                <rect x="582" y="54" width="198" height="76" rx="8" />
+                <path d="M669 75h16M677 67v24M697 68c12 0 12 16 0 16s-12 16 0 16M705 84h17" />
+                <text x="681" y="113">/dev-branch</text>
+              </g>
+
+              <g class="gate-node lower" transform="translate(302 214)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M28 18h20l8 8v32H28zM48 18v10h10M34 36h18M34 46h18M34 56h12" />
+                <text x="38" y="99">Changelog</text>
+                <text x="38" y="119">Gate</text>
+              </g>
+
+              <g class="gate-node lower" transform="translate(454 214)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M38 18 18 28l20 10 20-10-20-10ZM18 40l20 10 20-10M18 52l20 10 20-10" />
+                <text x="38" y="99">Distill</text>
+                <text x="38" y="119">Gate</text>
+              </g>
+
+              <g class="gate-node lower review-node" transform="translate(626 206)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M38 18 58 26v14c0 15-9 25-20 30-11-5-20-15-20-30V26l20-8ZM29 42l7 7 13-16" />
+                <text x="38" y="104">Review</text>
+                <text x="38" y="124">Gate</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="value-strip-section">
+        <div class="container">
+          <div class="value-strip">
+            <article class="value-item">
+              <span class="line-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3v18M4 12h16M7 7l10 10M17 7 7 17" /></svg>
+              </span>
+              <div>
+                <h2>低噪音进入上下文</h2>
+                <p>只读必要文档与关键代码，避免噪音，让 AI 快速进入状态。</p>
+              </div>
+            </article>
+            <article class="value-item">
+              <span class="line-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V7l8-4ZM8.5 12l2.4 2.4 4.8-5" /></svg>
+              </span>
+              <div>
+                <h2>审核前闭环</h2>
+                <p>提交与合并前自动完成更新日志与知识沉淀，确保变更可审查、可追溯。</p>
+              </div>
+            </article>
+            <article class="value-item">
+              <span class="line-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 4 4 8l8 4 8-4-8-4ZM4 12l8 4 8-4M4 16l8 4 8-4" /></svg>
+              </span>
+              <div>
+                <h2>长期知识沉淀</h2>
+                <p>将稳定事实与规则沉淀到 capability 与 ADR，构建可复用的项目文档。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section skills-showcase">
+        <div class="container">
+          <div class="compact-head">
+            <p class="section-kicker">Skills</p>
+            <h2>八个专注技能，各司其职</h2>
+            <p>每个技能只做一件事，职责清晰，配合使用构成完整闭环。</p>
+          </div>
+          <div class="skill-grid product-grid">
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7.5l8 4.5 8-4.5L12 3ZM4 12l8 4.5 8-4.5M4 16.5 12 21l8-4.5" /></svg></span>
+              <h3>dev-init</h3>
+              <p>初始化或补全 Dev Flow 目录与模板，安全接入现有项目。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M20 7 10 17l-5-5" /><circle cx="12" cy="12" r="9" /></svg></span>
+              <h3>dev-check</h3>
+              <p>校验文档路由与生命周期规则，发现并修复配置问题。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 21s7-4.4 7-11a7 7 0 0 0-14 0c0 6.6 7 11 7 11Z" /><path d="M12 10l3-3-1 4-3 3 1-4Z" /></svg></span>
+              <h3>dev-orient</h3>
+              <p>低噪音进入项目上下文，识别关键文档与代码入口。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h2" /></svg></span>
+              <h3>dev-plan</h3>
+              <p>识别决策点并制定最小可验证计划，输出可执行计划文档。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" /><path d="m15 15 5 5M8 10h4M10 8v4" /></svg></span>
+              <h3>dev-audit</h3>
+              <p>审查功能或流程，输出结构化审查报告与改进建议。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v6a4 4 0 0 1-4 4H6M18 4l-3 3M18 4l3 3M18 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" /></svg></span>
+              <h3>dev-branch</h3>
+              <p>创建分支实现任务，运行各项 Gate，并等待审核后再提交合并。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h3" /><path d="M4 8h3M17 8h3" /></svg></span>
+              <h3>dev-changelog</h3>
+              <p>维护 CHANGELOG.md，只记录对用户或运维可见的重要变更。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 4 4 8l8 4 8-4-8-4ZM4 12l8 4 8-4M4 16l8 4 8-4" /></svg></span>
+              <h3>dev-distill</h3>
+              <p>将稳定事实沉淀到 capability 与 ADR，完成知识闭环。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div>cuberhyk-dev-flow · Lifecycle workflow for coding agents</div>
+        <div class="footer-links">
+          <a href="getting-started.html">快速开始</a>
+          <a href="workflow.html">工作流</a>
+          <a href="reference.html">文档</a>
+        </div>
+      </div>
+    </footer>
+    <div class="toast" data-toast>已复制</div>
+    <script src="assets/site.js"></script>
+  </body>
+</html>

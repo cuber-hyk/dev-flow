@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>快速开始 - cuberhyk-dev-flow</title>
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body data-page="start">
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a>
+        <nav class="nav-links" aria-label="主导航">
+          <a data-nav="home" href="index.html">首页</a>
+          <a data-nav="start" href="getting-started.html">快速开始</a>
+          <a data-nav="workflow" href="workflow.html">工作流</a>
+          <a data-nav="reference" href="reference.html">文档</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="button ghost" href="https://github.com/cuber-hyk/dev-flow">GitHub</a>
+          <a class="button primary" href="#install">安装</a>
+          <button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-hero">
+        <span class="eyebrow">Getting Started</span>
+        <h1>从安装到第一个可审核任务</h1>
+        <p class="page-lede">
+          Dev Flow 的接入不要求一次性写完所有项目文档。先创建最小结构，再用真实任务逐步沉淀 capability、ADR 和测试。
+        </p>
+      </section>
+
+      <div class="page-shell">
+        <aside class="toc" aria-label="页面目录">
+          <a href="#install">安装插件</a>
+          <a href="#adopt">接入项目</a>
+          <a href="#first-task">第一个任务</a>
+          <a href="#cli">CLI 命令</a>
+        </aside>
+
+        <div class="page-content">
+          <section id="install" class="page-section">
+            <h2>安装插件</h2>
+            <p>安装方式改为纵向三行，避免命令块被三列布局挤压。Claude、Codex、npm 三种路径各自独立，阅读和复制都更稳定。</p>
+            <div class="install-stack">
+              <article class="install-row">
+                <div>
+                  <h3>Claude Code</h3>
+                  <p>添加本地 marketplace 后安装插件。安装后重启 Claude Code，让技能列表刷新到新版本。</p>
+                </div>
+                <div class="terminal-card">
+                  <div class="terminal-head"><span>Claude Code</span><button class="copy-button" data-copy='claude plugin marketplace add "C:\Users\胡运宽\plugins\cuberhyk-plugins"&#10;claude plugin install cuberhyk-dev-flow@cuberhyk-plugins&#10;claude plugin list'>复制</button></div>
+                  <pre><code>claude plugin marketplace add "C:\Users\胡运宽\plugins\cuberhyk-plugins"
+claude plugin install cuberhyk-dev-flow@cuberhyk-plugins
+claude plugin list</code></pre>
+                </div>
+              </article>
+              <article class="install-row">
+                <div>
+                  <h3>Codex</h3>
+                  <p>运行本地安装脚本，或在 `/plugins` 中选择 `cuberhyk-plugins` marketplace 后安装。</p>
+                </div>
+                <div class="terminal-card">
+                  <div class="terminal-head"><span>Local install</span><button class="copy-button" data-copy="cd C:\Users\胡运宽\plugins\dev-flow&#10;node .\bin\dev-flow.js install">复制</button></div>
+                  <pre><code>cd C:\Users\胡运宽\plugins\dev-flow
+node .\bin\dev-flow.js install</code></pre>
+                </div>
+              </article>
+              <article class="install-row">
+                <div>
+                  <h3>npm 发布后</h3>
+                  <p>公开发布后，安装流程可以收敛为一个 `npx` 命令，适合跨机器快速接入。</p>
+                </div>
+                <div class="terminal-card">
+                  <div class="terminal-head"><span>npx</span><button class="copy-button" data-copy="npx cuberhyk-dev-flow install">复制</button></div>
+                  <pre><code>npx cuberhyk-dev-flow install</code></pre>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section id="adopt" class="page-section">
+            <h2>接入已有项目</h2>
+            <p>`dev-init` 只创建缺失结构，不覆盖已有项目策略。它负责骨架，真实知识由后续任务沉淀。</p>
+            <div class="steps">
+              <article class="step-item"><div class="card-number">1</div><div><strong>/dev-init</strong><p>创建 AGENTS、CONTEXT、context-map、capabilities、plans、audits、ADR 和 CHANGELOG 模板。</p></div></article>
+              <article class="step-item"><div class="card-number">2</div><div><strong>/dev-check</strong><p>检查目录、状态字段、gitignore、context-map、CHANGELOG 和潜在 ADR 缺口。</p></div></article>
+              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-plan 或 /dev-audit</strong><p>用真实任务进入上下文，逐步生成能力文档和稳定事实。</p></div></article>
+            </div>
+          </section>
+
+          <section id="first-task" class="page-section">
+            <h2>第一个可审核任务</h2>
+            <p>常规功能开发只需要两个入口。计划技能会自动进入上下文；分支技能会在审核前完成验证、更新日志判断和知识沉淀判断。</p>
+            <div class="terminal-card">
+              <div class="terminal-head"><span>recommended first task</span><button class="copy-button" data-copy="/dev-plan 开发学习统计的连续学习天数。请先进入上下文、识别统计口径决策点，再制定计划。&#10;/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill gate。">复制</button></div>
+              <pre><code>/dev-plan 开发学习统计的连续学习天数。请先进入上下文、识别统计口径决策点，再制定计划。
+/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill gate。</code></pre>
+            </div>
+          </section>
+
+          <section id="cli" class="page-section">
+            <h2>CLI 命令</h2>
+            <p>正常对话使用技能；CLI 是给 agent 调用的稳定文件操作和校验原语。</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>命令</th><th>用途</th></tr></thead>
+                <tbody>
+                  <tr><td><code>cuberhyk-dev-flow install</code></td><td>安装到本地 marketplace。</td></tr>
+                  <tr><td><code>cuberhyk-dev-flow validate</code></td><td>校验插件包结构。</td></tr>
+                  <tr><td><code>cuberhyk-dev-flow init-project [dir]</code></td><td>作为 `dev-init` 的底层实现，创建缺失文档结构。</td></tr>
+                  <tr><td><code>cuberhyk-dev-flow validate-docs [dir]</code></td><td>作为 `dev-check` 的底层实现，检查文档路由和生命周期。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="footer-grid"><div>cuberhyk-dev-flow</div><div class="footer-links"><a href="index.html">首页</a><a href="workflow.html">工作流</a><a href="reference.html">文档</a></div></div></footer>
+    <div class="toast" data-toast>已复制</div>
+    <script src="assets/site.js"></script>
+  </body>
+</html>

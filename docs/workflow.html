@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工作流 - cuberhyk-dev-flow</title>
+    <link rel="stylesheet" href="assets/site.css" />
+  </head>
+  <body data-page="workflow">
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href="index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a>
+        <nav class="nav-links" aria-label="主导航">
+          <a data-nav="home" href="index.html">首页</a>
+          <a data-nav="start" href="getting-started.html">快速开始</a>
+          <a data-nav="workflow" href="workflow.html">工作流</a>
+          <a data-nav="reference" href="reference.html">文档</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="button ghost" href="https://github.com/cuber-hyk/dev-flow">GitHub</a>
+          <a class="button primary" href="getting-started.html">开始使用</a>
+          <button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="page-hero">
+        <span class="eyebrow">Workflow</span>
+        <h1>从模糊需求到可审核合并</h1>
+        <p class="page-lede">Dev Flow 把任务拆成一组 gate。每个 gate 都有明确职责，避免 AI 跳过决策、混入无关改动或把一次性报告当成长期知识。</p>
+      </section>
+
+      <div class="page-shell">
+        <aside class="toc" aria-label="页面目录">
+          <a href="#daily">日常开发</a>
+          <a href="#audit">审查驱动</a>
+          <a href="#branch">分支闭环</a>
+          <a href="#review">审核输出</a>
+        </aside>
+
+        <div class="page-content">
+          <section id="daily" class="page-section">
+            <h2>日常开发：plan -> branch</h2>
+            <p>用户只提出任务。`dev-plan` 负责进入上下文、识别决策点、创建计划；`dev-branch` 负责实现、验证和审核前收尾。</p>
+            <div class="process-panel">
+              <div class="process-lane">
+                <div class="lane-label">Plan</div>
+                <div class="lane-chain"><span class="node">/dev-plan</span><span class="arrow">-></span><span class="node gate">Orient Gate</span><span class="arrow">-></span><span class="node gate">Decision Gate</span><span class="arrow">-></span><span class="node">Plan file or chat plan</span></div>
+              </div>
+              <div class="process-lane">
+                <div class="lane-label">Build</div>
+                <div class="lane-chain"><span class="node">/dev-branch</span><span class="arrow">-></span><span class="node">Task branch</span><span class="arrow">-></span><span class="node">Implement</span><span class="arrow">-></span><span class="node">Verify</span></div>
+              </div>
+              <div class="process-lane">
+                <div class="lane-label">Close</div>
+                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Review Gate</span><span class="arrow">-></span><span class="node">Approve</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="audit" class="page-section">
+            <h2>审查驱动：audit -> plan -> branch</h2>
+            <p>当任务是“看看哪里不对”时，先审查，不要直接写计划。审查报告只放在 `docs/audits/`，稳定事实由后续 distill gate 同步到长期文档。</p>
+            <div class="steps">
+              <article class="step-item"><div class="card-number">1</div><div><strong>/dev-audit</strong><p>内置 orient gate，定义范围、读取证据、输出 findings。非平凡审查写入 `docs/audits/`。</p></div></article>
+              <article class="step-item"><div class="card-number">2</div><div><strong>/dev-plan</strong><p>把确认后的发现转成单一路线计划。未决产品或数据语义先让用户确认。</p></div></article>
+              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-branch</strong><p>实现修复，在审核前关闭或归档相关 audit/plan，并更新 capability、ADR 或测试。</p></div></article>
+            </div>
+          </section>
+
+          <section id="branch" class="page-section">
+            <h2>分支闭环：同一次任务只做一个可解释 diff</h2>
+            <p>`dev-branch` 不要求工作区绝对干净，但要求改动可归属。相关 plan/audit 可以带入任务分支，无关源码或配置改动必须先停下询问。</p>
+            <div class="card-grid">
+              <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 `CHANGELOG.md`。</p></article>
+              <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理。</p></article>
+              <article class="info-card"><h3>Review Gate</h3><p>展示 `git status` 和 `git diff`，用户明确批准后才提交、合并、删除分支。</p></article>
+            </div>
+          </section>
+
+          <section id="review" class="page-section">
+            <h2>审核输出必须包含什么</h2>
+            <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
+            <div class="terminal-card">
+              <div class="terminal-head"><span>review output shape</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Changes made: ...&#10;Verification: ...&#10;Changelog: updated/not needed - reason&#10;Distill: updated/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
+              <pre><code>Branch: task/YYYYMMDD-short-task-slug
+
+Changes made:
+- ...
+
+Verification:
+- ...
+
+Changelog:
+- Updated CHANGELOG.md under [Unreleased]
+- or Not needed: &lt;reason&gt;
+
+Distill:
+- Updated CONTEXT/capabilities/ADR/context-map/tests/lifecycle artifacts
+- or Not needed: &lt;reason&gt;
+
+Review:
+- git status --short --branch --untracked-files=all
+- git diff
+
+Waiting for approval:
+- Say "审核通过" or "可以合并" to commit, merge, and clean up.</code></pre>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="footer-grid"><div>cuberhyk-dev-flow</div><div class="footer-links"><a href="index.html">首页</a><a href="getting-started.html">快速开始</a><a href="reference.html">参考文档</a></div></div></footer>
+    <div class="toast" data-toast>已复制</div>
+    <script src="assets/site.js"></script>
+  </body>
+</html>
