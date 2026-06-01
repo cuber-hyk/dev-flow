@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Exploratory Review"
+  short_description: "Map projects and verify realistic risks"
+  default_prompt: "Use $dev-exploratory-review to map this project or scope, build a risk map, run focused probes or tests, and report only realistic verified failures."
