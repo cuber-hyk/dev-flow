@@ -1,4 +1,4 @@
 interface:
-  display_name: "Dev Audit"
+  display_name: "Cuberhyk Dev Flow: Dev Audit"
   short_description: "Audit work and persist non-trivial findings"
   default_prompt: "Use $dev-audit to review this feature or workflow, decide whether this needs a docs/audits report, and recommend the next Dev Flow step."

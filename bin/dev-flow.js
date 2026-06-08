@@ -262,6 +262,7 @@ function validatePluginRoot(root = pluginRoot) {
     '.opencode/INSTALL.md',
     ...skillNames.map((name) => `commands/${name}.md`),
     ...skillNames.map((name) => `skills/${name}/SKILL.md`),
+    ...skillNames.map((name) => `skills/${name}/agents/openai.yaml`),
     ...skillNames.map((name) => `skills/${name}/templates/output.md`),
     'templates/AGENTS.dev-flow.md',
     'templates/CHANGELOG.md',
@@ -282,6 +283,32 @@ function validatePluginRoot(root = pluginRoot) {
   const missing = required.filter((item) => !fs.existsSync(path.join(root, item)))
   if (missing.length > 0) {
     throw new Error(`Missing required files:\n${missing.map((item) => `- ${item}`).join('\n')}`)
+  }
+
+  const invalidOpenAiAgents = skillNames.filter((name) => {
+    const text = readText(path.join(root, 'skills', name, 'agents', 'openai.yaml'))
+    return !/^interface:\r?\n/.test(text)
+  })
+
+  if (invalidOpenAiAgents.length > 0) {
+    throw new Error(
+      `Invalid OpenAI agent metadata schema:\n${invalidOpenAiAgents
+        .map((name) => `- skills/${name}/agents/openai.yaml must start with interface:`)
+        .join('\n')}`
+    )
+  }
+
+  const unprefixedOpenAiAgents = skillNames.filter((name) => {
+    const text = readText(path.join(root, 'skills', name, 'agents', 'openai.yaml'))
+    return !/^\s+display_name:\s+"Cuberhyk Dev Flow: /m.test(text)
+  })
+
+  if (unprefixedOpenAiAgents.length > 0) {
+    throw new Error(
+      `OpenAI agent display names must include the plugin prefix:\n${unprefixedOpenAiAgents
+        .map((name) => `- skills/${name}/agents/openai.yaml`)
+        .join('\n')}`
+    )
   }
 }
 

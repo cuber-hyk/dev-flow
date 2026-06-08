@@ -1,3 +1,4 @@
-display_name: Dev Changelog
-short_description: Maintain human-readable release notes
-default_prompt: "Use $dev-changelog to decide whether a completed change needs CHANGELOG.md, update Unreleased when needed, or prepare a release section."
+interface:
+  display_name: "Cuberhyk Dev Flow: Dev Changelog"
+  short_description: "Maintain human-readable release notes"
+  default_prompt: "Use $dev-changelog to decide whether a completed change needs CHANGELOG.md, update Unreleased when needed, or prepare a release section."

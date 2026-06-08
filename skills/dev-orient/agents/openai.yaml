@@ -1,4 +1,4 @@
 interface:
-  display_name: "Dev Orient"
+  display_name: "Cuberhyk Dev Flow: Dev Orient"
   short_description: "Enter repo context and route artifacts"
   default_prompt: "Use $dev-orient to enter this repository context, identify relevant docs/code, and route likely task artifacts."
