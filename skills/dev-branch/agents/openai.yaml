@@ -1,4 +1,4 @@
 interface:
   display_name: "Cuberhyk Dev Flow: Dev Branch"
   short_description: "Run task work in a reviewed Git branch"
-  default_prompt: "Use $dev-branch to create an isolated task branch, implement the task, run the changelog gate, show status and diff, and wait for approval before commit and merge."
+  default_prompt: "Use $dev-branch to create an isolated task branch, implement and verify the task, run lifecycle gates and an independent subagent-or-manual review, then show status and diff and wait for approval before commit and merge."

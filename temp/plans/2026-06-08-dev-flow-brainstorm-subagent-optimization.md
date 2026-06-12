@@ -1,12 +1,22 @@
 ---
 artifact_type: plan
-status: draft
+status: active
 created: 2026-06-08
-updated: 2026-06-08
+updated: 2026-06-12
 owner: codex
 ---
 
 # Dev Flow Brainstorm And Subagent Optimization Plan
+
+## Implementation Progress
+
+| Phase | Status | Result |
+|---|---|---|
+| P0 | completed | Added `dev-brainstorm` and routed fuzzy ideas before planning. |
+| P1 | completed | Added the mandatory independent subagent-or-manual review gate inside `dev-branch`, including output fields, validation, docs, and repeatable contract scenario tests. |
+| P2 | deferred | Extract only after P1 proves reusable outside `dev-branch`. |
+| P3 | deferred | Requires reliable task-level subagent execution contracts. |
+| P4 | deferred | Outside the current Dev Flow core. |
 
 ## Goal
 

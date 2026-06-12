@@ -30,6 +30,8 @@ Dev Branch does:
   closure, or documentation routing changed.
 - Run the check gate before review when changelog, distill, documentation routing, lifecycle
   artifacts, capability docs, ADRs, context-map, or templates changed.
+- Run an independent review pass in subagent mode when a focused reviewer is available and the
+  review can be delegated without shared writes; otherwise run the same gate in manual mode.
 - Show `git status --short --branch` and `git diff` before any commit.
 - Wait for explicit user approval before commit, merge, or cleanup.
 - Commit, merge back to main, and delete the task branch only after approval.
@@ -41,6 +43,7 @@ Dev Branch does not:
 - Hide unresolved product, data, state, cleanup, or architecture decisions.
 - Mix unrelated source/config/test/generated changes into the task branch.
 - Commit, merge, delete a branch, or push before the review gate passes.
+- Delegate implementation, fixes, commits, merges, cleanup, or push to the review subagent.
 - Run `git push` unless the user separately asks and confirms push.
 - Write noisy changelog entries for tiny internal-only changes.
 - Leave durable knowledge distillation for a separate post-merge change when it belongs to the same
@@ -179,13 +182,47 @@ If none can be detected reliably, ask the user.
    - If no docs or lifecycle artifacts changed, report `Check gate: not needed` with a concrete reason.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 
-11. Review gate:
+11. Independent review gate:
+   - This gate is mandatory. Choose exactly one mode:
+     - `subagent`: use when the harness exposes subagents, the implementation is non-trivial or
+       benefits from independent review, and the reviewer can work read-only without shared writes.
+     - `manual`: use when subagents are unavailable, the task is too small to justify dispatch, or
+       independent read-only review cannot be safely delegated.
+   - Do not dispatch a subagent merely because one is available. Dispatch only when all are true:
+     - the review scope and pass/fail criteria are explicit;
+     - the reviewer does not need to modify files or make unresolved product/architecture decisions;
+     - the main agent can verify every finding against the repository, diff, and command output;
+     - dispatch provides meaningful independence or context relief.
+   - Provide a subagent reviewer with:
+     - task goal and confirmed route;
+     - active plan or audit source when applicable;
+     - `git status --short --branch --untracked-files=all`;
+     - diff summary, full diff, or relevant commit range;
+     - verification commands and observed results;
+     - the required review output fields below.
+   - The review pass must report:
+     - mode: `subagent` or `manual`;
+     - plan compliance: `pass`, `fail`, or `not applicable`;
+     - audit coverage: `pass`, `fail`, or `not applicable`;
+     - related changes only: `pass` or `fail`;
+     - verification evidence: `pass` or `fail`;
+     - changelog, distill, and check gate results with reasons;
+     - blocking issues.
+   - The main agent owns the result:
+     - independently verify subagent findings and inspect the final diff;
+     - reject unsupported findings;
+     - fix or route confirmed blocking issues, then rerun the review gate;
+     - never treat a subagent statement as verification evidence by itself.
+   - Stop before approval when any required result is `fail` or blocking issues remain.
+
+12. Approval review output:
    - Run `git status --short --branch --untracked-files=all`.
    - Run `git diff`.
-   - Summarize changed files, verification, changelog gate, distill gate, and check gate.
+   - Summarize changed files, verification, changelog gate, distill gate, check gate, and the
+     independent review gate.
    - Stop and wait for explicit user approval.
 
-12. After explicit approval only:
+13. After explicit approval only:
    - Stage only task-related files.
    - Commit with a concise message.
    - Switch back to the main branch.
@@ -194,7 +231,7 @@ If none can be detected reliably, ask the user.
    - Delete the task branch.
    - Do not push unless the user separately asks and confirms.
 
-13. Close:
+14. Close:
    - Recommend the `/dev-check` skill after documentation/lifecycle changes.
 
 ## Approval Language

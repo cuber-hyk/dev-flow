@@ -13,7 +13,7 @@
   "interface": {
     "displayName": "cuberhyk-dev-flow",
     "shortDescription": "Init, check, orient, brainstorm, plan, audit, exploratory review, branch, changelog, and distill coding work.",
-    "longDescription": "cuberhyk-dev-flow provides eleven focused Codex skills. dev-brainstorm refines fuzzy ideas before planning, dev-design-system maintains durable UI rules and semantic reuse, and dev-plan/dev-audit include low-noise orientation gates. dev-branch executes work inside a reviewed Git branch and runs design-system, changelog, distill, and check gates before approval.",
+    "longDescription": "cuberhyk-dev-flow provides eleven focused Codex skills. dev-brainstorm refines fuzzy ideas before planning, dev-design-system maintains durable UI rules and semantic reuse, and dev-plan/dev-audit include low-noise orientation gates. dev-branch executes work inside a reviewed Git branch and runs lifecycle gates plus an independent subagent-or-manual review before approval.",
     "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
@@ -25,7 +25,7 @@
       "Use dev-plan to enter relevant context, identify decision points, and define the next task.",
       "Use dev-audit to enter relevant context, review bounded features or workflows, and persist non-trivial findings.",
       "Use dev-exploratory-review to map a project or scope, build a risk map, run focused probes/tests, and report realistic failures.",
-      "Use dev-branch to isolate implementation work, run changelog, distill, and check gates, and wait for review before commit and merge.",
+      "Use dev-branch to isolate implementation work, run lifecycle gates and an independent subagent-or-manual review, and wait for approval before commit and merge.",
       "Use dev-orient, dev-changelog, and dev-distill standalone only when a context-only, release-note-only, or knowledge-only task needs them."
     ],
     "websiteURL": "https://github.com/cuber-hyk/dev-flow",

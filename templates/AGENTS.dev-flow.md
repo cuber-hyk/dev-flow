@@ -9,12 +9,12 @@ For fuzzy ideas or unclear product/workflow changes:
 
 1. `dev-brainstorm`: clarify goals, non-goals, approaches, and user-owned decisions before planning.
 2. `dev-plan`: turn the confirmed route into a verifiable plan.
-3. `dev-branch`: implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
+3. `dev-branch`: implement in a task branch, run lifecycle gates and an independent subagent-or-manual review, then wait for approval before commit/merge.
 
 For clear non-trivial tasks:
 
 1. `dev-plan`: enter relevant repository context, identify unresolved decisions, and create a verifiable plan.
-2. `dev-branch`: implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
+2. `dev-branch`: implement in a task branch, run lifecycle gates and an independent subagent-or-manual review, then wait for approval before commit/merge.
 
 Audit-driven flow:
 
@@ -74,6 +74,7 @@ Branch execution rules:
 - Before commit or merge, show `git status --short --branch --untracked-files=all` and `git diff`, then wait for explicit approval.
 - Run the changelog gate before review; update `CHANGELOG.md` only when the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
 - Run changelog, distill, and check gates before review. Update durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it. If no durable update is needed, report concrete "not needed" reasons. If any gate is blocked, stop before commit or merge approval.
+- Run the independent review gate before approval. Use a focused read-only subagent only when available and useful; otherwise run the same review manually. The main agent must verify findings and remains responsible for the final diff and evidence.
 - Never push automatically.
 
 Changelog rules:

@@ -24,7 +24,9 @@ Required behavior:
 7. Run the distill gate before review: update durable repository knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it.
 8. Run the check gate before review when changelog, distill, docs routing, lifecycle artifacts, ADRs, context-map, capability docs, templates, or validation rules changed.
 9. Stop before review if changelog, distill, or check is blocked.
-10. Show `git status --short --branch --untracked-files=all` and `git diff`.
-11. Wait for explicit approval before commit, merge, or branch cleanup.
-12. Never push automatically.
-13. Follow the skill's `templates/output.md` final response shape.
+10. Run the mandatory independent review gate in subagent mode when a focused read-only reviewer is available and useful; otherwise run the same gate in manual mode.
+11. Independently verify subagent findings and stop if any review blocker remains.
+12. Show `git status --short --branch --untracked-files=all` and `git diff`.
+13. Wait for explicit approval before commit, merge, or branch cleanup.
+14. Never push automatically.
+15. Follow the skill's `templates/output.md` final response shape.

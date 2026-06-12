@@ -313,6 +313,28 @@ function validatePluginRoot(root = pluginRoot) {
         .join('\n')}`
     )
   }
+
+  const devBranchOutput = readText(path.join(root, 'skills', 'dev-branch', 'templates', 'output.md'))
+  const requiredReviewFields = [
+    'Subagent review gate:',
+    'Mode: subagent/manual',
+    'Plan compliance:',
+    'Audit coverage:',
+    'Related changes only:',
+    'Verification evidence:',
+    'Changelog gate:',
+    'Distill gate:',
+    'Check gate:',
+    'Blocking issues:',
+  ]
+  const missingReviewFields = requiredReviewFields.filter((field) => !devBranchOutput.includes(field))
+  if (missingReviewFields.length > 0) {
+    throw new Error(
+      `Dev Branch output template is missing independent review fields:\n${missingReviewFields
+        .map((field) => `- ${field}`)
+        .join('\n')}`
+    )
+  }
 }
 
 function ensureAgents(targetRoot, vars, created) {

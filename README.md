@@ -87,8 +87,8 @@ For repository health:
 
 `dev-orient`, `dev-changelog`, and `dev-distill` still exist as standalone skills, but normal users
 do not need to remember them for every task. `dev-brainstorm`, `dev-plan`, `dev-audit`, and
-`dev-exploratory-review` include built-in orientation. `dev-branch` includes changelog, distill,
-and check gates before review.
+`dev-exploratory-review` include built-in orientation. `dev-branch` includes lifecycle gates and
+an independent subagent-or-manual review before approval.
 
 ## Flow Diagram
 
@@ -129,8 +129,9 @@ flowchart TD
   DN --> K
   K --> KP["Validate lifecycle docs if changed"]
   K --> KN["Report not needed if no docs changed"]
-  KP --> R["Review Gate: status + diff"]
-  KN --> R
+  KP --> IR["Independent Review: subagent or manual"]
+  KN --> IR
+  IR --> R["Approval Review: status + diff"]
   R --> M["User approval -> commit, merge, cleanup"]
 ```
 
@@ -146,7 +147,7 @@ flowchart TD
 | `dev-plan` | Run orient gate, check decision readiness, then create a verifiable plan. | Implement, audit, close artifacts, or silently decide product/business choices. | `dev-branch` |
 | `dev-audit` | Run orient gate, produce evidence-based findings for bounded audits, and persist non-trivial audits. | Implement fixes, discover unknown risks across a project, or update capability facts directly. | `dev-plan` or `dev-branch` |
 | `dev-exploratory-review` | Map a project or bounded scope, build a risk map, run focused probes/tests, and report only realistic failures. | Implement fixes or comment on style, naming, formatting, or subjective preferences. | `dev-plan` or `dev-branch` |
-| `dev-branch` | Implement inside an isolated Git branch with changelog, distill, check, and review gates before commit. | Mix unrelated changes, skip review, push automatically, or defer same-task distillation. | `dev-check` |
+| `dev-branch` | Implement inside an isolated Git branch with lifecycle gates and an independent subagent-or-manual review before commit. | Mix unrelated changes, skip review, push automatically, or defer same-task distillation. | `dev-check` |
 | `dev-changelog` | Maintain `CHANGELOG.md` for notable user/operator/release changes. | Replace git history, ADRs, capability docs, task plans, or log tiny internal changes. | `dev-branch` review gate |
 | `dev-distill` | Move durable knowledge to the right long-lived place and close plans/audits. | Re-plan, re-audit, or implement. | `dev-check` |
 
@@ -161,7 +162,8 @@ flowchart TD
 | Changelog Gate | `dev-branch`, or standalone `dev-changelog` | Decide whether the change is notable for users, operators, public APIs, data, security, install, config, compatibility, or release notes. | Updated `CHANGELOG.md` or a concrete "not needed" reason. |
 | Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
 | Check Gate | `dev-branch`, or standalone `dev-check` | Validate lifecycle routing after docs or process artifacts changed. | Errors/warnings/recommendations, or a concrete "not needed" reason. |
-| Review Gate | `dev-branch` | Show status and diff before any commit, merge, branch delete, or push. | User approval request. |
+| Independent Review Gate | `dev-branch` | Check plan compliance, audit coverage, related-only changes, verification evidence, and lifecycle gates using a focused read-only subagent when useful or the same manual review otherwise. | Pass/fail/not-applicable results and blockers verified by the main agent. |
+| Approval Review Gate | `dev-branch` | Show status and diff before any commit, merge, branch delete, or push. | User approval request. |
 
 ## Output Templates
 
@@ -178,8 +180,8 @@ and the other commands produce consistent responses across agent harnesses.
 Use the templates as the source of truth for response structure:
 
 - `dev-brainstorm` has ready, blocked-by-decisions, and continue-brainstorming shapes.
-- `dev-branch` has separate `Before Approval` and `After Merge` sections, and reports changelog,
-  distill, and check gate results before approval.
+- `dev-branch` has separate `Before Approval` and `After Merge` sections, and reports lifecycle
+  gates plus an independent subagent-or-manual review before approval.
 - `dev-plan` has separate ready and decision-blocked shapes.
 - `dev-changelog` always reports updated, not needed, release prepared, or blocked.
 - `dev-distill` always reports durable updates and plan/audit/ADR closeout.
@@ -253,6 +255,7 @@ Review output must include:
 - changelog gate result;
 - distill gate result;
 - check gate result;
+- independent review mode, compliance/coverage results, verification evidence, and blockers;
 - status and diff summary;
 - explicit approval request.
 
@@ -300,7 +303,7 @@ Changelog: not needed - internal refactor only, no user-visible behavior change
 
 ## Distill Gate
 
-`dev-branch` runs changelog, distill, and check gates before the review gate. If any gate is blocked,
+`dev-branch` runs changelog, distill, check, and independent review gates before the approval review. If any gate is blocked,
 it must stop before commit or merge approval. This keeps the code change, docs update, ADR decision,
 tests, changelog entry, artifact closeout, and validation result in one reviewed diff.
 
@@ -642,7 +645,7 @@ cuberhyk-dev-flow is intentionally small. It is not a full project-management sy
 repeatable lifecycle loop for agents:
 
 ```text
-initialize memory -> validate routing -> plan/audit with orient gate -> branch -> changelog gate -> distill gate -> check gate -> review gate
+initialize memory -> validate routing -> plan/audit with orient gate -> branch -> changelog gate -> distill gate -> check gate -> independent review -> approval review
 ```
 
 Its job is to make future AI sessions cheaper, cleaner, and less likely to treat old process

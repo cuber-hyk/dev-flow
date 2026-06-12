@@ -62,7 +62,7 @@
                   <tr><td><code>dev-plan</code></td><td>内置 orient gate，识别决策点，制定计划。</td><td>实现或归档知识。</td></tr>
                   <tr><td><code>dev-audit</code></td><td>内置 orient gate，输出证据化发现。</td><td>修复问题。</td></tr>
                   <tr><td><code>dev-exploratory-review</code></td><td>开放式风险发现，建立项目地图与风险地图，只报告真实失败路径。</td><td>实现修复或评论风格偏好。</td></tr>
-                  <tr><td><code>dev-branch</code></td><td>分支实现、验证、changelog/distill/check/review gates。</td><td>静默混入无关改动或自动 push。</td></tr>
+                  <tr><td><code>dev-branch</code></td><td>分支实现、验证、生命周期 gates、独立评审和审批评审。</td><td>静默混入无关改动、跳过评审或自动 push。</td></tr>
                   <tr><td><code>dev-changelog</code></td><td>维护面向人的发布说明。</td><td>记录每个 commit 或内部微调。</td></tr>
                   <tr><td><code>dev-distill</code></td><td>沉淀长期知识并关闭过程产物。</td><td>重新规划、重新审查或实现。</td></tr>
                 </tbody>
@@ -102,7 +102,7 @@
                   <tr><td><code>dev-plan</code></td><td><code>skills/dev-plan/templates/output.md</code></td><td>Ready-to-plan shape plus blocked-by-decisions shape.</td></tr>
                   <tr><td><code>dev-audit</code></td><td><code>skills/dev-audit/templates/output.md</code></td><td>Scope, findings with ID/status, evidence, verification, routing.</td></tr>
                   <tr><td><code>dev-exploratory-review</code></td><td><code>skills/dev-exploratory-review/templates/output.md</code></td><td>Scope, project map, risk map, passes, traceable findings, probes.</td></tr>
-                  <tr><td><code>dev-branch</code></td><td><code>skills/dev-branch/templates/output.md</code></td><td>Before Approval and After Merge shapes, including changelog, distill, and check gates.</td></tr>
+                  <tr><td><code>dev-branch</code></td><td><code>skills/dev-branch/templates/output.md</code></td><td>Before Approval and After Merge shapes, including lifecycle gates and independent subagent-or-manual review.</td></tr>
                   <tr><td><code>dev-changelog</code></td><td><code>skills/dev-changelog/templates/output.md</code></td><td>Updated, not needed, release prepared, or blocked.</td></tr>
                   <tr><td><code>dev-distill</code></td><td><code>skills/dev-distill/templates/output.md</code></td><td>Durable updates plus plan, audit closeout gate, and ADR closeout.</td></tr>
                 </tbody>

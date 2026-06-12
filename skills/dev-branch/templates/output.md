@@ -29,6 +29,17 @@ Check gate:
 - or not needed: <concrete reason>
 - or blocked: <reason>
 
+Subagent review gate:
+- Mode: subagent/manual
+- Plan compliance: pass/fail/not applicable
+- Audit coverage: pass/fail/not applicable
+- Related changes only: pass/fail
+- Verification evidence: pass/fail
+- Changelog gate: needed/not needed - <reason>
+- Distill gate: needed/not needed - <reason>
+- Check gate: needed/not needed - <reason>
+- Blocking issues: none/<issues>
+
 Review:
 - git status --short --branch --untracked-files=all: <summary>
 - git diff: shown above/summarized

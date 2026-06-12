@@ -28,7 +28,8 @@
     "validate": "node ./bin/dev-flow.js validate",
     "init-project": "node ./bin/dev-flow.js init-project",
     "init-design-system": "node ./bin/dev-flow.js init-design-system",
-    "validate-docs": "node ./bin/dev-flow.js validate-docs"
+    "validate-docs": "node ./bin/dev-flow.js validate-docs",
+    "test:p1-review-gate": "node ./tests/dev-branch-review-gate.test.js"
   },
   "keywords": [
     "ai-agent",

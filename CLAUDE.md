@@ -8,12 +8,12 @@ For fuzzy ideas or unclear product/workflow changes:
 
 1. `cuberhyk-dev-flow:dev-brainstorm` - Clarify goals, non-goals, approaches, and user-owned decisions before planning.
 2. `cuberhyk-dev-flow:dev-plan` - Turn the confirmed route into a verifiable plan.
-3. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
+3. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run lifecycle gates and an independent subagent-or-manual review, then wait for approval before commit/merge.
 
 For clear non-trivial development, prefer the short user flow:
 
 1. `cuberhyk-dev-flow:dev-plan` - Enter relevant context, identify decision points, and create a verifiable plan.
-2. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
+2. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run lifecycle gates and an independent subagent-or-manual review, then wait for approval before commit/merge.
 
 For project-level UI design systems:
 
@@ -63,6 +63,7 @@ Persistent artifacts:
 - `dev-branch` must show `git status --short --branch --untracked-files=all` and `git diff`, then wait for explicit approval before commit, merge, or cleanup.
 - `dev-branch` must run the changelog gate before review. It updates `CHANGELOG.md` through `dev-changelog` only for notable user/operator/release changes.
 - `dev-branch` must run changelog, distill, and check gates before review. It updates durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise it reports concrete "not needed" reasons. If any gate is blocked, it stops before commit or merge approval.
+- `dev-branch` must run an independent review gate before approval. Use a focused read-only subagent only when available and useful; otherwise run the same review manually. The main agent verifies all findings and owns the final diff and evidence.
 - `dev-changelog` writes to `## [Unreleased]` using `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, and `Security`; tiny internal-only changes should report `Changelog: not needed`.
 
 Plan readiness:

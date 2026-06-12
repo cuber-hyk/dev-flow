@@ -59,7 +59,7 @@
               </div>
               <div class="process-lane">
                 <div class="lane-label">Close</div>
-                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Check Gate</span><span class="arrow">-></span><span class="node gate">Review Gate</span><span class="arrow">-></span><span class="node">Approve</span></div>
+                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Check Gate</span><span class="arrow">-></span><span class="node gate">Independent Review</span><span class="arrow">-></span><span class="node gate">Approval Review</span></div>
               </div>
             </div>
           </section>
@@ -75,7 +75,7 @@
                   <tr><td><code>/dev-brainstorm</code></td><td>低噪声进入上下文、澄清目标/非目标、比较方案、确认用户决策。</td><td>confirmed route、decision points、alternatives、下一技能。</td><td>目标和关键决策已确认，或明确停下提问。</td></tr>
                   <tr><td><code>/dev-plan</code></td><td>Orient Gate、Decision Gate、范围确认、步骤和验证设计。</td><td>目标、范围、事实源、步骤表、验收标准、plan 路径或 blocked 原因。</td><td>没有未决决策，步骤都有验证方式。</td></tr>
                   <tr><td><code>/dev-audit</code></td><td>Audit scope、证据读取、finding 编号、严重度和状态判定。</td><td>带 ID/Status/Evidence/Owner Plan/Verification 的 findings，必要时写入 <code>docs/audits/</code>。</td><td>每个 finding 有证据和后续路由。</td></tr>
-                  <tr><td><code>/dev-branch</code></td><td>创建分支、实现、验证、Changelog Gate、Distill Gate、Check Gate、Review Gate。</td><td>变更摘要、验证结果、三个 gate 结果、git status/diff、等待审批说明。</td><td>所有必要 gate 通过或明确不需要。</td></tr>
+                  <tr><td><code>/dev-branch</code></td><td>创建分支、实现、验证、生命周期 Gate、独立评审、审批评审。</td><td>变更摘要、验证结果、gate 结果、subagent/manual review、git status/diff、等待审批说明。</td><td>所有必要 gate 通过或明确不需要，且不存在评审 blocker。</td></tr>
                   <tr><td><code>/dev-distill</code></td><td>知识分类、ADR Gate、plan closeout、audit closeout、验证。</td><td>长期文档更新、plan/audit 生命周期结果、ADR 判断、下一步 check。</td><td>未关闭产物保持 active；可关闭产物有明确原因。</td></tr>
                   <tr><td><code>/dev-check</code></td><td>检查模板、文档路由、状态字段、归档目录和 git 可见性。</td><td>errors、warnings、recommendations、validation result。</td><td>无 error；warning 有明确处理或接受理由。</td></tr>
                 </tbody>
@@ -100,7 +100,8 @@
               <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 <code>CHANGELOG.md</code>。</p></article>
               <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理；部分修复只能更新 finding 状态。</p></article>
               <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG、输出模板和路由状态。</p></article>
-              <article class="info-card"><h3>Review Gate</h3><p>展示 <code>git status</code> 和 <code>git diff</code>，用户明确批准后才提交、合并、删除分支。</p></article>
+              <article class="info-card"><h3>Independent Review Gate</h3><p>有价值且可安全委派时使用只读子 Agent，否则执行同形状的 manual review；主 Agent 复核 finding 并负责最终证据。</p></article>
+              <article class="info-card"><h3>Approval Review Gate</h3><p>展示 <code>git status</code> 和 <code>git diff</code>，用户明确批准后才提交、合并、删除分支。</p></article>
             </div>
           </section>
 
@@ -109,7 +110,7 @@
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
             <p>标准分支输出模板位于 <code>skills/dev-branch/templates/output.md</code>。提交或合并审批前使用 <code>Before Approval</code> 形态；只有在用户批准合并且清理完成后，才使用 <code>After Merge</code> 形态。</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
+              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Subagent review gate: subagent/manual, compliance, coverage, evidence, blockers&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
               <pre><code>Branch: task/YYYYMMDD-short-task-slug
 
 Existing changes before branch:
@@ -132,6 +133,14 @@ Distill gate:
 Check gate:
 - Passed: &lt;command/result&gt;
 - or Not needed: &lt;reason&gt;
+
+Subagent review gate:
+- Mode: subagent/manual
+- Plan compliance: pass/fail/not applicable
+- Audit coverage: pass/fail/not applicable
+- Related changes only: pass/fail
+- Verification evidence: pass/fail
+- Blocking issues: none/&lt;issues&gt;
 
 Review:
 - git status --short --branch --untracked-files=all
