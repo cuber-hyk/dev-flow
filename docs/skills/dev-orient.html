@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-orient - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-orient</h1><p class="page-lede">低噪声进入仓库上下文。它帮助 Agent 找到事实源、代码入口和文档目的地，但不制定计划、不审查、不实现。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#output">输出</a><a href="#artifacts">产物</a><a href="#next">下一步</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>内部流程</h2><p>先读取 AGENTS、CONTEXT、context-map 和相关 capability 文档，再按任务关键词定位代码入口。只读与当前任务有关的文件，避免全仓库漫游。</p></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>输出包含 loaded context、relevant entry points、fact sources、artifact destinations、dirty worktree visibility 和 recommended next skill。</p></section>
+        <section id="artifacts" class="page-section"><h2>技能产物</h2><p>通常只在对话中输出上下文地图，不创建持久文档。若发现缺失结构，应建议 <code>/dev-init</code> skill；若发现生命周期问题，应建议 <code>/dev-check</code> skill。</p></section>
+        <section id="next" class="page-section"><h2>后续路由</h2><p>目标模糊时进入 <code>/dev-brainstorm</code> skill；目标明确但非平凡时进入 <code>/dev-plan</code> skill；需要发现问题时进入 <code>/dev-audit</code> skill；已有清晰计划时进入 <code>/dev-branch</code> skill。</p></section>
+      </div></div>
+    </main>
+    <footer class="site-footer"><div class="footer-grid"><div>dev-orient</div><div class="footer-links"><a href="dev-check.html">上一页</a><a href="dev-brainstorm.html">下一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

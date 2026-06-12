@@ -15,6 +15,8 @@ const skillNames = [
   'dev-init',
   'dev-check',
   'dev-orient',
+  'dev-brainstorm',
+  'dev-design-system',
   'dev-plan',
   'dev-audit',
   'dev-exploratory-review',
@@ -25,14 +27,12 @@ const skillNames = [
 const allowedFindingStatuses = [
   'open',
   'planned',
-  'in_progress',
-  'fixed',
+  'resolved',
   'verified',
-  'accepted_risk',
-  'wont_fix',
-  'not_reproducible',
 ]
-const unresolvedFindingStatuses = ['open', 'planned', 'in_progress', 'fixed', 'not_verified']
+const allowedPlanStepStatuses = ['todo', 'done', 'blocked']
+const resolvedNoVerificationCloseouts = ['accepted_risk', 'wont_fix', 'not_reproducible']
+const unresolvedFindingStatuses = ['open', 'planned', 'not_verified']
 const agentSectionStart = '<!-- cuberhyk-dev-flow:start -->'
 const agentSectionEnd = '<!-- cuberhyk-dev-flow:end -->'
 
@@ -43,6 +43,7 @@ Usage:
   npx cuberhyk-dev-flow install
   npx cuberhyk-dev-flow validate
   npx cuberhyk-dev-flow init-project [project-dir]
+  npx cuberhyk-dev-flow init-design-system [project-dir]
   npx cuberhyk-dev-flow validate-docs [project-dir]
   npx cuberhyk-dev-flow paths
 
@@ -240,7 +241,7 @@ function installClaudeMarketplace(pluginDir) {
       {
         name: pluginName,
         description:
-          'Init, check, orient, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses',
+          'Init, check, orient, brainstorm, design-system, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses',
         version: readJson(path.join(pluginDir, 'package.json')).version,
         source: './plugins/cuberhyk-dev-flow',
         author: {
@@ -267,6 +268,8 @@ function validatePluginRoot(root = pluginRoot) {
     'templates/AGENTS.dev-flow.md',
     'templates/CHANGELOG.md',
     'templates/CONTEXT.md',
+    'templates/DESIGN.md',
+    'templates/design-tokens.json',
     'templates/docs/ai/context-map.md',
     'templates/docs/capabilities/_template.md',
     'templates/docs/plans/_template.md',
@@ -417,6 +420,27 @@ function initProject() {
   }
 }
 
+function initDesignSystem() {
+  const targetRoot = path.resolve(process.argv[3] || process.cwd())
+  const created = []
+  const vars = {
+    DATE: today(),
+    PROJECT_NAME: path.basename(targetRoot),
+  }
+
+  writeTemplateIfMissing('DESIGN.md', path.join(targetRoot, 'DESIGN.md'), vars, created)
+  writeTemplateIfMissing('design-tokens.json', path.join(targetRoot, 'design-tokens.json'), vars, created)
+
+  console.log(`cuberhyk-dev-flow design system initialized: ${targetRoot}`)
+  if (created.length === 0) {
+    console.log('No files were created; DESIGN.md and design-tokens.json already exist.')
+    return
+  }
+  console.log('Created:')
+  for (const item of created) console.log(`- ${path.relative(targetRoot, item)}`)
+  console.log('Populate and review confirmed rules and token values before treating the contract as authoritative.')
+}
+
 function hasHeading(text, heading) {
   return new RegExp(`^##\\s+${heading}\\s*$`, 'im').test(text)
 }
@@ -451,20 +475,40 @@ function auditFindingTables(text) {
   )
 }
 
-function rowStatus(table, row) {
-  const statusIndex = table.headers.indexOf('status')
-  if (statusIndex < 0) return ''
+function planStepTables(text) {
+  return extractMarkdownTables(text).filter((table) =>
+    table.headers.includes('status') && table.headers.some((header) => ['step', 'task', 'verification'].includes(header))
+  )
+}
+
+function rowCell(table, row, header) {
+  const index = table.headers.indexOf(header)
+  if (index < 0) return ''
   const cells = row
     .replace(/^\s*\|/, '')
     .replace(/\|\s*$/, '')
     .split('|')
-    .map((item) => item.trim().toLowerCase())
-  return cells[statusIndex] || ''
+    .map((item) => item.trim())
+  return cells[index] || ''
+}
+
+function rowStatus(table, row) {
+  return rowCell(table, row, 'status').toLowerCase()
+}
+
+function rowCloseout(table, row) {
+  return rowCell(table, row, 'closeout').toLowerCase()
 }
 
 function auditHasUnresolvedSignals(text) {
   const tableHasUnresolvedStatus = auditFindingTables(text).some((table) =>
-    table.rows.some((row) => unresolvedFindingStatuses.includes(rowStatus(table, row)))
+    table.rows.some((row) => {
+      const status = rowStatus(table, row)
+      if (unresolvedFindingStatuses.includes(status)) return true
+      if (status !== 'resolved') return false
+      const closeout = rowCloseout(table, row)
+      return !resolvedNoVerificationCloseouts.some((reason) => closeout.includes(reason))
+    })
   )
   const legacyUnresolvedSignals =
     /(^|\n)#{2,4}\s*(Critical|High)\b|待进一步调查|推荐下一步|Recommended next step|Next step|Not verified|Open questions/i.test(
@@ -494,6 +538,43 @@ function validateDocs() {
 
   for (const item of recommended) {
     if (!fs.existsSync(path.join(targetRoot, item))) warnings.push(`Missing recommended path: ${item}`)
+  }
+
+  const designPath = path.join(targetRoot, 'DESIGN.md')
+  const tokenPath = path.join(targetRoot, 'design-tokens.json')
+  if (fs.existsSync(designPath) || fs.existsSync(tokenPath)) {
+    if (!fs.existsSync(designPath)) warnings.push('design-tokens.json exists but DESIGN.md is missing.')
+    if (!fs.existsSync(tokenPath)) warnings.push('DESIGN.md exists but design-tokens.json is missing.')
+  }
+
+  if (fs.existsSync(designPath)) {
+    const design = readText(designPath)
+    for (const heading of ['Authority And Scope', 'Sources', 'Foundations', 'Component Rules', 'Known Gaps']) {
+      if (!hasHeading(design, heading)) warnings.push(`DESIGN.md should contain ## ${heading}.`)
+    }
+    const references = [...design.matchAll(/`([^`]+\.(?:tsx?|jsx?|css|scss|json|stories\.[A-Za-z0-9]+))`/g)]
+      .map((match) => match[1])
+      .filter((ref) => !ref.includes('*') && !ref.includes('Add project-specific'))
+    for (const ref of references) {
+      if (!fs.existsSync(path.join(targetRoot, ref))) warnings.push(`DESIGN.md references missing source: ${ref}`)
+    }
+  }
+
+  if (fs.existsSync(tokenPath)) {
+    try {
+      const tokens = readJson(tokenPath)
+      if (!tokens || Array.isArray(tokens) || typeof tokens !== 'object') {
+        warnings.push('design-tokens.json should contain a token object.')
+      }
+      const tokenText = readText(tokenPath)
+      const hasType = /"\$type"\s*:/.test(tokenText)
+      const hasValue = /"\$value"\s*:/.test(tokenText)
+      if (hasType !== hasValue) {
+        warnings.push('design-tokens.json should use $type and $value token fields.')
+      }
+    } catch (error) {
+      errors.push(`design-tokens.json is invalid JSON: ${error.message}`)
+    }
   }
 
   if (isGitRepository(targetRoot)) {
@@ -591,6 +672,20 @@ function validateDocs() {
             `Plan may contain unresolved decision points; keep decision requests in conversation and write only confirmed execution routes: ${rel}`
           )
         }
+        const stepTables = planStepTables(text)
+        if (hasHeading(text, 'Steps And Verification') && stepTables.length === 0) {
+          warnings.push(`Plan Steps And Verification section should contain a status table: ${rel}`)
+        }
+        for (const table of stepTables) {
+          for (const row of table.rows) {
+            const status = rowStatus(table, row)
+            if (status && !allowedPlanStepStatuses.includes(status)) {
+              warnings.push(
+                `Plan step has invalid status "${status}" in ${rel}; expected one of ${allowedPlanStepStatuses.join(', ')}`
+              )
+            }
+          }
+        }
       }
 
       if (dir === 'docs/audits') {
@@ -624,6 +719,9 @@ function validateDocs() {
               warnings.push(
                 `Audit finding has invalid status "${status}" in ${rel}; expected one of ${allowedFindingStatuses.join(', ')}`
               )
+            }
+            if (status === 'resolved' && !rowCloseout(table, row)) {
+              warnings.push(`Audit finding with status "resolved" should include a Closeout reason: ${rel}`)
             }
           }
         }
@@ -785,6 +883,7 @@ const command = process.argv[2] || 'install'
 try {
   if (command === 'install') install()
   else if (command === 'init-project') initProject()
+  else if (command === 'init-design-system') initDesignSystem()
   else if (command === 'validate-docs') validateDocs()
   else if (command === 'validate') {
     validatePluginRoot(pluginRoot)

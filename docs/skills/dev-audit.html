@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-audit - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container"><section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-audit</h1><p class="page-lede">对明确范围做证据化审查，输出可追踪 findings。它负责发现和路由，不负责修复。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#output">输出</a><a href="#state">Finding 状态</a><a href="#artifacts">产物</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>内部流程</h2><p>先确认审查范围和问题，再低噪音读取事实源，最后按严重程度输出 findings。小审查可留在对话；跨模块、正确性、安全、数据或后续需要修复的审查必须持久化。</p></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>持久审查必须使用 audit 模板，包含 frontmatter、Scope、Fact Sources、Findings、Verification、Git Visibility、Closeout。Finding 表必须包含 <code>ID</code>、<code>Severity</code>、<code>Status</code>、<code>Evidence</code>、<code>Owner Plan</code>、<code>Branch/Commit</code>、<code>Verification</code>、<code>Closeout</code>。</p></section>
+        <section id="state" class="page-section"><h2>Finding 状态</h2><p>只使用 <code>open</code>、<code>planned</code>、<code>resolved</code>、<code>verified</code>。<code>resolved</code> 的原因写入 <code>Closeout</code>，如 fixed、accepted_risk、wont_fix、not_reproducible。Audit 有未关闭 finding 时保持 active。</p></section>
+        <section id="artifacts" class="page-section"><h2>产物与下一步</h2><p>持久审查写入 <code>docs/audits/</code>。修复需要计划时交给 <code>/dev-plan</code> skill；实现明确时交给 <code>/dev-branch</code> skill；归档或删除由 <code>/dev-distill</code> skill 的 Audit Closeout Gate 决定。</p></section>
+      </div></div>
+    </main><footer class="site-footer"><div class="footer-grid"><div>dev-audit</div><div class="footer-links"><a href="dev-plan.html">上一页</a><a href="dev-exploratory-review.html">下一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

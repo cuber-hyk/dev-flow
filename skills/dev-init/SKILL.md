@@ -21,6 +21,8 @@ Dev Init does:
 
 Dev Init does not:
 
+- Create `DESIGN.md` or `design-tokens.json` before an initial UI direction is approved; use
+  `/dev-design-system` initialize mode.
 - Create feature plans or audit reports.
 - Read broad project code.
 - Overwrite existing `AGENTS.md`, `CLAUDE.md`, or business docs.
@@ -79,6 +81,13 @@ Existing `AGENTS.md` receives only this marked block when missing:
 <!-- cuberhyk-dev-flow:start -->
 ...
 <!-- cuberhyk-dev-flow:end -->
+```
+
+UI projects initialize their durable design contract separately after the user approves a
+representative UI:
+
+```bash
+cuberhyk-dev-flow init-design-system /path/to/project
 ```
 
 ## Workflow

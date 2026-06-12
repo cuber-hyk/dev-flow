@@ -24,11 +24,15 @@ Context loaded:
 - <file or source>
 
 Steps and verification:
-1. <step>
-   Verification: <command/check/manual verification>
+| ID | Status | Step | Verification |
+|---|---|---|---|
+| PLAN-1 | todo/done/blocked | <step> | <command/check/manual verification> |
 
 Acceptance criteria:
 - <observable completion condition>
+
+Completion:
+- <complete when all non-deferred steps are done, no step is blocked, and verification is recorded>
 
 Artifact routing:
 - Plan: <path or none>

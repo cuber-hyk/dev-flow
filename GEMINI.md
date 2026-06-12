@@ -7,6 +7,8 @@ Skills:
 - `dev-init`: initialize Dev Flow memory structure.
 - `dev-check`: validate docs routing and lifecycle health.
 - `dev-orient`: enter repository context.
+- `dev-brainstorm`: clarify fuzzy ideas and compare approaches before planning.
+- `dev-design-system`: initialize, update, or check the durable project UI contract.
 - `dev-plan`: create a verifiable plan.
 - `dev-audit`: create structured audit findings under `docs/audits/`.
 - `dev-exploratory-review`: map a project or scope, build a risk map, and verify realistic failures.
@@ -14,7 +16,16 @@ Skills:
 - `dev-changelog`: maintain notable `CHANGELOG.md` entries.
 - `dev-distill`: preserve durable knowledge and close process artifacts.
 
-Use the shared skills in this short flow for non-trivial development work:
+For UI work, read `DESIGN.md` and relevant `design-tokens.json` entries before planning or implementation.
+Search existing semantic patterns and shared components before creating a new UI implementation.
+
+Use this flow for fuzzy ideas or unclear product/workflow changes:
+
+1. `dev-brainstorm` clarifies goals, non-goals, approaches, and user-owned decisions before planning.
+2. `dev-plan` turns the confirmed route into a verifiable goal, scope, steps, risks, and checks.
+3. `dev-branch` executes implementation in a task branch, runs changelog, distill, and check gates, and waits for review before commit/merge.
+
+Use this short flow for clear non-trivial development work:
 
 1. `dev-plan` enters relevant context, identifies decision points, and turns the task into a verifiable goal, scope, steps, risks, and checks.
 2. `dev-branch` executes implementation in a task branch, runs changelog, distill, and check gates, and waits for review before commit/merge.
@@ -29,7 +40,7 @@ Use `dev-exploratory-review` when the problem location is unknown and the agent 
 or a user-provided scope, run focused probes/tests when useful, and report only realistic failures.
 
 Use `dev-init` for first-time project adoption and `dev-check` for lifecycle/routing validation.
-`dev-orient`, `dev-changelog`, and `dev-distill` are still available standalone, but normal `dev-plan`,
+`dev-orient`, `dev-changelog`, and `dev-distill` are still available standalone, but normal `dev-brainstorm`, `dev-plan`,
 `dev-audit`, and `dev-branch` calls include their relevant gates.
 
 Do not skip directly to implementation when the task is ambiguous, cross-module, or business-critical.
@@ -51,6 +62,7 @@ Persistent artifacts:
 Plan readiness:
 
 - `dev-plan` must identify unresolved product, business, data, state, irreversible cleanup, user-experience, or architecture decisions before writing an executable plan.
+- `dev-brainstorm` keeps fuzzy idea refinement chat-only by default and routes confirmed decisions into `dev-plan`.
 - If code facts cannot resolve a decision, ask the user to confirm it first.
 - Recommendations are allowed, but must be labeled as recommendations.
 - Plan files should contain one confirmed execution route, not unresolved option branches.

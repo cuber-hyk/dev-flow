@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cuberhyk Dev Flow: Dev Design System"
+  short_description: "Maintain the project's durable UI contract"
+  default_prompt: "Use $dev-design-system to initialize, update, or check DESIGN.md, design tokens, shared components, and semantic UI reuse rules."

@@ -12,7 +12,7 @@ Context loaded:
 - <file or source>
 
 Findings:
-- [ID, P1/P2/P3, open/planned/in_progress/fixed/verified/accepted_risk/wont_fix/not_reproducible, Confirmed/Strong/Risk] <finding>
+- [ID, P1/P2/P3, open/planned/resolved/verified, Confirmed/Strong/Risk] <finding>
   Evidence: <file/function/command/runtime result>
   Owner Plan: <path or none>
   Branch/Commit: <branch, commit, or none>

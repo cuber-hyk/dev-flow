@@ -29,7 +29,7 @@ Passes:
 - Judge: <summary>
 
 Findings:
-- [ID, P1/P2/P3, open/planned/in_progress/fixed/verified/accepted_risk/wont_fix/not_reproducible, Confirmed/Strong/Risk, category] <finding>
+- [ID, P1/P2/P3, open/planned/resolved/verified, Confirmed/Strong/Risk, category] <finding>
   Scenario: <realistic trigger>
   Evidence: <code/test/config/runtime evidence>
   Owner Plan: <path or none>

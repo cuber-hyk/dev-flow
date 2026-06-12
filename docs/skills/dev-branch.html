@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-branch - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-branch</h1><p class="page-lede">在隔离分支中完成实现、验证和审查前收尾。它是闭环执行技能，但不会自动提交、合并或推送。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#gates">门控</a><a href="#output">输出</a><a href="#lifecycle">生命周期</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>固定执行顺序</h2><div class="process-panel"><div class="process-lane"><div class="lane-label">Work</div><div class="lane-chain"><span class="node">确认 dirty worktree</span><span class="arrow">-></span><span class="node">创建任务分支</span><span class="arrow">-></span><span class="node">实现</span><span class="arrow">-></span><span class="node">验证</span></div></div><div class="process-lane"><div class="lane-label">Closeout</div><div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Check Gate</span><span class="arrow">-></span><span class="node gate">Review Gate</span></div></div></div></section>
+        <section id="gates" class="page-section"><h2>门控说明</h2><p>Changelog gate 判断是否需要调用 <code>/dev-changelog</code> skill；Distill gate 判断是否需要调用 <code>/dev-distill</code> skill 更新长期知识、ADR、plan/audit 生命周期；Check gate 在文档或生命周期产物变化后运行验证；任一 gate blocked 时不得进入提交或合并审批。</p></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>审查前输出必须包含 branch、existing changes、changes made、verification、changelog gate、distill gate、check gate、review 和 waiting for approval。合并后才使用 after merge 输出。</p></section>
+        <section id="lifecycle" class="page-section"><h2>生命周期</h2><p>来自 audit 的任务需要更新 finding 的 Owner Plan、Branch/Commit、Verification 和 Status。一个 audit 可以驱动多个 plan/branch；只修复部分 finding 时 audit 保持 active。</p></section>
+      </div></div>
+    </main>
+    <footer class="site-footer"><div class="footer-grid"><div>dev-branch</div><div class="footer-links"><a href="dev-exploratory-review.html">上一页</a><a href="dev-changelog.html">下一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

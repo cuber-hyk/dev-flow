@@ -34,6 +34,7 @@
       <div class="page-shell">
         <aside class="toc" aria-label="页面目录">
           <a href="#daily">日常开发</a>
+          <a href="#outputs">步骤输出</a>
           <a href="#audit">审查驱动</a>
           <a href="#branch">分支闭环</a>
           <a href="#review">审核输出</a>
@@ -41,9 +42,13 @@
 
         <div class="page-content">
           <section id="daily" class="page-section">
-            <h2>日常开发：plan -> branch</h2>
-            <p>用户只提出任务。`dev-plan` 负责进入上下文、识别决策点、创建计划；`dev-branch` 负责实现、验证和审核前收尾。</p>
+            <h2>日常开发：brainstorm -> plan -> branch</h2>
+            <p>模糊需求先由 <code>/dev-brainstorm</code> 澄清目标、非目标、方案和决策；明确任务由 <code>/dev-plan</code> 创建计划；<code>/dev-branch</code> 负责实现、验证和审核前收尾。</p>
             <div class="process-panel">
+              <div class="process-lane">
+                <div class="lane-label">Brainstorm</div>
+                <div class="lane-chain"><span class="node">/dev-brainstorm</span><span class="arrow">-></span><span class="node gate">Intent Gate</span><span class="arrow">-></span><span class="node">Confirmed route</span></div>
+              </div>
               <div class="process-lane">
                 <div class="lane-label">Plan</div>
                 <div class="lane-chain"><span class="node">/dev-plan</span><span class="arrow">-></span><span class="node gate">Orient Gate</span><span class="arrow">-></span><span class="node gate">Decision Gate</span><span class="arrow">-></span><span class="node">Plan file or chat plan</span></div>
@@ -59,31 +64,50 @@
             </div>
           </section>
 
+          <section id="outputs" class="page-section">
+            <h2>每一步最后输出什么</h2>
+            <p>Dev Flow 的重点不是多跑几个命令，而是让每个阶段留下可审查的结果。用户可以从输出判断下一步是否能继续，Agent 也能从产物继续接力。</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>阶段</th><th>内部经历</th><th>最终输出</th><th>可继续条件</th></tr></thead>
+                <tbody>
+                  <tr><td><code>/dev-orient</code></td><td>读取 AGENTS、CONTEXT、context-map、相关 capability 和代码入口。</td><td>上下文来源、相关入口、文档目的地、推荐下一技能。</td><td>事实源明确，下一步路由清楚。</td></tr>
+                  <tr><td><code>/dev-brainstorm</code></td><td>低噪声进入上下文、澄清目标/非目标、比较方案、确认用户决策。</td><td>confirmed route、decision points、alternatives、下一技能。</td><td>目标和关键决策已确认，或明确停下提问。</td></tr>
+                  <tr><td><code>/dev-plan</code></td><td>Orient Gate、Decision Gate、范围确认、步骤和验证设计。</td><td>目标、范围、事实源、步骤表、验收标准、plan 路径或 blocked 原因。</td><td>没有未决决策，步骤都有验证方式。</td></tr>
+                  <tr><td><code>/dev-audit</code></td><td>Audit scope、证据读取、finding 编号、严重度和状态判定。</td><td>带 ID/Status/Evidence/Owner Plan/Verification 的 findings，必要时写入 <code>docs/audits/</code>。</td><td>每个 finding 有证据和后续路由。</td></tr>
+                  <tr><td><code>/dev-branch</code></td><td>创建分支、实现、验证、Changelog Gate、Distill Gate、Check Gate、Review Gate。</td><td>变更摘要、验证结果、三个 gate 结果、git status/diff、等待审批说明。</td><td>所有必要 gate 通过或明确不需要。</td></tr>
+                  <tr><td><code>/dev-distill</code></td><td>知识分类、ADR Gate、plan closeout、audit closeout、验证。</td><td>长期文档更新、plan/audit 生命周期结果、ADR 判断、下一步 check。</td><td>未关闭产物保持 active；可关闭产物有明确原因。</td></tr>
+                  <tr><td><code>/dev-check</code></td><td>检查模板、文档路由、状态字段、归档目录和 git 可见性。</td><td>errors、warnings、recommendations、validation result。</td><td>无 error；warning 有明确处理或接受理由。</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <section id="audit" class="page-section">
             <h2>审查驱动：audit -> plan -> branch</h2>
-            <p>当任务是“看看哪里不对”时，先审查，不要直接写计划。审查报告只放在 `docs/audits/`，稳定事实由后续 distill gate 同步到长期文档。</p>
+            <p>当任务是“看看哪里不对”时，先审查，不要直接写计划。审查报告只放在 <code>docs/audits/</code>，稳定事实由后续 distill gate 同步到长期文档。</p>
             <div class="steps">
-              <article class="step-item"><div class="card-number">1</div><div><strong>/dev-audit</strong><p>内置 orient gate，定义范围、读取证据、输出 findings。非平凡审查写入 `docs/audits/`。</p></div></article>
-              <article class="step-item"><div class="card-number">2</div><div><strong>/dev-plan</strong><p>把确认后的发现转成单一路线计划。未决产品或数据语义先让用户确认。</p></div></article>
-              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-branch</strong><p>实现修复，在审核前关闭或归档相关 audit/plan，并更新 capability、ADR 或测试。</p></div></article>
+              <article class="step-item"><div class="card-number">1</div><div><strong>/dev-audit</strong><p>内置 orient gate，定义范围、读取证据、输出带 ID 和状态的 findings。非平凡审查写入 <code>docs/audits/</code>。</p></div></article>
+              <article class="step-item"><div class="card-number">2</div><div><strong>/dev-plan</strong><p>把确认后的发现转成单一路线计划，并记录 <code>source_audit</code>、<code>covered_findings</code> 和 <code>deferred_findings</code>。</p></div></article>
+              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-branch</strong><p>实现修复，在审核前更新 finding 状态、验证结果和 branch/commit 关联；未全部关闭的 audit 继续保持 active。</p></div></article>
             </div>
           </section>
 
           <section id="branch" class="page-section">
             <h2>分支闭环：同一次任务只做一个可解释 diff</h2>
-            <p>`dev-branch` 不要求工作区绝对干净，但要求改动可归属。相关 plan/audit 可以带入任务分支，无关源码或配置改动必须先停下询问。</p>
+            <p><code>/dev-branch</code> skill 不要求工作区绝对干净，但要求改动可归属。相关 plan/audit 可以带入任务分支，无关源码或配置改动必须先停下询问。</p>
             <div class="card-grid">
-              <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 `CHANGELOG.md`。</p></article>
-              <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理。</p></article>
-              <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG 和路由状态。</p></article>
-              <article class="info-card"><h3>Review Gate</h3><p>展示 `git status` 和 `git diff`，用户明确批准后才提交、合并、删除分支。</p></article>
+              <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 <code>CHANGELOG.md</code>。</p></article>
+              <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理；部分修复只能更新 finding 状态。</p></article>
+              <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG、输出模板和路由状态。</p></article>
+              <article class="info-card"><h3>Review Gate</h3><p>展示 <code>git status</code> 和 <code>git diff</code>，用户明确批准后才提交、合并、删除分支。</p></article>
             </div>
           </section>
 
           <section id="review" class="page-section">
             <h2>审核输出必须包含什么</h2>
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
-            <p>The canonical branch response shape lives in <code>skills/dev-branch/templates/output.md</code>. Use <code>Before Approval</code> before commit or merge approval, and <code>After Merge</code> only after the approved merge and cleanup complete.</p>
+            <p>标准分支输出模板位于 <code>skills/dev-branch/templates/output.md</code>。提交或合并审批前使用 <code>Before Approval</code> 形态；只有在用户批准合并且清理完成后，才使用 <code>After Merge</code> 形态。</p>
             <div class="terminal-card">
               <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
               <pre><code>Branch: task/YYYYMMDD-short-task-slug

@@ -37,6 +37,26 @@ Current facts stay current. Process artifacts get closed. Old process noise is n
 
 The daily user flow is intentionally short:
 
+For fuzzy ideas or unclear product/workflow changes:
+
+```text
+/dev-brainstorm <idea to clarify>
+/dev-plan <confirmed route>
+/dev-branch <implement the approved plan>
+```
+
+For a new project's initial UI:
+
+```text
+/dev-brainstorm <discuss product and UI direction>
+<agent produces representative UI; user reviews and approves it>
+/dev-design-system <initialize the confirmed durable UI contract>
+/dev-plan <plan implementation>
+/dev-branch <implement with the Design System Gate>
+```
+
+For clear tasks:
+
 ```text
 /dev-plan <what you want to do>
 /dev-branch <implement the approved plan>
@@ -66,7 +86,7 @@ For repository health:
 ```
 
 `dev-orient`, `dev-changelog`, and `dev-distill` still exist as standalone skills, but normal users
-do not need to remember them for every task. `dev-plan`, `dev-audit`, and
+do not need to remember them for every task. `dev-brainstorm`, `dev-plan`, `dev-audit`, and
 `dev-exploratory-review` include built-in orientation. `dev-branch` includes changelog, distill,
 and check gates before review.
 
@@ -74,6 +94,12 @@ and check gates before review.
 
 ```mermaid
 flowchart TD
+  S["/dev-brainstorm idea"] --> SO["Orient Gate"]
+  SO --> SD{"Route clear?"}
+  SD -- "No" --> SQ["Ask user to decide"]
+  SQ --> S
+  SD -- "Yes" --> P
+
   P["/dev-plan task"] --> PO["Orient Gate"]
   PO --> PD{"Decision points clear?"}
   PD -- "No" --> U["Ask user to decide"]
@@ -115,6 +141,8 @@ flowchart TD
 | `dev-init` | Create the minimum repository memory structure and templates. | Infer all project knowledge, write plans, or audit code. | `dev-check` |
 | `dev-check` | Validate document routing, lifecycle status, changelog shape, ADR hints, and git visibility. | Do deep business review or rewrite docs. | `dev-init`, `dev-plan`, `dev-audit`, or `dev-distill` |
 | `dev-orient` | Enter repository context by reading only stable entry docs and relevant capability docs. | Plan, audit, implement, or distill. | `dev-plan` or `dev-audit` |
+| `dev-brainstorm` | Clarify fuzzy ideas, compare approaches, and confirm decisions before planning. | Write executable plans, audit findings, or implementation code. | `dev-plan`, `dev-audit`, `dev-exploratory-review`, or `dev-orient` |
+| `dev-design-system` | Initialize, update, or check the durable project UI contract, tokens, and semantic reuse rules. | Invent unseen UI scenarios or replace component code and task plans. | User review, `dev-plan`, or continued `dev-branch` gates |
 | `dev-plan` | Run orient gate, check decision readiness, then create a verifiable plan. | Implement, audit, close artifacts, or silently decide product/business choices. | `dev-branch` |
 | `dev-audit` | Run orient gate, produce evidence-based findings for bounded audits, and persist non-trivial audits. | Implement fixes, discover unknown risks across a project, or update capability facts directly. | `dev-plan` or `dev-branch` |
 | `dev-exploratory-review` | Map a project or bounded scope, build a risk map, run focused probes/tests, and report only realistic failures. | Implement fixes or comment on style, naming, formatting, or subjective preferences. | `dev-plan` or `dev-branch` |
@@ -127,6 +155,8 @@ flowchart TD
 | Gate | Where it runs | Purpose | Output |
 |---|---|---|---|
 | Orient Gate | `dev-plan`, `dev-audit`, or standalone `dev-orient` | Load AGENTS/CLAUDE, CONTEXT, context-map, relevant capability docs, and key code only. | Context sources and likely artifact routes. |
+| Brainstorm Gate | `dev-brainstorm` | Clarify fuzzy intent, compare approaches, and confirm the next route before planning. | Confirmed goal, decisions, alternatives, and next skill. |
+| Design System Gate | `dev-design-system`, or UI work inside `dev-branch` | Reuse existing semantic patterns, update confirmed reusable rules, and check UI compliance. | Updated/passed `DESIGN.md`, tokens, components, and visual/accessibility verification, or a concrete "not needed" reason. |
 | Decision Gate | `dev-plan` | Identify unresolved product, data, lifecycle, cleanup, or architecture decisions before planning. | Decision request or confirmed execution route. |
 | Changelog Gate | `dev-branch`, or standalone `dev-changelog` | Decide whether the change is notable for users, operators, public APIs, data, security, install, config, compatibility, or release notes. | Updated `CHANGELOG.md` or a concrete "not needed" reason. |
 | Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
@@ -142,11 +172,12 @@ skills/<skill-name>/templates/output.md
 ```
 
 `SKILL.md` keeps the workflow rules and points to the template. Slash commands also require the
-same template shape, so `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, `/dev-distill`,
+same template shape, so `/dev-brainstorm`, `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, `/dev-distill`,
 and the other commands produce consistent responses across agent harnesses.
 
 Use the templates as the source of truth for response structure:
 
+- `dev-brainstorm` has ready, blocked-by-decisions, and continue-brainstorming shapes.
 - `dev-branch` has separate `Before Approval` and `After Merge` sections, and reports changelog,
   distill, and check gate results before approval.
 - `dev-plan` has separate ready and decision-blocked shapes.
@@ -158,6 +189,10 @@ Use the templates as the source of truth for response structure:
 
 `dev-plan` does not start by writing a plan. It first orients, then asks whether the task is
 plan-ready.
+
+For fuzzy ideas, use `dev-brainstorm` before `dev-plan`. Brainstorming confirms goal, non-goals,
+approach tradeoffs, and user-owned decisions. It stays chat-only by default and does not create
+executable plans.
 
 A task is plan-ready only when:
 
@@ -342,8 +377,8 @@ Default closeout:
 Plan has trace value -> move to docs/plans/archived/ and set status: archived
 Plan has no trace value -> delete the file
 
-Audit still has open/planned/in-progress findings -> keep status: active in docs/audits/
-Audit findings are all verified, accepted, rejected, or transferred -> move to docs/audits/archived/ and set status: archived
+Audit still has open/planned findings or unresolved closeout -> keep status: active in docs/audits/
+Audit findings are all verified or resolved with explicit closeout -> move to docs/audits/archived/ and set status: archived
 Audit conclusions are captured elsewhere, findings are closed, and evidence has no future value -> delete the file
 
 ADR is current -> keep in docs/adr/ as proposed or accepted
@@ -395,9 +430,10 @@ Persistent audit findings must be traceable across multiple plans and branches:
 ID | Severity | Status | Finding | Evidence | Owner Plan | Branch/Commit | Verification | Closeout
 ```
 
-Allowed finding statuses are `open`, `planned`, `in_progress`, `fixed`, `verified`,
-`accepted_risk`, `wont_fix`, and `not_reproducible`. An audit must remain `active` while any
-finding is open, planned, in progress, or fixed but unverified.
+Allowed finding statuses are `open`, `planned`, `resolved`, and `verified`. Put specific closeout
+reasons such as `fixed`, `accepted_risk`, `wont_fix`, or `not_reproducible` in `Closeout`, not in
+`Status`. An audit must remain `active` while any finding is open, planned, or resolved without a
+closeout reason that no longer needs verification.
 
 After creating any persistent plan or audit, the agent must run:
 
@@ -415,6 +451,7 @@ For an existing project:
 ```text
 /dev-init 接入当前项目的 Dev Flow 文档结构
 /dev-check 检查文档结构、生命周期状态、CHANGELOG 和 gitignore 规则
+/dev-brainstorm 梳理一个还不明确的新功能想法，比较路线并确认决策
 /dev-plan 我要开发某个功能，请先进入上下文、识别决策点、再制定计划
 /dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate
 /dev-check 复查文档归位和生命周期状态
@@ -442,11 +479,14 @@ Use skills in normal agent conversations. CLI commands are implementation primit
 cuberhyk-dev-flow install
 cuberhyk-dev-flow validate
 cuberhyk-dev-flow init-project [project-dir]
+cuberhyk-dev-flow init-design-system [project-dir]
 cuberhyk-dev-flow validate-docs [project-dir]
 cuberhyk-dev-flow paths
 ```
 
-`init-project` backs the `dev-init` skill. `validate-docs` backs the `dev-check` skill.
+`init-project` backs the `dev-init` skill. `init-design-system` creates the initial empty
+`DESIGN.md` and `design-tokens.json` contract after a representative UI is approved.
+`validate-docs` backs the `dev-check` skill.
 
 ## Installation
 
@@ -487,8 +527,11 @@ Invoke skills with short Claude Code commands:
 /dev-init
 /dev-check
 /dev-orient
+/dev-brainstorm
+/dev-design-system
 /dev-plan
 /dev-audit
+/dev-exploratory-review
 /dev-branch
 /dev-changelog
 /dev-distill
@@ -555,6 +598,14 @@ The docs validator checks:
 ## Examples
 
 Feature development:
+
+```text
+/dev-brainstorm 我想增加学习统计能力，但还不确定统计口径和展示方式。
+/dev-plan 基于已确认的统计口径制定实现计划。
+/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate。
+```
+
+Clear feature development:
 
 ```text
 /dev-plan 开发学习统计的连续学习天数。先进入上下文，识别是否有统计口径决策点，再制定计划。

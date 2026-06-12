@@ -37,6 +37,8 @@ Dev Distill does not:
 | Current feature behavior | `docs/features.md` when the project uses it | Document current behavior only. |
 | Current module facts, APIs, data sources, rules | `docs/capabilities/*.md` | Only current recommended behavior. |
 | Important hard-to-reverse decision | `docs/adr/YYYY-MM-DD-short-title.md` | Use only when the ADR gate passes. |
+| Current confirmed UI design and reuse rules | `DESIGN.md` | Update in place through `/dev-design-system`; remove stale rules. |
+| Exact UI foundation values | `design-tokens.json` | Keep one current value source; avoid duplicated manual values. |
 | Executable business rule | tests | Prefer tests for regression-prone rules. |
 | Process evidence | `docs/plans/`, `docs/audits/`, or archived audit paths | Not default context. |
 
@@ -68,14 +70,14 @@ events or vague historical labels. Dev Distill must end with a concrete closeout
 ### Audit Closeout
 
 - Run the Audit Closeout Gate before archiving or deleting any audit.
-- Keep an audit active when any finding is `open`, `planned`, `in_progress`, or `fixed` without
-  verification, or when the audit contains unresolved `Not verified`, `Open questions`, `Next step`,
-  `Recommended next step`, `待进一步调查`, or `推荐下一步` content.
+- Keep an audit active when any finding is `open`, `planned`, or `resolved` without a closeout
+  reason that no longer needs verification, or when the audit contains unresolved `Not verified`,
+  `Open questions`, `Next step`, `Recommended next step`, `待进一步调查`, or `推荐下一步` content.
 - Keep partially executed audits active. Update finding status, owner plan, branch/commit, and
   verification fields instead of archiving the whole audit.
-- Archive an audit only when every finding is `verified`, `accepted_risk`, `wont_fix`,
-  `not_reproducible`, or fully transferred to an active plan that owns follow-up.
-  Move it to `docs/audits/archived/` and set `status: archived`.
+- Archive an audit only when every finding is `verified`, or `resolved` with closeout reason
+  `accepted_risk`, `wont_fix`, `not_reproducible`, or fully transferred to an active plan that owns
+  follow-up. Move it to `docs/audits/archived/` and set `status: archived`.
 - Delete an audit only when all useful conclusions are represented in capability docs, ADRs, tests,
   code, or active plans, every finding is closed or transferred, and the raw evidence has no future
   value.
@@ -90,7 +92,7 @@ Before changing an audit from active to archived or deleting it, verify:
   `source_of_truth`.
 - Every finding has `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
   `Verification`, and `Closeout`.
-- No finding remains `open`, `planned`, `in_progress`, or unverified `fixed`.
+- No finding remains `open`, `planned`, or `resolved` without a closeout reason that no longer needs verification.
 - No Critical/High finding remains unresolved.
 - Remaining follow-up work is owned by active plans through `source_audit` and `covered_findings`.
 
@@ -121,6 +123,7 @@ can be updated safely, and report `Audit: blocked` or `Audit: keep active` with 
    - Architecture/business decision was made.
    - Regression-prone rule was discovered.
    - Existing plan or audit artifact needs closeout.
+   - Confirmed reusable UI rule, token, layout, interaction pattern, or UI implementation rule changed.
    - No durable knowledge was created.
 
 2. Choose exactly the right destination:

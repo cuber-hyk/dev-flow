@@ -12,14 +12,16 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "cuberhyk-dev-flow",
-    "shortDescription": "Init, check, orient, plan, audit, exploratory review, branch, changelog, and distill coding work.",
-    "longDescription": "cuberhyk-dev-flow provides nine focused Codex skills. dev-plan and dev-audit include low-noise orientation gates, while dev-exploratory-review maps unknown risks and verifies realistic failures. dev-branch executes work inside a reviewed Git branch and runs changelog, distill, and check gates before showing status and diff for approval. dev-check validates repository memory and audit lifecycle health, while dev-orient, dev-changelog, and dev-distill remain available as standalone expert tools.",
+    "shortDescription": "Init, check, orient, brainstorm, plan, audit, exploratory review, branch, changelog, and distill coding work.",
+    "longDescription": "cuberhyk-dev-flow provides eleven focused Codex skills. dev-brainstorm refines fuzzy ideas before planning, dev-design-system maintains durable UI rules and semantic reuse, and dev-plan/dev-audit include low-noise orientation gates. dev-branch executes work inside a reviewed Git branch and runs design-system, changelog, distill, and check gates before approval.",
     "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
     "defaultPrompt": [
       "Use dev-init to initialize Dev Flow memory when needed.",
       "Use dev-check to validate docs routing.",
+      "Use dev-brainstorm to refine fuzzy ideas, compare approaches, and identify decision points before planning.",
+      "Use dev-design-system after an initial UI direction is approved, or to update/check reusable UI rules.",
       "Use dev-plan to enter relevant context, identify decision points, and define the next task.",
       "Use dev-audit to enter relevant context, review bounded features or workflows, and persist non-trivial findings.",
       "Use dev-exploratory-review to map a project or scope, build a risk map, run focused probes/tests, and report realistic failures.",

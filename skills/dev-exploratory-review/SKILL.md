@@ -141,12 +141,13 @@ When creating a report:
 3. Use the findings table structure from `templates/docs/audits/_template.md` for persistent reports.
 4. Give every finding a stable `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
    `Verification`, and `Closeout` field.
-5. Use only these finding statuses: `open`, `planned`, `in_progress`, `fixed`, `verified`,
-   `accepted_risk`, `wont_fix`, and `not_reproducible`.
-6. Include project map, risk map, passes, findings, rejected candidates, verification, not-verified areas, and next steps.
-7. Confirm the file exists.
-8. Run `git status --short --branch --untracked-files=all`.
-9. Report whether git sees the file.
+5. Use only these finding statuses: `open`, `planned`, `resolved`, and `verified`.
+6. Put the closeout reason in `Closeout`, such as `fixed`, `accepted_risk`, `wont_fix`, or
+   `not_reproducible`; do not split those reasons into separate statuses.
+7. Include project map, risk map, passes, findings, rejected candidates, verification, not-verified areas, and next steps.
+8. Confirm the file exists.
+9. Run `git status --short --branch --untracked-files=all`.
+10. Report whether git sees the file.
 
 ## Output Template
 

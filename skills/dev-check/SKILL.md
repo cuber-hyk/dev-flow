@@ -26,6 +26,8 @@ Dev Check does:
 - Warn when `CHANGELOG.md` is missing `Unreleased`, release dates, or standard categories.
 - Warn when `docs/ai/context-map.md` points to missing paths or routes default context to process noise.
 - Warn when git ignore rules hide Dev Flow paths such as `docs/plans/` or `docs/audits/`.
+- When a design contract exists, validate the `DESIGN.md`/`design-tokens.json` pair, required design
+  sections, JSON structure, and referenced UI source paths.
 - Recommend the next skill or cleanup action.
 
 Dev Check does not:
@@ -78,8 +80,9 @@ The validator checks:
   and `source_of_truth`.
 - Audit findings tables without `ID`, `Severity`, `Status`, `Finding`, `Evidence`, `Owner Plan`, or
   `Branch/Commit` columns.
-- Invalid audit finding statuses. Allowed statuses are `open`, `planned`, `in_progress`, `fixed`,
-  `verified`, `accepted_risk`, `wont_fix`, and `not_reproducible`.
+- Invalid plan step statuses. Allowed statuses are `todo`, `done`, and `blocked`.
+- Invalid audit finding statuses. Allowed statuses are `open`, `planned`, `resolved`, and
+  `verified`.
 - Archived audits that still contain unresolved finding statuses, Critical/High unresolved sections,
   not-verified work, open questions, or next-step recommendations.
 - Invalid plan/audit statuses. Allowed persisted statuses are `active` and `archived`.
@@ -91,6 +94,8 @@ The validator checks:
 - `docs/ai/context-map.md` that routes default context to plans, audits, or archived files.
 - Git ignore rules that hide `AGENTS.md`, `CONTEXT.md`, `docs/ai/context-map.md`,
   `docs/capabilities/`, `docs/plans/`, `docs/audits/`, or `docs/adr/`.
+- A partial design contract where only `DESIGN.md` or `design-tokens.json` exists.
+- Missing core `DESIGN.md` sections, invalid token JSON, missing `$type`/`$value`, or missing referenced sources.
 - `CHANGELOG.md` structure, including `Unreleased`, release date format, and standard categories.
 - Likely ADR-worthy decision language in plans, audits, or capability docs that has not been
   reviewed by the `/dev-distill` skill.

@@ -1,6 +1,6 @@
 ---
 name: dev-orient
-description: Enter and orient within a repository using low-noise, repo-native context. Use at the start of a new coding session or before non-trivial work to inspect repository state, read AGENTS/CONTEXT/context-map/capability docs, identify relevant code entry points, identify likely documentation destinations such as docs/plans, docs/audits, docs/capabilities, or docs/adr, and recommend whether to continue with the `/dev-plan`, `/dev-audit`, or `/dev-branch` skills. Do not use for detailed planning, auditing, implementation, branch execution, or knowledge distillation.
+description: Enter and orient within a repository using low-noise, repo-native context. Use at the start of a new coding session or before non-trivial work to inspect repository state, read AGENTS/CONTEXT/context-map/capability docs, identify relevant code entry points, identify likely documentation destinations such as docs/plans, docs/audits, docs/capabilities, or docs/adr, and recommend whether to continue with the `/dev-brainstorm`, `/dev-plan`, `/dev-audit`, or `/dev-branch` skills. Do not use for detailed planning, auditing, implementation, branch execution, or knowledge distillation.
 ---
 
 # Dev Orient
@@ -36,6 +36,8 @@ Dev Orient does not:
 | Persistent task plans | `docs/plans/*.md` | Do not read by default; mention as plan destination. |
 | Audit reports and review findings | `docs/audits/*.md` | Do not read by default; mention as audit destination. |
 | Important hard-to-reverse decisions | `docs/adr/*.md` | Read only when the task involves decisions. |
+| Current UI design, reuse, and implementation rules | `DESIGN.md` | Read for UI, page, component, styling, or interaction tasks. |
+| Exact UI foundation values | `design-tokens.json` | Read only when the UI task touches foundations or token usage. |
 
 ## Lifecycle Awareness
 
@@ -70,12 +72,15 @@ the `/dev-init` skill.
      `docs/adr/archived/` exist.
    - Note whether `_template.md` files exist for capabilities, plans, audits, and ADRs.
    - If a needed destination is missing, recommend the `/dev-init` skill.
+   - If the goal is fuzzy or multiple user-owned routes are reasonable, recommend the `/dev-brainstorm` skill.
 
 4. Choose task-specific context:
    - Use `docs/ai/context-map.md` to select capability docs.
    - Read only the relevant `docs/capabilities/*.md`.
    - Read accepted ADRs only when the task involves a long-term decision or historical tradeoff.
    - Read only code entry points referenced by capability docs or found by narrow `rg` searches.
+   - For UI tasks, read `DESIGN.md`, then inspect only relevant tokens, shared components, stories,
+     and visual examples.
 
 5. Avoid default noise:
    - Do not read old plans, old TODOs, generated reports, build outputs, `docs/plans/*`,
@@ -101,7 +106,8 @@ Use `templates/output.md` for the final response shape.
 
 End with one of these:
 
+- "Context is loaded; use the `/dev-brainstorm` skill to clarify goals and decisions before planning."
 - "Context is loaded; use the `/dev-plan` skill to lock goal, boundaries, and verification before implementation, then use the `/dev-branch` skill for reviewed branch work."
 - "This is review work; use the `/dev-audit` skill to define scope, evidence, and findings under `docs/audits/` when persistence is needed."
 - "This is a small clear task; direct implementation is possible, and the `/dev-distill` skill may be needed at closeout if durable knowledge changes."
-- "Context is insufficient or decisions are unclear; clarify with the user before using the `/dev-plan` or `/dev-audit` skill."
+- "Context is insufficient or decisions are unclear; clarify with the user through `/dev-brainstorm` before using the `/dev-plan` or `/dev-audit` skill."

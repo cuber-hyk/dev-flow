@@ -24,6 +24,7 @@ Dev Branch does:
 - Create a task branch.
 - Implement the requested task when the route is clear.
 - Run meaningful verification.
+- Run the Design System Gate for UI tasks before changelog and distill gates.
 - Run the changelog gate and use the `/dev-changelog` skill when release notes are needed.
 - Run the distill gate and use the `/dev-distill` skill when durable repository knowledge, ADRs, lifecycle
   closure, or documentation routing changed.
@@ -74,6 +75,7 @@ onto the task branch. Do not commit it early.
 Before implementation, decide whether planning is needed:
 
 - If the task is small, explicit, and low-risk, proceed after basic orientation.
+- If the task is fuzzy or route selection is still needed, use or recommend the `/dev-brainstorm` skill.
 - If the task is non-trivial, cross-module, correctness-sensitive, or already has a persistent plan, use or recommend the `/dev-plan` skill.
 - If unresolved decisions exist, stop and ask the user. Do not create an executable branch plan from unresolved choices.
 - If a persistent plan exists, read only the active plan for this task and verify it is plan-ready.
@@ -128,6 +130,7 @@ If none can be detected reliably, ask the user.
 
 5. Execute task:
    - Use the `/dev-orient` skill first if context is not loaded.
+   - Use the `/dev-brainstorm` skill first if the task is fuzzy or the route is not confirmed.
    - Use the `/dev-plan` skill first if the task is not plan-ready.
    - Make the smallest necessary implementation changes.
    - Keep existing code style.
@@ -137,14 +140,23 @@ If none can be detected reliably, ask the user.
    - Run the smallest meaningful tests, type checks, builds, or manual checks for the change.
    - If verification cannot be run, state why.
 
-7. Changelog gate:
+7. Design System Gate:
+   - Run for page, component, styling, layout, interaction, or other UI tasks.
+   - Read applicable `DESIGN.md` rules and search shared components and semantic interaction patterns.
+   - Reuse an existing applicable pattern; do not create a page-specific equivalent only because copy differs.
+   - Use `/dev-design-system` update mode when the task confirms or changes a reusable project-level rule.
+   - Use `/dev-design-system` check mode to verify rule, token, component, responsive, visual, and accessibility compliance.
+   - If no reusable rule changed, report `Design system gate: not needed` with a concrete reason.
+   - If a design decision or contract conflict remains unresolved, stop before review.
+
+8. Changelog gate:
    - Decide whether the change affects users, operators, public behavior, data, security, install, config, compatibility, or release notes.
    - If yes, use the `/dev-changelog` skill rules to update `CHANGELOG.md` under `## [Unreleased]`.
    - If no, report `Changelog gate: not needed` with a concrete reason.
    - If the changelog decision is blocked, stop before the review gate.
    - Do not write changelog entries for pure internal refactors, formatting, test-only changes, or tiny invisible tweaks.
 
-8. Distill gate:
+9. Distill gate:
    - Decide whether this task changed durable knowledge:
      - domain vocabulary;
      - feature behavior or public workflow;
@@ -160,20 +172,20 @@ If none can be detected reliably, ask the user.
    - Close or route active plan/audit artifacts as part of the same branch when they belong to this task.
    - Do not defer same-task knowledge updates until after commit unless the user explicitly asks.
 
-9. Check gate:
+10. Check gate:
    - Run this gate before review when changelog, distill, documentation routing, lifecycle
      artifacts, capability docs, ADRs, context-map, templates, or validation rules changed.
    - Use the `/dev-check` skill rules or `cuberhyk-dev-flow validate-docs <project>` to verify routing and lifecycle health.
    - If no docs or lifecycle artifacts changed, report `Check gate: not needed` with a concrete reason.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 
-10. Review gate:
+11. Review gate:
    - Run `git status --short --branch --untracked-files=all`.
    - Run `git diff`.
    - Summarize changed files, verification, changelog gate, distill gate, and check gate.
    - Stop and wait for explicit user approval.
 
-11. After explicit approval only:
+12. After explicit approval only:
    - Stage only task-related files.
    - Commit with a concise message.
    - Switch back to the main branch.
@@ -182,7 +194,7 @@ If none can be detected reliably, ask the user.
    - Delete the task branch.
    - Do not push unless the user separately asks and confirms.
 
-12. Close:
+13. Close:
    - Recommend the `/dev-check` skill after documentation/lifecycle changes.
 
 ## Approval Language

@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
   "version": "0.7.2",
-  "description": "Multi-agent lifecycle workflow plugin with orient, decision, exploratory review, branch, changelog, distill, and review gates.",
+  "description": "Multi-agent lifecycle workflow plugin with orient, brainstorm, design-system, decision, exploratory review, branch, changelog, distill, and review gates.",
   "type": "module",
   "bin": {
     "cuberhyk-dev-flow": "bin/dev-flow.js"
@@ -27,6 +27,7 @@
     "install-plugin": "node ./bin/dev-flow.js install",
     "validate": "node ./bin/dev-flow.js validate",
     "init-project": "node ./bin/dev-flow.js init-project",
+    "init-design-system": "node ./bin/dev-flow.js init-design-system",
     "validate-docs": "node ./bin/dev-flow.js validate-docs"
   },
   "keywords": [

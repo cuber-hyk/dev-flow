@@ -84,15 +84,15 @@ When creating an audit file:
 5. Set `artifact_type: audit` and `status: active` for newly created audit files.
 6. Give every finding a stable `ID`, `Severity`, `Status`, `Evidence`, `Owner Plan`, `Branch/Commit`,
    `Verification`, and `Closeout` field.
-7. Use only these finding statuses: `open`, `planned`, `in_progress`, `fixed`, `verified`,
-   `accepted_risk`, `wont_fix`, and `not_reproducible`.
-8. Start actionable findings as `open` unless they are immediately rejected as `not_reproducible`
-   or explicitly accepted as `accepted_risk` / `wont_fix`.
-9. Do not mark the audit `archived`; audit closeout belongs to the `/dev-distill` skill after all findings are
+7. Use only these finding statuses: `open`, `planned`, `resolved`, and `verified`.
+8. Start actionable findings as `open`; use `planned` only after an owner plan exists.
+9. Use `resolved` only when the finding has a concrete closeout reason in `Closeout`, such as
+   `fixed`, `accepted_risk`, `wont_fix`, or `not_reproducible`.
+10. Do not mark the audit `archived`; audit closeout belongs to the `/dev-distill` skill after all findings are
    closed or transferred.
-10. Confirm the file exists after writing it.
-11. Run `git status --short --branch --untracked-files=all`.
-12. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the audit is not tracked and ask before changing ignore policy.
+11. Confirm the file exists after writing it.
+12. Run `git status --short --branch --untracked-files=all`.
+13. If the file is not visible because `.gitignore` excludes it, either add the smallest safe allow rule or report that the audit is not tracked and ask before changing ignore policy.
 
 ## Document Routing
 

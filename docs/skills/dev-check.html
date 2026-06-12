@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-check - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-check</h1><p class="page-lede">验证 Dev Flow 文档路由、模板完整性和生命周期健康。它发现结构问题，不替代业务审查。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#output">输出</a><a href="#rules">规则</a><a href="#routing">后续路由</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>内部流程</h2><div class="process-panel"><div class="process-lane"><div class="lane-label">Validate</div><div class="lane-chain"><span class="node">检查插件模板</span><span class="arrow">-></span><span class="node">检查项目 docs</span></div></div><div class="process-lane"><div class="lane-label">Classify</div><div class="lane-chain"><span class="node gate">Errors</span><span class="arrow">/</span><span class="node gate">Warnings</span><span class="arrow">/</span><span class="node">Recommendations</span></div></div><div class="process-lane"><div class="lane-label">Route</div><div class="lane-chain"><span class="node">指向 /dev-init</span><span class="arrow">or</span><span class="node">/dev-distill</span><span class="arrow">or</span><span class="node">/dev-audit</span></div></div></div></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>输出必须列出 validation result、errors、warnings、recommendations、检查过的范围和下一步。没有问题时也要明确说明验证通过。</p></section>
+        <section id="rules" class="page-section"><h2>状态规则</h2><p>plan 步骤状态只接受 <code>todo</code>、<code>done</code>、<code>blocked</code>。audit finding 状态只接受 <code>open</code>、<code>planned</code>、<code>resolved</code>、<code>verified</code>。archived audit 中仍有未关闭 finding 时应报错或强警告。</p></section>
+        <section id="routing" class="page-section"><h2>后续路由</h2><p>缺结构时用 <code>/dev-init</code> skill；active plan/audit 需要关闭时用 <code>/dev-distill</code> skill；需要深度业务审查时用 <code>/dev-audit</code> skill；干净状态下用 <code>/dev-orient</code> skill 开始下一项任务。</p></section>
+      </div></div>
+    </main>
+    <footer class="site-footer"><div class="footer-grid"><div>dev-check</div><div class="footer-links"><a href="dev-init.html">上一页</a><a href="dev-orient.html">下一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

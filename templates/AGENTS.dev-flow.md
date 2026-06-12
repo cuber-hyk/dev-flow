@@ -5,6 +5,14 @@ Use cuberhyk-dev-flow for non-trivial development work.
 
 Default user-facing flow:
 
+For fuzzy ideas or unclear product/workflow changes:
+
+1. `dev-brainstorm`: clarify goals, non-goals, approaches, and user-owned decisions before planning.
+2. `dev-plan`: turn the confirmed route into a verifiable plan.
+3. `dev-branch`: implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
+
+For clear non-trivial tasks:
+
 1. `dev-plan`: enter relevant repository context, identify unresolved decisions, and create a verifiable plan.
 2. `dev-branch`: implement in a task branch, run changelog, distill, and check gates, then wait for review before commit/merge.
 
@@ -22,6 +30,7 @@ Setup and maintenance skills:
 4. `dev-changelog`: update `CHANGELOG.md` only for notable user/operator/release changes.
 5. `dev-distill`: preserve stable knowledge and close process artifacts.
 6. `dev-check`: re-check routing after documentation changes.
+7. `dev-design-system`: initialize, update, or check the durable UI contract for UI work.
 
 Document routing:
 
@@ -36,6 +45,8 @@ Document routing:
 - Archived decisions -> `docs/adr/archived/*.md`
 - Human-readable release notes -> `CHANGELOG.md`
 - Executable business rules -> tests
+- Current confirmed UI rules -> `DESIGN.md`
+- Exact UI foundation values -> `design-tokens.json`
 
 Lifecycle rules:
 
@@ -48,6 +59,8 @@ Lifecycle rules:
 
 Planning decision rules:
 
+- `dev-brainstorm` clarifies fuzzy ideas before planning; it must not write implementation code, audit findings, or executable plans.
+- `dev-brainstorm` keeps output in conversation by default unless the user asks for a document.
 - `dev-plan` must not write an executable plan while key product, business, data, state, cleanup, or architecture decisions are unresolved.
 - If multiple reasonable routes exist and code facts cannot decide, `dev-plan` must ask the user to confirm the decision.
 - Recommendations are allowed, but must be labeled as recommendations, not treated as confirmed decisions.
@@ -75,4 +88,7 @@ Default context rules:
 - Do not read `docs/audits/` by default.
 - Do not read archived files by default.
 - Treat code and tests as the source of truth when documents disagree.
+- For UI tasks, read `DESIGN.md` and relevant tokens/components before planning or implementation.
+- Search existing semantic UI patterns and shared components before creating a new implementation.
+- After UI work, run the Design System Gate and update `DESIGN.md` only when a reusable rule changed.
 {{AGENT_SECTION_END}}

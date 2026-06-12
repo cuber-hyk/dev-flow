@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
   "displayName": "cuberhyk-dev-flow",
-  "description": "Init, check, orient, plan, audit, exploratory review, branch, changelog, distill, and check-gated coding work with focused agent skills.",
+  "description": "Init, check, orient, brainstorm, design-system, plan, audit, exploratory review, branch, changelog, distill, and check-gated coding work with focused agent skills.",
   "version": "0.7.2",
   "author": {
     "name": "cuber-hyk"

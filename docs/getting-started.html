@@ -88,7 +88,7 @@ node .\bin\dev-flow.js install</code></pre>
             <div class="steps">
               <article class="step-item"><div class="card-number">1</div><div><strong>/dev-init</strong><p>创建 AGENTS、CONTEXT、context-map、capabilities、plans、audits、ADR 和 CHANGELOG 模板。</p></div></article>
               <article class="step-item"><div class="card-number">2</div><div><strong>/dev-check</strong><p>检查目录、状态字段、gitignore、context-map、CHANGELOG 和潜在 ADR 缺口。</p></div></article>
-              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-plan 或 /dev-audit</strong><p>用真实任务进入上下文，逐步生成能力文档和稳定事实。</p></div></article>
+              <article class="step-item"><div class="card-number">3</div><div><strong>/dev-brainstorm、/dev-plan 或 /dev-audit</strong><p>用真实任务进入上下文；模糊想法先澄清，明确任务再计划，审查任务先输出 findings。</p></div></article>
             </div>
           </section>
 
@@ -96,8 +96,9 @@ node .\bin\dev-flow.js install</code></pre>
             <h2>第一个可审核任务</h2>
             <p>常规功能开发只需要两个入口。计划技能会自动进入上下文；分支技能会在审核前完成验证、更新日志判断和知识沉淀判断。</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>recommended first task</span><button class="copy-button" data-copy="/dev-plan 开发学习统计的连续学习天数。请先进入上下文、识别统计口径决策点，再制定计划。&#10;/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate。">复制</button></div>
-              <pre><code>/dev-plan 开发学习统计的连续学习天数。请先进入上下文、识别统计口径决策点，再制定计划。
+              <div class="terminal-head"><span>recommended first task</span><button class="copy-button" data-copy="/dev-brainstorm 我想开发学习统计能力，但还没确认统计口径和展示方式。&#10;/dev-plan 基于已确认的统计口径制定实现计划。&#10;/dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate。">复制</button></div>
+              <pre><code>/dev-brainstorm 我想开发学习统计能力，但还没确认统计口径和展示方式。
+/dev-plan 基于已确认的统计口径制定实现计划。
 /dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate。</code></pre>
             </div>
           </section>
@@ -112,6 +113,7 @@ node .\bin\dev-flow.js install</code></pre>
                   <tr><td><code>cuberhyk-dev-flow install</code></td><td>安装到本地 marketplace。</td></tr>
                   <tr><td><code>cuberhyk-dev-flow validate</code></td><td>校验插件包结构。</td></tr>
                   <tr><td><code>cuberhyk-dev-flow init-project [dir]</code></td><td>作为 `dev-init` 的底层实现，创建缺失文档结构。</td></tr>
+                  <tr><td><code>cuberhyk-dev-flow init-design-system [dir]</code></td><td>在代表性 UI 审核通过后创建 DESIGN.md 和 design-tokens.json。</td></tr>
                   <tr><td><code>cuberhyk-dev-flow validate-docs [dir]</code></td><td>作为 `dev-check` 的底层实现，检查文档路由和生命周期。</td></tr>
                 </tbody>
               </table>

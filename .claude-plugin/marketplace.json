@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "cuberhyk-dev-flow",
-      "description": "Init, check, orient, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses",
+      "description": "Init, check, orient, brainstorm, design-system, plan, audit, exploratory review, branch, changelog, and distill coding work across agent harnesses",
       "version": "0.7.2",
       "source": "./",
       "author": {

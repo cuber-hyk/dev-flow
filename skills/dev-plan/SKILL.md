@@ -2,7 +2,6 @@
 name: dev-plan
 description: Create a minimal, verifiable development plan with a built-in low-noise orientation gate. Use for non-trivial bug fixes, features, refactors, audit follow-up fixes, docs work, tests, or user requests that invoke dev-plan. First enter relevant repository context, then check whether goals, boundaries, and decision points are clear. If product, business, data, state, irreversible cleanup, or architecture decisions are unresolved, ask for user confirmation before writing an executable plan. Small plans may stay in conversation. Create or update docs/plans for explicit plan documents, repository workflow requirements, high-risk/cross-module/multi-turn work, audit follow-up work, or reviewable branch workflows. Do not execute implementation changes, write audit reports, or distill completed knowledge.
 ---
-
 # Dev Plan
 
 Use this skill to enter the relevant project context, then turn the task or audit findings into a
@@ -30,6 +29,7 @@ Dev Plan does:
 Dev Plan does not:
 
 - Replace the standalone `/dev-orient` skill for context-only sessions or deep repository mapping.
+- Refine fuzzy ideas or compare early approaches; use the `/dev-brainstorm` skill before planning.
 - Read broad unrelated context, old plans, old audits, or archived files by default.
 - Perform audits or write findings; use the `/dev-audit` skill.
 - Edit implementation code.
@@ -40,8 +40,7 @@ Dev Plan does not:
 
 ## Orient Gate
 
-The `/dev-plan` skill includes the practical subset of the `/dev-orient` skill so users do not have to run two commands
-for normal planning.
+The `/dev-plan` skill includes the practical subset of the `/dev-orient` skill so users do not have to run two commands for normal planning.
 
 Before the plan readiness gate, do this:
 
@@ -51,6 +50,7 @@ Before the plan readiness gate, do this:
 4. Read only task-relevant `docs/capabilities/*.md`.
 5. Inspect only the code, tests, routes, schemas, or configs needed to understand the task.
 6. Identify likely artifact destinations: plan, audit, capability, ADR, changelog, tests, or none.
+7. For UI tasks, read `DESIGN.md` when present and inspect relevant tokens, shared components, and examples.
 
 Do not read these by default:
 
@@ -59,9 +59,12 @@ Do not read these by default:
 - `archived/` directories.
 - Generated files, build output, dependency folders, or unrelated historical notes.
 
-If the repository has no Dev Flow structure, recommend the `/dev-init` skill before creating persistent
-artifacts. If orientation reveals that the task is actually an audit, recommend the `/dev-audit` skill instead
-of forcing a plan.
+If the repository has no Dev Flow structure, recommend the `/dev-init` skill before creating persistent artifacts.
+
+If orientation reveals that the task is actually a fuzzy idea, recommend the `/dev-brainstorm` skill before forcing a plan.
+
+If orientation reveals that the task is actually an audit, recommend the
+`/dev-audit` skill instead of forcing a plan.
 
 ## Plan Readiness Gate
 
@@ -74,6 +77,10 @@ Plan readiness requires:
 - Relevant source of truth is known or discoverable from code/docs.
 - No critical decision point is unresolved.
 - Validation path is known or can be defined.
+- For UI tasks, applicable design rules and the reuse/new-pattern decision are known.
+
+If readiness fails because the idea is not yet shaped enough to choose a route, output a recommendation
+to use `/dev-brainstorm` instead of writing a formal plan.
 
 If readiness fails because a decision is unresolved, output a decision request instead of a formal
 plan. Do not create or update a plan file yet.
@@ -176,88 +183,96 @@ When creating a plan file:
 
 ## Document Routing
 
-| Artifact | Destination | Rule |
-|---|---|---|
-| Decision request | Conversation only | Use when decisions block planning; do not write as executable plan. |
-| Task plan | `docs/plans/YYYY-MM-DD-short-topic.md` | Create only after plan readiness passes and the persistent plan rule applies. |
-| Audit/review report | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using the `/dev-audit` skill. |
-| Current module facts | `docs/capabilities/*.md` | Do not write plans or audit findings here. |
-| Important decision | `docs/adr/YYYY-MM-DD-short-title.md` | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
-| Executable rule | tests | Prefer tests over prose-only rules when practical. |
+| Artifact             | Destination                               | Rule                                                                                        |
+| -------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Decision request     | Conversation only                         | Use when decisions block planning; do not write as executable plan.                         |
+| Task plan            | `docs/plans/YYYY-MM-DD-short-topic.md`  | Create only after plan readiness passes and the persistent plan rule applies.               |
+| Audit/review report  | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using the `/dev-audit` skill.                     |
+| Current module facts | `docs/capabilities/*.md`                | Do not write plans or audit findings here.                                                  |
+| Important decision   | `docs/adr/YYYY-MM-DD-short-title.md`    | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
+| Executable rule      | tests                                     | Prefer tests over prose-only rules when practical.                                          |
+| Confirmed reusable UI rule | `DESIGN.md` through `/dev-design-system` | Update only when the task establishes or changes a project-level rule. |
 
 ## Workflow
 
 1. Run the orient gate:
+
    - Load repository instructions and stable vocabulary.
    - Use `docs/ai/context-map.md` and capability docs to find relevant source files.
    - Avoid historical plan/audit noise unless directly relevant.
    - Report the key context sources used.
-
 2. Confirm the task frame:
+
    - Task type: bug, feature, refactor, audit follow-up, docs, test, or research.
    - Goal in one sentence.
    - Non-goals in one sentence when scope could drift.
-
 3. Run the plan readiness gate:
+
    - Goal clear?
    - Scope clear?
    - Source of truth known?
    - Critical decisions confirmed?
    - Validation path known?
-
 4. Identify decision points:
+
    - List only decisions that affect implementation route.
    - Separate code facts from recommendations and user-owned decisions.
    - If unresolved decisions block execution, output the decision request and stop.
-
 5. Decide plan persistence after decisions are confirmed:
+
    - If the persistent plan rule applies, set `persistent_plan: yes`.
    - If the plan can stay in conversation, set `persistent_plan: no` and explain why it is small enough.
    - If creating a persistent plan, use `docs/plans/YYYY-MM-DD-short-topic.md`.
    - If a relevant active plan already exists, update it instead of creating a duplicate.
-
 6. Make assumptions and decisions explicit:
+
    - List only assumptions that affect implementation.
    - List confirmed decisions, including user-confirmed product/business choices.
    - Ask the user if an assumption is risky and cannot be resolved from code.
    - If the plan comes from an audit, record the source audit path and the exact finding IDs covered
      by this plan.
-
 7. Identify fact sources:
+
    - Relevant docs.
    - Relevant files, APIs, tables, state stores, or tests.
    - The single source of truth if the task touches business logic.
-
+   - For UI tasks: applicable `DESIGN.md` rules, tokens, shared components, stories, and visual checks.
 8. Create the smallest useful plan:
+
    - 3 to 7 steps.
+   - Each executable step has `todo`, `done`, or `blocked` status.
    - Each step has a verification method.
    - Prefer proving the existing issue before modifying code.
    - Do not include unresolved option branches in executable steps.
-
 9. Define artifact routing:
+
    - State whether the task will create or update a plan, audit, capability doc, ADR, tests, or none.
    - If the task comes from an audit, reference the audit path, list `covered_findings`, list
      `deferred_findings`, and keep findings in `docs/audits/`.
    - Include whether `docs/ai/context-map.md` may need an update after implementation.
+   - For UI tasks, state `design_system_impact: none | update | unresolved`, existing components to
+     reuse, and the visual/accessibility verification path.
    - If the task involves a hard-to-reverse decision, fact-source change, architecture choice,
      algorithm policy, or cross-module rule, flag that the `/dev-distill` skill must run the ADR gate.
-
 10. Verify plan file when created:
-   - Confirm the path exists.
-   - Run `git status --short --branch --untracked-files=all`.
-   - Report whether git sees the file.
-   - If ignored, add a minimal allow rule only when safe; otherwise ask the user.
+
+- Confirm the path exists.
+- Run `git status --short --branch --untracked-files=all`.
+- Report whether git sees the file.
+- If ignored, add a minimal allow rule only when safe; otherwise ask the user.
 
 11. Decide execution readiness:
-   - Ready: continue implementing.
-   - Blocked by decisions: ask the user to confirm the decision points.
-   - Needs branch/spec: tell the user why before creating long-lived artifacts.
+
+- Ready: continue implementing.
+- Blocked by decisions: ask the user to confirm the decision points.
+- Needs branch/spec: tell the user why before creating long-lived artifacts.
 
 ## Output Template
 
 Use `templates/output.md` for the final response shape.
 
 When blocked by decisions, use the `Blocked By Decisions` template and stop before creating or updating a plan file.
+
 ## Next-Step Prompt
 
 End with one of these:

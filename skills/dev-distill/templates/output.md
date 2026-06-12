@@ -15,8 +15,9 @@ Artifact closeout:
 - Plan: archived/deleted/not applicable/blocked; <path or reason>
 - Audit: keep active/archived/deleted/not applicable/blocked; <path or reason>
   Open findings: <IDs or none>
+  Resolved findings awaiting verification: <IDs or none>
   Transferred to plans: <plan paths and finding IDs or none>
-  Verification status: <all closed/partially handled/not verified>
+  Verification status: <all verified/resolved by accepted risk or no-fix/partially handled/not verified>
 - ADR: accepted/archived/deleted/not needed/blocked; <path or reason>
 
 Verification:

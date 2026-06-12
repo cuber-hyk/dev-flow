@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-design-system - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-design-system</h1><p class="page-lede">维护项目级、持续演化的 UI 设计契约：确认规则写入 DESIGN.md，精确数值写入 design-tokens.json，并约束语义组件复用。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#modes">工作模式</a><a href="#authority">事实来源</a><a href="#reuse">复用规则</a><a href="#gate">检查 Gate</a></aside><div class="page-content">
+        <section id="modes" class="page-section"><h2>工作模式</h2><p><code>initialize</code> 在代表性 UI 经用户确认后建立首版规范；<code>update</code> 沉淀任务中新确认的可复用规则；<code>check</code> 检查实现是否遵守规范。</p></section>
+        <section id="authority" class="page-section"><h2>事实来源</h2><p><code>DESIGN.md</code> 管理设计意图、使用规则和交互模式；<code>design-tokens.json</code> 管理精确数值；共享组件和 Storybook 管理可执行行为与视觉状态。</p></section>
+        <section id="reuse" class="page-section"><h2>语义复用</h2><p>复用依据是场景含义和行为，而不只是外观。相同语义场景必须优先复用现有组件或交互模式，内容和业务回调可以不同。</p></section>
+        <section id="gate" class="page-section"><h2>检查 Gate</h2><p>UI 任务在审核前检查 DESIGN.md、Token、共享组件、响应式、视觉和可访问性；只有确认后的通用规则才更新设计契约。</p></section>
+      </div></div>
+    </main><footer class="site-footer"><div class="footer-grid"><div>dev-design-system</div><div class="footer-links"><a href="dev-brainstorm.html">上一页</a><a href="dev-plan.html">下一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

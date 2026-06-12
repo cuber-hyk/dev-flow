@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-distill - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-distill</h1><p class="page-lede">把完成后的事实沉淀到长期文档，并关闭 plan/audit 等过程产物。它不重新规划、不重新审查、不重新实现。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#closeout">关闭规则</a><a href="#output">输出</a><a href="#adr">ADR Gate</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>内部流程</h2><div class="process-panel"><div class="process-lane"><div class="lane-label">Classify</div><div class="lane-chain"><span class="node">识别长期事实</span><span class="arrow">-></span><span class="node">选择 CONTEXT/capability/context-map/ADR/test</span></div></div><div class="process-lane"><div class="lane-label">Close</div><div class="lane-chain"><span class="node gate">Plan Closeout</span><span class="arrow">-></span><span class="node gate">Audit Closeout</span><span class="arrow">-></span><span class="node gate">ADR Gate</span></div></div><div class="process-lane"><div class="lane-label">Verify</div><div class="lane-chain"><span class="node">运行相关验证</span><span class="arrow">-></span><span class="node">建议 /dev-check skill</span></div></div></div></section>
+        <section id="closeout" class="page-section"><h2>关闭规则</h2><p>plan 只有在所有非延后步骤为 <code>done</code>、没有 <code>blocked</code>、验证已记录且关联 audit finding 已更新后才可归档或删除。audit 只有在所有 findings verified，或 resolved 且 Closeout 说明接受风险、不处理、不可复现，或完整转入 active plan 后才可归档或删除。</p></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>输出包含 durable updates、plan closeout、audit closeout gate、ADR gate、verification 和 next step。若发现 open/planned finding、未验证 resolved finding 或缺少 closeout，应报告 blocked 并保持 audit active。</p></section>
+        <section id="adr" class="page-section"><h2>ADR Gate</h2><p>当任务改变长期架构、事实源、数据迁移策略、跨模块规则、算法政策或重大取舍时，dev-distill 必须主动判断是否需要 ADR；普通 bug 修复和一次性审查结论不写 ADR。</p></section>
+      </div></div>
+    </main>
+    <footer class="site-footer"><div class="footer-grid"><div>dev-distill</div><div class="footer-links"><a href="dev-changelog.html">上一页</a><a href="../reference.html">文档总览</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

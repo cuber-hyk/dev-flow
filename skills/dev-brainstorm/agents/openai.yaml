@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cuberhyk Dev Flow: Dev Brainstorm"
+  short_description: "Refine fuzzy ideas before planning"
+  default_prompt: "Use $dev-brainstorm to clarify fuzzy feature ideas, compare approaches, identify decision points, and route the confirmed intent to the next Dev Flow step."

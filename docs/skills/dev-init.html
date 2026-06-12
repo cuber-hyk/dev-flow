@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>dev-init - cuberhyk-dev-flow</title><link rel="stylesheet" href="../assets/site.css" /></head>
+  <body data-page="reference">
+    <header class="site-header"><div class="nav-wrap"><a class="brand" href="../index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a><nav class="nav-links" aria-label="主导航"><a data-nav="home" href="../index.html">首页</a><a data-nav="start" href="../getting-started.html">快速开始</a><a data-nav="workflow" href="../workflow.html">工作流</a><a data-nav="reference" href="../reference.html">文档</a></nav><div class="nav-actions"><a class="button ghost" href="../reference.html">文档总览</a><button class="menu-button" type="button" data-menu-button aria-label="打开导航" aria-expanded="false"><span></span><span></span><span></span></button></div></div></header>
+    <main class="container">
+      <section class="page-hero"><span class="eyebrow">Skill</span><h1>dev-init</h1><p class="page-lede">初始化 Dev Flow 的最小文档骨架。它只补齐缺失结构和模板，不替项目推断完整业务知识。</p></section>
+      <div class="page-shell"><aside class="toc"><a href="#flow">流程</a><a href="#output">输出</a><a href="#artifacts">产物</a><a href="#lifecycle">生命周期</a></aside><div class="page-content">
+        <section id="flow" class="page-section"><h2>内部流程</h2><div class="process-panel"><div class="process-lane"><div class="lane-label">Inspect</div><div class="lane-chain"><span class="node">读取现有 AGENTS/CONTEXT/docs</span><span class="arrow">-></span><span class="node">识别缺失结构</span></div></div><div class="process-lane"><div class="lane-label">Create</div><div class="lane-chain"><span class="node">运行 init CLI</span><span class="arrow">-></span><span class="node">只创建缺失文件</span></div></div><div class="process-lane"><div class="lane-label">Verify</div><div class="lane-chain"><span class="node gate">检查路径存在</span><span class="arrow">-></span><span class="node">建议 /dev-check skill</span></div></div></div></section>
+        <section id="output" class="page-section"><h2>输出格式</h2><p>最终输出说明初始化目标、创建的路径、保持不变的路径、验证结果和下一步。若目录已完整，输出应明确说明没有创建新文件。</p></section>
+        <section id="artifacts" class="page-section"><h2>技能产物</h2><p>可能创建 <code>AGENTS.md</code>、<code>CONTEXT.md</code>、<code>CHANGELOG.md</code>、<code>docs/ai/context-map.md</code>、<code>docs/plans/</code>、<code>docs/audits/</code>、<code>docs/capabilities/</code>、<code>docs/adr/</code> 及模板。</p></section>
+        <section id="lifecycle" class="page-section"><h2>生命周期</h2><p>dev-init 不关闭 plan/audit，也不归档文档。初始化完成后的健康检查交给 <code>/dev-check</code> skill；具体任务上下文交给 <code>/dev-orient</code>、<code>/dev-plan</code> 或 <code>/dev-audit</code> skill。</p></section>
+      </div></div>
+    </main>
+    <footer class="site-footer"><div class="footer-grid"><div>dev-init</div><div class="footer-links"><a href="../reference.html">文档总览</a><a href="dev-check.html">下一页</a></div></div></footer><div class="toast" data-toast>已复制</div><script src="../assets/site.js"></script>
+  </body>
+</html>

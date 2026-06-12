@@ -53,7 +53,7 @@
             </h1>
             <p class="hero-lede">
               cuberhyk-dev-flow 是一套为 AI Coding 场景设计的工作流插件。
-              通过 <strong>Orient</strong>、<strong>Plan</strong>、<strong>Branch</strong>、<strong>Changelog</strong>、<strong>Distill</strong>
+            通过 <strong>Orient</strong>、<strong>Plan</strong>、<strong>Branch</strong>、<strong>Changelog</strong>、<strong>Distill</strong>、<strong>Check</strong>
               等关键 Gate，帮助你将每一次改动都变成可理解、可验证、可复用的知识。
             </p>
             <div class="hero-actions">
@@ -66,7 +66,7 @@
           <div class="system-diagram">
             <svg viewBox="0 0 820 380" role="img" aria-labelledby="home-flow-title home-flow-desc">
               <title id="home-flow-title">Dev Flow gate 流程图</title>
-              <desc id="home-flow-desc">从 dev-plan 进入 Orient 和 Decision gate，再由 dev-branch 执行 Changelog、Distill 和 Review gate。</desc>
+              <desc id="home-flow-desc">从 dev-brainstorm 或 dev-plan 进入决策确认，再由 dev-branch 执行 Changelog、Distill、Check 和 Review gate。</desc>
               <defs>
                 <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
                   <path d="M0 0 9 4.5 0 9Z" fill="#0d9488" />
@@ -87,9 +87,10 @@
                 <path d="M176 92H270" marker-end="url(#arrow)" />
                 <path d="M332 92H424" marker-end="url(#arrow)" />
                 <path d="M488 92H580" marker-end="url(#arrow)" />
-                <path d="M704 130v65q0 26-26 26H552" marker-end="url(#arrow)" />
-                <path d="M704 130v122q0 26-26 26H552" marker-end="url(#arrow)" />
-                <path d="M704 130v184q0 26-26 26H552" marker-end="url(#arrow)" />
+                <path d="M704 130v65q0 26-26 26H232" marker-end="url(#arrow)" />
+                <path d="M704 130v122q0 26-26 26H384" marker-end="url(#arrow)" />
+                <path d="M704 130v184q0 26-26 26H536" marker-end="url(#arrow)" />
+                <path d="M704 130v204q0 24-24 24H676" marker-end="url(#arrow)" />
                 <path class="return-line" d="M678 358H244q-34 0-34-34V132" marker-end="url(#arrow)" />
               </g>
 
@@ -119,17 +120,24 @@
                 <text x="681" y="113">/dev-branch</text>
               </g>
 
-              <g class="gate-node lower" transform="translate(302 214)">
+              <g class="gate-node lower" transform="translate(150 214)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M28 18h20l8 8v32H28zM48 18v10h10M34 36h18M34 46h18M34 56h12" />
                 <text x="38" y="99">Changelog</text>
                 <text x="38" y="119">Gate</text>
               </g>
 
-              <g class="gate-node lower" transform="translate(454 214)">
+              <g class="gate-node lower" transform="translate(302 214)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M38 18 18 28l20 10 20-10-20-10ZM18 40l20 10 20-10M18 52l20 10 20-10" />
                 <text x="38" y="99">Distill</text>
+                <text x="38" y="119">Gate</text>
+              </g>
+
+              <g class="gate-node lower" transform="translate(454 214)">
+                <circle cx="38" cy="38" r="38" />
+                <path d="M23 38 34 50 55 27M22 58h32M22 20h32" />
+                <text x="38" y="99">Check</text>
                 <text x="38" y="119">Gate</text>
               </g>
 
@@ -162,7 +170,7 @@
               </span>
               <div>
                 <h2>审核前闭环</h2>
-                <p>提交与合并前自动完成更新日志与知识沉淀，确保变更可审查、可追溯。</p>
+              <p>提交与合并前自动完成更新日志、知识沉淀和状态校验，确保变更可审查、可追溯。</p>
               </div>
             </article>
             <article class="value-item">
@@ -182,7 +190,7 @@
         <div class="container">
           <div class="compact-head">
             <p class="section-kicker">Skills</p>
-            <h2>九个专注技能，各司其职</h2>
+            <h2>十个专注技能，各司其职</h2>
             <p>每个技能只做一件事，职责清晰，配合使用构成完整闭环。</p>
           </div>
           <p class="section-note">Since 0.7.2, every skill has a dedicated <code>skills/&lt;skill&gt;/templates/output.md</code> response template, audit findings use stable lifecycle fields, and branch work reports changelog, distill, and check gates before review.</p>
@@ -201,6 +209,11 @@
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 21s7-4.4 7-11a7 7 0 0 0-14 0c0 6.6 7 11 7 11Z" /><path d="M12 10l3-3-1 4-3 3 1-4Z" /></svg></span>
               <h3>dev-orient</h3>
               <p>低噪音进入项目上下文，识别关键文档与代码入口。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M5 6h14M5 12h10M5 18h7" /><path d="M17 14l2 2 3-4" /></svg></span>
+              <h3>dev-brainstorm</h3>
+              <p>澄清模糊想法、比较方案并确认决策，再进入计划或审查。</p>
             </article>
             <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h2" /></svg></span>
@@ -230,7 +243,7 @@
             <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 4 4 8l8 4 8-4-8-4ZM4 12l8 4 8-4M4 16l8 4 8-4" /></svg></span>
               <h3>dev-distill</h3>
-              <p>将稳定事实沉淀到 capability 与 ADR，完成知识闭环。</p>
+              <p>将稳定事实沉淀到 capability 与 ADR，并正确处理 plan/audit 生命周期。</p>
             </article>
           </div>
         </div>

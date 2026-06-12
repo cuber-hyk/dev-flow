@@ -43,8 +43,11 @@ ask the user first and create/update this plan only after confirmation.
 
 ## Steps And Verification
 
-1. Step:
-   Verification:
+Allowed step statuses: `todo`, `done`, `blocked`.
+
+| ID | Status | Step | Verification |
+|---|---|---|---|
+| PLAN-1 | todo |  |  |
 
 ## Acceptance Criteria
 
@@ -71,5 +74,8 @@ During `dev-distill`, choose one final action:
 
 - Archive: move this file to `docs/plans/archived/` and set `status: archived` when the plan has trace value.
 - Delete: remove this file when it has no independent future value.
+
+Only close the plan when every non-deferred step is `done`, no step is `blocked`, verification is
+recorded, and linked audit findings have been updated.
 
 Do not use `completed` or `superseded` as final states.

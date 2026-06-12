@@ -38,7 +38,7 @@
       <div class="page-shell">
         <aside class="toc" aria-label="页面目录">
           <a href="#skills">技能职责</a>
-          <a href="#skill-md">技能详情</a>
+          <a href="#skill-pages">技能页面</a>
           <a href="#output-templates">Output templates</a>
           <a href="#routing">文档路由</a>
           <a href="#lifecycle">生命周期</a>
@@ -49,7 +49,7 @@
         <div class="page-content">
           <section id="skills" class="page-section">
             <h2>技能职责</h2>
-            <p>每个技能只负责一个阶段。普通开发可以只使用 <code>dev-plan</code> 和 <code>dev-branch</code>，但底层职责仍然清晰。</p>
+            <p>每个技能只负责一个阶段。模糊需求先用 <code>dev-brainstorm</code> 澄清，明确任务可以直接使用 <code>dev-plan</code> 和 <code>dev-branch</code>。</p>
             <div class="table-wrap">
               <table>
                 <thead><tr><th>技能</th><th>负责</th><th>不负责</th></tr></thead>
@@ -57,6 +57,8 @@
                   <tr><td><code>dev-init</code></td><td>创建最小项目记忆结构。</td><td>推断完整项目知识。</td></tr>
                   <tr><td><code>dev-check</code></td><td>检查文档路由、生命周期、git 可见性。</td><td>深度业务审查。</td></tr>
                   <tr><td><code>dev-orient</code></td><td>低噪声进入仓库上下文。</td><td>计划、审查、实现或沉淀。</td></tr>
+                  <tr><td><code>dev-brainstorm</code></td><td>澄清模糊想法、比较路线并确认决策。</td><td>写可执行计划、审查 findings 或实现代码。</td></tr>
+                  <tr><td><code>dev-design-system</code></td><td>初始化、更新或检查项目级 UI 设计契约与语义复用规则。</td><td>预测未出现的 UI 场景或替代组件实现。</td></tr>
                   <tr><td><code>dev-plan</code></td><td>内置 orient gate，识别决策点，制定计划。</td><td>实现或归档知识。</td></tr>
                   <tr><td><code>dev-audit</code></td><td>内置 orient gate，输出证据化发现。</td><td>修复问题。</td></tr>
                   <tr><td><code>dev-exploratory-review</code></td><td>开放式风险发现，建立项目地图与风险地图，只报告真实失败路径。</td><td>实现修复或评论风格偏好。</td></tr>
@@ -68,199 +70,21 @@
             </div>
           </section>
 
-          <section id="skill-md" class="page-section">
-            <h2>技能详情</h2>
-            <p>这里按统一模式说明每个技能：先给结论，再说明适用场景、核心流程、边界和下一步。完整执行规则仍以插件内 <code>skills/*/SKILL.md</code> 为准。</p>
-            <div class="skill-source-grid">
-              <article class="skill-source-card">
-                <header><h3>dev-init</h3><span class="source-path">skills/dev-init/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责初始化 Dev Flow 的最小记忆结构，但不负责替项目补全所有知识。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>首次接入 Dev Flow。</li>
-                    <li>补齐缺失的 docs、模板或 agent 指令结构。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>检查现有项目策略和目录。</li>
-                    <li>只创建缺失结构与模板。</li>
-                    <li>结束后建议运行 <code>dev-check</code>。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不覆盖既有策略，不推断完整能力文档或 ADR。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-check</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-check</h3><span class="source-path">skills/dev-check/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责验证文档路由和生命周期健康，但不做深度业务审查。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>初始化后确认结构是否可用。</li>
-                    <li>检查计划、审查、ADR、CHANGELOG 是否归位。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>运行 docs validation。</li>
-                    <li>识别缺失结构、状态字段和 git 可见性问题。</li>
-                    <li>把问题路由到 init、audit 或 distill。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不修业务 bug，不替代 <code>dev-audit</code> 或 <code>dev-distill</code>。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-init</code> / <code>dev-audit</code> / <code>dev-distill</code> / <code>dev-orient</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-orient</h3><span class="source-path">skills/dev-orient/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责低噪声进入仓库上下文，但不负责计划、审查或实现。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>新会话开始前了解项目状态。</li>
-                    <li>识别相关文档、代码入口和产物路由。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>读取 AGENTS、CONTEXT、context-map 等稳定入口。</li>
-                    <li>只读取任务相关能力文档和代码入口。</li>
-                    <li>推荐继续 plan、audit、branch 或直接小改。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不写计划、不产出 findings、不沉淀长期知识。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-plan</code> / <code>dev-audit</code> / <code>dev-branch</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-plan</h3><span class="source-path">skills/dev-plan/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责把目标变成可验证计划，但不负责实现或审查。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>非平凡功能、修复、重构或文档工作。</li>
-                    <li>审查发现需要转成修复步骤。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>先运行 Orient Gate。</li>
-                    <li>识别产品、业务、数据、架构等决策点。</li>
-                    <li>决策明确后输出单一路线和验收方式。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不实现、不审查、不归档知识，不替用户默默决定关键取舍。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-branch</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-audit</h3><span class="source-path">skills/dev-audit/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责查问题、给证据、写审计报告并路由后续动作，但不负责修复。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>代码审查、架构审计、文档审计。</li>
-                    <li>正确性、数据流、权限、安全或跨模块风险检查。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>先定审计边界和问题。</li>
-                    <li>低噪声读取相关事实源。</li>
-                    <li>按严重程度输出 findings，必要时写入 <code>docs/audits/</code>。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不实现修复，不把审查报告写入 <code>docs/capabilities/</code>。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-plan</code> / <code>dev-branch</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-exploratory-review</h3><span class="source-path">skills/dev-exploratory-review/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责开放式风险发现，先建立项目地图和风险地图，再报告有真实失败路径的问题。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>用户不知道问题在哪里，需要检查整个项目、模块、功能、流程或当前分支。</li>
-                    <li>需要多轮验证正确性、数据完整性、安全、并发、性能或用户可见失败风险。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>先建立 project map 和 risk map。</li>
-                    <li>按 Project Mapper、Risk Prober、Adversarial Verifier、Judge 四轮审查。</li>
-                    <li>只输出有现实触发路径和证据的问题。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不实现修复，不报告命名、格式或主观偏好问题。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-plan</code> / <code>dev-branch</code></p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-branch</h3><span class="source-path">skills/dev-branch/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责在隔离分支实现、验证和审核闭环，但不自动提交、合并或 push。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>计划已明确，需要开始实现。</li>
-                    <li>修复需要完整验证、changelog 和 distill gate。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>分类 dirty worktree，必要时创建任务分支。</li>
-                    <li>实现并运行验证。</li>
-                    <li>审核前执行 Changelog、Distill、Check 和 Review Gate。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不自动提交、合并、删除分支或 push；push 需要单独确认。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-check</code> / commit approval</p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-changelog</h3><span class="source-path">skills/dev-changelog/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责维护面向人的 CHANGELOG，但不记录所有 commit。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>用户、运维、安装、配置、兼容性或安全可见变化。</li>
-                    <li>准备发布或移动 Unreleased 条目。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>判断是否通过 changelog gate。</li>
-                    <li>保持 <code>## [Unreleased]</code> 在顶部。</li>
-                    <li>把条目写入 Added、Changed、Fixed 等分类。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不记录纯内部重构、格式微调、测试-only 或临时过程产物。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-branch</code> review gate</p>
-                </div>
-              </article>
-              <article class="skill-source-card">
-                <header><h3>dev-distill</h3><span class="source-path">skills/dev-distill/SKILL.md</span></header>
-                <div class="source-body">
-                  <p class="skill-summary">结论：负责把稳定知识归位并关闭过程产物，但不重新计划、审查或实现。</p>
-                  <p class="source-label">适合场景</p>
-                  <ul class="source-list">
-                    <li>实现或审查后产生稳定事实。</li>
-                    <li>需要归档或删除 active plan/audit。</li>
-                  </ul>
-                  <p class="source-label">核心流程</p>
-                  <ul class="source-list">
-                    <li>分类知识：capability、ADR、context-map、测试或生命周期产物。</li>
-                    <li>运行 ADR Gate。</li>
-                    <li>关闭计划和审查产物。</li>
-                  </ul>
-                  <p class="source-label">不会做</p>
-                  <ul class="source-list"><li>不重新计划、不重新审查、不重新实现。</li></ul>
-                  <p class="source-label">下一步</p>
-                  <p class="next-step"><code>dev-check</code></p>
-                </div>
-              </article>
+          <section id="skill-pages" class="page-section">
+            <h2>技能页面</h2>
+            <p>每个技能都有独立页面，按同一结构解释适用场景、内部流程、输出格式、状态转换、生命周期、技能产物和下一步路由。这里是面向人阅读的详细说明；Agent 执行时仍以插件内的 <code>skills/*/SKILL.md</code> 和 <code>skills/*/templates/output.md</code> 为准。</p>
+            <div class="card-grid">
+              <article class="info-card"><h3><a href="skills/dev-init.html">dev-init</a></h3><p>初始化 Dev Flow 文档结构和模板。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-check.html">dev-check</a></h3><p>验证路由、模板和生命周期健康。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-orient.html">dev-orient</a></h3><p>低噪声进入仓库上下文。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-brainstorm.html">dev-brainstorm</a></h3><p>把模糊想法转成可计划意图。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-design-system.html">dev-design-system</a></h3><p>维护 DESIGN.md、设计 Token 和语义组件复用规则。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-plan.html">dev-plan</a></h3><p>把目标转成可验证计划。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-audit.html">dev-audit</a></h3><p>执行有边界的结构化审查。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-exploratory-review.html">dev-exploratory-review</a></h3><p>开放式风险发现和多轮验证。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-branch.html">dev-branch</a></h3><p>分支实现、验证和审查前门控。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-changelog.html">dev-changelog</a></h3><p>维护面向人的发布说明。</p></article>
+              <article class="info-card"><h3><a href="skills/dev-distill.html">dev-distill</a></h3><p>沉淀长期知识并关闭过程产物。</p></article>
             </div>
           </section>
 
@@ -274,12 +98,13 @@
                   <tr><td><code>dev-init</code></td><td><code>skills/dev-init/templates/output.md</code></td><td>Target, created paths, unchanged paths, verification, next step.</td></tr>
                   <tr><td><code>dev-check</code></td><td><code>skills/dev-check/templates/output.md</code></td><td>Errors, warnings, recommendations, validation result, next step.</td></tr>
                   <tr><td><code>dev-orient</code></td><td><code>skills/dev-orient/templates/output.md</code></td><td>Context loaded, entry points, fact sources, artifact destinations.</td></tr>
+                  <tr><td><code>dev-brainstorm</code></td><td><code>skills/dev-brainstorm/templates/output.md</code></td><td>Ready-to-plan, blocked-by-decisions, and continue-brainstorming shapes.</td></tr>
                   <tr><td><code>dev-plan</code></td><td><code>skills/dev-plan/templates/output.md</code></td><td>Ready-to-plan shape plus blocked-by-decisions shape.</td></tr>
-                  <tr><td><code>dev-audit</code></td><td><code>skills/dev-audit/templates/output.md</code></td><td>Scope, findings, evidence, verification, routing.</td></tr>
-                  <tr><td><code>dev-exploratory-review</code></td><td><code>skills/dev-exploratory-review/templates/output.md</code></td><td>Scope, project map, risk map, passes, findings, probes.</td></tr>
-                  <tr><td><code>dev-branch</code></td><td><code>skills/dev-branch/templates/output.md</code></td><td>Before Approval and After Merge shapes.</td></tr>
+                  <tr><td><code>dev-audit</code></td><td><code>skills/dev-audit/templates/output.md</code></td><td>Scope, findings with ID/status, evidence, verification, routing.</td></tr>
+                  <tr><td><code>dev-exploratory-review</code></td><td><code>skills/dev-exploratory-review/templates/output.md</code></td><td>Scope, project map, risk map, passes, traceable findings, probes.</td></tr>
+                  <tr><td><code>dev-branch</code></td><td><code>skills/dev-branch/templates/output.md</code></td><td>Before Approval and After Merge shapes, including changelog, distill, and check gates.</td></tr>
                   <tr><td><code>dev-changelog</code></td><td><code>skills/dev-changelog/templates/output.md</code></td><td>Updated, not needed, release prepared, or blocked.</td></tr>
-                  <tr><td><code>dev-distill</code></td><td><code>skills/dev-distill/templates/output.md</code></td><td>Durable updates plus plan, audit, and ADR closeout.</td></tr>
+                  <tr><td><code>dev-distill</code></td><td><code>skills/dev-distill/templates/output.md</code></td><td>Durable updates plus plan, audit closeout gate, and ADR closeout.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -300,10 +125,10 @@
 
           <section id="lifecycle" class="page-section">
             <h2>生命周期规则</h2>
-            <p><code>completed</code> 和 <code>distilled</code> 是事件，不是最终状态。被替代内容如果有历史价值就归档，否则删除。</p>
+            <p><code>completed</code> 和 <code>distilled</code> 是事件，不是最终状态。被替代内容如果有历史价值就归档，否则删除。Audit 只有在 findings 全部验证、接受风险、不处理、不可复现或明确转入 plan 后才能归档。</p>
             <div class="process-panel">
               <div class="process-lane"><div class="lane-label">Plan</div><div class="lane-chain"><span class="node">active</span><span class="arrow">-></span><span class="node gate">archive</span><span class="arrow">or</span><span class="node gate">delete</span></div></div>
-              <div class="process-lane"><div class="lane-label">Audit</div><div class="lane-chain"><span class="node">active</span><span class="arrow">-></span><span class="node gate">archive</span><span class="arrow">or</span><span class="node gate">delete</span></div></div>
+              <div class="process-lane"><div class="lane-label">Audit</div><div class="lane-chain"><span class="node">active</span><span class="arrow">until</span><span class="node gate">all findings closed</span><span class="arrow">-></span><span class="node gate">archive/delete</span></div></div>
               <div class="process-lane"><div class="lane-label">Capability</div><div class="lane-chain"><span class="node">current only</span><span class="arrow">-></span><span class="node gate">update in place</span></div></div>
               <div class="process-lane"><div class="lane-label">ADR</div><div class="lane-chain"><span class="node">proposed</span><span class="arrow">-></span><span class="node">accepted</span><span class="arrow">-></span><span class="node gate">archived or delete</span></div></div>
             </div>
