@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
   "description": "Init, check, orient, plan, audit, exploratory review, branch, changelog, distill, and check-gated coding work with focused agent skills.",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "contextFileName": "GEMINI.md"
 }

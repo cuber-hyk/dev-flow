@@ -565,7 +565,7 @@ Local package test before publishing:
 
 ```bash
 npm pack
-npx ./cuberhyk-dev-flow-0.7.2.tgz install
+npx ./cuberhyk-dev-flow-0.8.0.tgz install
 ```
 
 ## Validation
