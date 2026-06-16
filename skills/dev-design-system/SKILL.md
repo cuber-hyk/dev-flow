@@ -1,6 +1,6 @@
 ---
 name: dev-design-system
-description: Create, evolve, or check a project's durable UI design system contract. Use after the user confirms an initial UI direction, when a UI task discovers a reusable component or interaction pattern, or when checking whether UI implementation follows DESIGN.md, design tokens, shared components, and layout rules. Maintains current rules only; does not design unconfirmed future scenarios or replace implementation planning.
+description: Maintain a project's durable UI design system contract. Use after the user confirms an initial UI direction, when UI work establishes or changes reusable design rules, components, interaction patterns, tokens, layout rules, or UI code rules, or when checking implementation against DESIGN.md, design tokens, and shared components. Do not invent unconfirmed future UI scenarios.
 ---
 
 # Dev Design System

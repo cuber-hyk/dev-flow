@@ -1,6 +1,6 @@
 ---
 name: dev-changelog
-description: Maintain a human-readable CHANGELOG.md using Keep a Changelog conventions. Use when the user asks to update changelog, maintain release notes, record user-visible changes, prepare a release, move Unreleased items into a version, or when the `/dev-branch` skill determines a completed change affects users, operators, public behavior, data, security, install, configuration, compatibility, or release notes. Writes concise entries under Unreleased by category and avoids logging tiny internal-only changes. Do not replace git history, capability docs, ADRs, or task plans.
+description: Maintain human-readable CHANGELOG.md entries using Keep a Changelog conventions. Use when the user asks for changelog or release-note work, prepares a release, moves Unreleased items into a version, or when a completed change affects users, operators, public behavior, data, security, install, configuration, compatibility, or release notes.
 ---
 
 # Dev Changelog

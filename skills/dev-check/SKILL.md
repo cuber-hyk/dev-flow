@@ -1,6 +1,6 @@
 ---
 name: dev-check
-description: Validate Dev Flow documentation routing and lifecycle health. Use when a user asks to check whether AGENTS, CONTEXT, CHANGELOG, context-map, capabilities, plans, audits, ADRs, templates, or Dev Flow directories are correctly organized, or after the `/dev-init`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, or `/dev-distill` skills to verify repository memory. Runs or recommends cuberhyk-dev-flow validate-docs. Do not use for implementing features, writing plans, branch execution, changelog writing, or performing deep code audits.
+description: Validate Dev Flow repository memory, documentation routing, and lifecycle health. Use when the user asks to check AGENTS, CONTEXT, CHANGELOG, context-map, capabilities, plans, audits, ADRs, design-system files, templates, or Dev Flow directories, or after workflow steps that change repository memory. Not for implementation, planning, changelog writing, or deep code audits.
 ---
 
 [toc]

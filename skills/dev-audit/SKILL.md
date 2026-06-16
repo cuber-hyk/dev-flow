@@ -1,6 +1,6 @@
 ---
 name: dev-audit
-description: Create a structured bounded audit or review report with a built-in low-noise orientation gate. Use when the user asks to audit, review, inspect correctness, evaluate completeness, find risks, produce findings, or invokes dev-audit with a clear audit scope or questions. For open-ended project or scope review where the agent must map unknown risks, run probes/tests, and discover realistic failures, use the `/dev-exploratory-review` skill instead. Small audits may stay in conversation. Create or update docs/audits for explicit audit reports, repository workflow requirements, non-trivial/cross-module/correctness-sensitive audits, or findings that need follow-up. Recommend the `/dev-plan` skill for fixes and let the `/dev-branch` skill run distill before review when stable knowledge changes. Do not implement fixes, create feature plans, or write capability documentation.
+description: Create a structured, evidence-based audit or review for a bounded scope. Use when the user asks to audit, inspect correctness, evaluate completeness, find risks, or produce findings for a specific feature, workflow, branch, module, or question. For open-ended unknown-risk discovery, use dev-exploratory-review.
 ---
 
 # Dev Audit

@@ -1,6 +1,6 @@
 ---
 name: dev-branch
-description: Run a development task inside an isolated Git branch with changelog, distill, and review gates. Use when the user asks to create a task branch, use branch-task, isolate implementation work, perform a planned task safely, or wants Codex/Claude to implement changes but only commit/merge after explicit approval. Handles Git repository detection, main branch selection, dirty worktree classification, task branch creation, implementation, verification, changelog decisions, durable knowledge distillation, status/diff review, user approval gate, commit, merge, and cleanup. Allows clearly related Dev Flow plan/audit artifacts to move onto the task branch, but must stop for unrelated existing changes. Never push automatically.
+description: Execute a clear or planned development task in an isolated Git branch with verification and review gates. Use when the user wants implementation work, task-branch isolation, reviewed commit/merge flow, or explicit approval before commit or merge. Also applies when related plan or audit artifacts should move with the task. Never push automatically.
 ---
 
 # Dev Branch
@@ -23,6 +23,8 @@ Dev Branch does:
 - Stop for unrelated or ambiguous existing changes and ask the user how to handle them.
 - Create a task branch.
 - Implement the requested task when the route is clear.
+- During implementation, autonomously delegate focused worker subagents when the task can be split
+  into clear, non-overlapping ownership scopes.
 - Run meaningful verification.
 - Run the Design System Gate for UI tasks before changelog and distill gates.
 - Run the changelog gate and use the `/dev-changelog` skill when release notes are needed.
@@ -30,8 +32,8 @@ Dev Branch does:
   closure, or documentation routing changed.
 - Run the check gate before review when changelog, distill, documentation routing, lifecycle
   artifacts, capability docs, ADRs, context-map, or templates changed.
-- Run an independent review pass in subagent mode when a focused reviewer is available and the
-  review can be delegated without shared writes; otherwise run the same gate in manual mode.
+- Run an independent review pass. The agent is authorized to autonomously choose subagent mode when
+  a focused read-only reviewer is useful and safe; otherwise run the same gate in manual mode.
 - Show `git status --short --branch` and `git diff` before any commit.
 - Wait for explicit user approval before commit, merge, or cleanup.
 - Commit, merge back to main, and delete the task branch only after approval.
@@ -43,7 +45,9 @@ Dev Branch does not:
 - Hide unresolved product, data, state, cleanup, or architecture decisions.
 - Mix unrelated source/config/test/generated changes into the task branch.
 - Commit, merge, delete a branch, or push before the review gate passes.
-- Delegate implementation, fixes, commits, merges, cleanup, or push to the review subagent.
+- Delegate commits, merges, branch cleanup, or push to any subagent.
+- Let worker subagents edit outside their assigned ownership scope or revert changes made by others.
+- Let reviewer subagents implement fixes or edit files.
 - Run `git push` unless the user separately asks and confirms push.
 - Write noisy changelog entries for tiny internal-only changes.
 - Leave durable knowledge distillation for a separate post-merge change when it belongs to the same
@@ -135,6 +139,17 @@ If none can be detected reliably, ask the user.
    - Use the `/dev-orient` skill first if context is not loaded.
    - Use the `/dev-brainstorm` skill first if the task is fuzzy or the route is not confirmed.
    - Use the `/dev-plan` skill first if the task is not plan-ready.
+   - Decide whether implementation should use worker subagents.
+   - The agent is authorized to choose worker subagent delegation autonomously without asking the user again.
+   - Use worker subagents when all are true:
+     - the task can be split into clear, non-overlapping ownership scopes;
+     - each worker has a concrete objective, write scope, and verification expectation;
+     - parallel work materially helps the task;
+     - the main agent can inspect, integrate, and verify all worker outputs.
+   - Do not delegate implementation when the task is small, tightly coupled, urgently blocking, or likely to create merge conflicts.
+   - Tell workers they are not alone in the codebase, must not revert others' edits, and must adapt to existing changes.
+   - Workers may edit only within their assigned ownership scope.
+   - Workers must not commit, merge, delete branches, clean up unrelated lifecycle artifacts, or push.
    - Make the smallest necessary implementation changes.
    - Keep existing code style.
    - Avoid unrelated refactors or compatibility fallback paths.
@@ -183,12 +198,14 @@ If none can be detected reliably, ask the user.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 
 11. Independent review gate:
-   - This gate is mandatory. Choose exactly one mode:
-     - `subagent`: use when the harness exposes subagents, the implementation is non-trivial or
-       benefits from independent review, and the reviewer can work read-only without shared writes.
-     - `manual`: use when subagents are unavailable, the task is too small to justify dispatch, or
-       independent read-only review cannot be safely delegated.
-   - Do not dispatch a subagent merely because one is available. Dispatch only when all are true:
+   - This gate is mandatory. The agent is authorized to choose the review mode autonomously without
+     asking the user again.
+   - Choose exactly one mode:
+     - `subagent`: use when the implementation is non-trivial or benefits from independent review,
+       and a focused reviewer can work read-only without shared writes.
+     - `manual`: use when the task is too small to justify dispatch or independent read-only review
+       cannot be safely delegated.
+   - Do not dispatch a subagent merely because one is available. Dispatch when all are true:
      - the review scope and pass/fail criteria are explicit;
      - the reviewer does not need to modify files or make unresolved product/architecture decisions;
      - the main agent can verify every finding against the repository, diff, and command output;

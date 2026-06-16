@@ -1,6 +1,6 @@
 ---
 name: dev-distill
-description: Distill completed development, audit, review, debugging, or documentation work into durable repository knowledge. Use after implementation or from the `/dev-branch` skill's pre-review distill gate when task outcomes may change domain vocabulary, feature docs, capability docs, ADRs, audit reports, plan records, context maps, or tests. Classifies information, writes it to the right destination, then closes plans and audits by archiving or deleting them. Do not use for initial orientation, task planning, auditing, or implementation.
+description: Distill completed work into durable repository knowledge. Use after development, audit, review, debugging, or documentation work when outcomes may change domain vocabulary, feature behavior, capability docs, UI design rules, ADRs, audit or plan records, context maps, or tests. Also use when active plans or audits need lifecycle closeout.
 ---
 
 # Dev Distill

@@ -1,6 +1,6 @@
 ﻿---
 name: dev-init
-description: Initialize Dev Flow repository memory for a new or existing project. Use when a user wants to set up cuberhyk-dev-flow, quickly connect an existing project, create the recommended AGENTS/CONTEXT/CHANGELOG/docs memory structure, install templates, or learn how to start the workflow. Runs or recommends the underlying cuberhyk-dev-flow init-project command. Do not use for task planning, audits, implementation, changelog maintenance, or distillation.
+description: Initialize Dev Flow repository memory for a new or existing project. Use when the user wants to set up cuberhyk-dev-flow, connect an existing project, create the recommended AGENTS, CONTEXT, CHANGELOG, docs memory structure, install templates, or learn how to start the workflow. Not for task planning, audits, implementation, changelog maintenance, or distillation.
 ---
 
 # Dev Init

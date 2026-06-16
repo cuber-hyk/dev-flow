@@ -1,6 +1,6 @@
 ---
 name: dev-exploratory-review
-description: Perform open-ended, scope-aware, risk-driven review of an existing project when the user does not know where problems may be. Use when asked to inspect a whole project, module, feature, flow, branch, or directory for realistic bugs, correctness issues, data integrity problems, security risks, race conditions, performance regressions, or user-visible failures. Build a project map and risk map, run or write focused probes/tests when useful, validate findings across multiple review passes, and report only issues with realistic failure scenarios. Do not implement fixes or report style, naming, formatting, or subjective preferences.
+description: Perform open-ended, risk-driven review when the problem location is unknown. Use when the user asks to inspect a project, module, feature, flow, branch, or directory for realistic bugs, correctness issues, data integrity problems, security risks, race conditions, performance regressions, or user-visible failures. For bounded audit questions, use dev-audit.
 ---
 
 # Dev Exploratory Review

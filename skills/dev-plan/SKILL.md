@@ -1,6 +1,6 @@
 ---
 name: dev-plan
-description: Create a minimal, verifiable development plan with a built-in low-noise orientation gate. Use for non-trivial bug fixes, features, refactors, audit follow-up fixes, docs work, tests, or user requests that invoke dev-plan. First enter relevant repository context, then check whether goals, boundaries, and decision points are clear. If product, business, data, state, irreversible cleanup, or architecture decisions are unresolved, ask for user confirmation before writing an executable plan. Small plans may stay in conversation. Create or update docs/plans for explicit plan documents, repository workflow requirements, high-risk/cross-module/multi-turn work, audit follow-up work, or reviewable branch workflows. Do not execute implementation changes, write audit reports, or distill completed knowledge.
+description: Create a minimal, verifiable development plan after repository orientation. Use for non-trivial bug fixes, features, refactors, docs work, tests, audit follow-up, reviewable branch work, or explicit dev-plan requests when goals, scope, decisions, and validation need to be confirmed before implementation. Ask for user confirmation when product, data, state, cleanup, UX, or architecture decisions are unresolved.
 ---
 # Dev Plan
 

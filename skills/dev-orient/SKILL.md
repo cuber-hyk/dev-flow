@@ -1,6 +1,6 @@
 ---
 name: dev-orient
-description: Enter and orient within a repository using low-noise, repo-native context. Use at the start of a new coding session or before non-trivial work to inspect repository state, read AGENTS/CONTEXT/context-map/capability docs, identify relevant code entry points, identify likely documentation destinations such as docs/plans, docs/audits, docs/capabilities, or docs/adr, and recommend whether to continue with the `/dev-brainstorm`, `/dev-plan`, `/dev-audit`, or `/dev-branch` skills. Do not use for detailed planning, auditing, implementation, branch execution, or knowledge distillation.
+description: Orient within a repository using low-noise, repo-native context. Use at the start of a coding session or before non-trivial work to inspect repository state, read stable context entry points, identify relevant capability docs, code entry points, and likely artifact destinations, then recommend the next Dev Flow skill. Not for detailed planning, auditing, implementation, branch execution, or distillation.
 ---
 
 # Dev Orient

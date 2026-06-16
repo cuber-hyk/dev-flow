@@ -1,6 +1,6 @@
 ---
 name: dev-brainstorm
-description: Refine fuzzy feature ideas, workflow changes, product directions, or architecture options before planning. Use when the user wants to explore approaches, compare tradeoffs, clarify goals, or when entering dev-plan would require silent product, business, data, state, user-experience, or architecture decisions. Do not use for clear implementation plans, audits, branch execution, changelog writing, or knowledge distillation.
+description: Refine fuzzy ideas before planning. Use when the user wants to explore a feature, workflow change, product direction, UI direction, or architecture option; compare approaches; clarify goals and non-goals; or surface product, data, state, UX, or architecture decisions that should not be chosen silently.
 ---
 
 # Dev Brainstorm
