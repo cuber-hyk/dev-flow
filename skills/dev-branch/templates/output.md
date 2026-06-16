@@ -42,7 +42,8 @@ Subagent review gate:
 
 Review:
 - git status --short --branch --untracked-files=all: <summary>
-- git diff: shown above/summarized
+- changed files: <list or summary>
+- diff summary: <key behavior/code/doc changes; full diff only when requested, small, or line-level review is necessary>
 
 Waiting for approval:
 - Say "���ͨ��" or "���Ժϲ�" to let me commit, merge, and clean up.

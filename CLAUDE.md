@@ -60,7 +60,7 @@ Persistent artifacts:
 - `dev-exploratory-review` may stay chat-only for small scoped reviews, but must write `docs/audits/YYYY-MM-DD-topic-exploratory-review.md` for repository-wide, multi-pass, cross-module, data-related, security-sensitive, correctness-sensitive, or follow-up-worthy reviews.
 - After creating a plan or audit file, run `git status --short --branch --untracked-files=all` and report whether git sees the artifact.
 - `dev-branch` may carry clearly related Dev Flow plan/audit artifacts onto the task branch, but must stop for unrelated existing changes.
-- `dev-branch` must show `git status --short --branch --untracked-files=all` and `git diff`, then wait for explicit approval before commit, merge, or cleanup.
+- `dev-branch` must show `git status --short --branch --untracked-files=all`, changed files, and a concise diff summary, then wait for explicit approval before commit, merge, or cleanup. Do not print the full diff by default; include it only when the user asks, the diff is small, or line-level review is necessary.
 - `dev-branch` must run the changelog gate before review. It updates `CHANGELOG.md` through `dev-changelog` only for notable user/operator/release changes.
 - `dev-branch` must run changelog, distill, and check gates before review. It updates durable knowledge, ADRs, context-map, tests, or plan/audit lifecycle artifacts when the task outcome requires it; otherwise it reports concrete "not needed" reasons. If any gate is blocked, it stops before commit or merge approval.
 - `dev-branch` must run an independent review gate before approval. Use a focused read-only subagent only when available and useful; otherwise run the same review manually. The main agent verifies all findings and owns the final diff and evidence.

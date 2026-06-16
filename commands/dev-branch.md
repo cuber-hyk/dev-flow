@@ -26,7 +26,7 @@ Required behavior:
 9. Stop before review if changelog, distill, or check is blocked.
 10. Run the mandatory independent review gate in subagent mode when a focused read-only reviewer is available and useful; otherwise run the same gate in manual mode.
 11. Independently verify subagent findings and stop if any review blocker remains.
-12. Show `git status --short --branch --untracked-files=all` and `git diff`.
+12. Show `git status --short --branch --untracked-files=all`, changed files, and a concise diff summary; do not print full diff by default.
 13. Wait for explicit approval before commit, merge, or branch cleanup.
 14. Never push automatically.
 15. Follow the skill's `templates/output.md` final response shape.

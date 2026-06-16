@@ -34,7 +34,8 @@ Dev Branch does:
   artifacts, capability docs, ADRs, context-map, or templates changed.
 - Run an independent review pass. The agent is authorized to autonomously choose subagent mode when
   a focused read-only reviewer is useful and safe; otherwise run the same gate in manual mode.
-- Show `git status --short --branch` and `git diff` before any commit.
+- Run `git status --short --branch --untracked-files=all` and inspect the diff before any commit.
+  Summarize changed files and key diffs instead of printing the full diff by default.
 - Wait for explicit user approval before commit, merge, or cleanup.
 - Commit, merge back to main, and delete the task branch only after approval.
 - Recommend the `/dev-check` skill after merge when documentation or lifecycle artifacts changed.
@@ -71,7 +72,7 @@ Classify existing changes:
 | Class | Examples | Action |
 |---|---|---|
 | Dev Flow task artifacts | `docs/plans/*.md`, `docs/audits/*.md`, `docs/ai/context-map.md`, `CONTEXT.md`, Dev Flow section in `AGENTS.md` | Allow if clearly related to this task. These move onto the task branch and remain part of review. |
-| Unrelated or ambiguous changes | Source code, config, dependencies, tests, generated files, unrelated docs, unknown user edits | Stop, show status/diff, and ask the user whether to keep, commit elsewhere, stash, discard, or include them. |
+| Unrelated or ambiguous changes | Source code, config, dependencies, tests, generated files, unrelated docs, unknown user edits | Stop, show status and a concise diff summary, then ask the user whether to keep, commit elsewhere, stash, discard, or include them. |
 | Clean worktree | No changes | Continue. |
 
 If a plan file was created by the `/dev-plan` skill before the `/dev-branch` skill, it may remain uncommitted and move
@@ -123,7 +124,8 @@ If none can be detected reliably, ask the user.
 2. Inspect repository:
    - Run `git rev-parse --is-inside-work-tree`.
    - If not a Git repository, stop and explain that the `/dev-branch` skill requires Git. Recommend initializing a repository only if the user asks.
-   - Run `git status --short --branch --untracked-files=all` and `git diff`.
+   - Run `git status --short --branch --untracked-files=all` and inspect `git diff`.
+   - Do not print the full diff by default; summarize changed files and relevant diff themes.
 
 3. Classify existing changes:
    - If only related Dev Flow artifacts exist, continue.
@@ -214,7 +216,7 @@ If none can be detected reliably, ask the user.
      - task goal and confirmed route;
      - active plan or audit source when applicable;
      - `git status --short --branch --untracked-files=all`;
-     - diff summary, full diff, or relevant commit range;
+     - changed files and diff summary, plus full diff only when line-level review is necessary;
      - verification commands and observed results;
      - the required review output fields below.
    - The review pass must report:
@@ -234,9 +236,11 @@ If none can be detected reliably, ask the user.
 
 12. Approval review output:
    - Run `git status --short --branch --untracked-files=all`.
-   - Run `git diff`.
-   - Summarize changed files, verification, changelog gate, distill gate, check gate, and the
-     independent review gate.
+   - Inspect `git diff`.
+   - Summarize changed files, key diff themes, verification, changelog gate, distill gate, check gate,
+     and the independent review gate.
+   - Do not print the full diff by default.
+   - Print the full diff only when the user asks, the diff is small, or line-level review is necessary.
    - Stop and wait for explicit user approval.
 
 13. After explicit approval only:

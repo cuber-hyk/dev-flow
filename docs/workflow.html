@@ -101,7 +101,7 @@
               <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理；部分修复只能更新 finding 状态。</p></article>
               <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG、输出模板和路由状态。</p></article>
               <article class="info-card"><h3>Independent Review Gate</h3><p>有价值且可安全委派时使用只读子 Agent，否则执行同形状的 manual review；主 Agent 复核 finding 并负责最终证据。</p></article>
-              <article class="info-card"><h3>Approval Review Gate</h3><p>展示 <code>git status</code> 和 <code>git diff</code>，用户明确批准后才提交、合并、删除分支。</p></article>
+              <article class="info-card"><h3>Approval Review Gate</h3><p>展示 <code>git status</code>、变更文件和 diff 摘要，默认不输出完整 diff；用户明确批准后才提交、合并、删除分支。</p></article>
             </div>
           </section>
 
@@ -110,7 +110,7 @@
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
             <p>标准分支输出模板位于 <code>skills/dev-branch/templates/output.md</code>。提交或合并审批前使用 <code>Before Approval</code> 形态；只有在用户批准合并且清理完成后，才使用 <code>After Merge</code> 形态。</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Subagent review gate: subagent/manual, compliance, coverage, evidence, blockers&#10;Review: git status + git diff&#10;Waiting for approval">复制</button></div>
+              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Subagent review gate: subagent/manual, compliance, coverage, evidence, blockers&#10;Review: git status + changed files + diff summary&#10;Waiting for approval">复制</button></div>
               <pre><code>Branch: task/YYYYMMDD-short-task-slug
 
 Existing changes before branch:
@@ -144,7 +144,7 @@ Subagent review gate:
 
 Review:
 - git status --short --branch --untracked-files=all
-- git diff
+- changed files and diff summary
 
 Waiting for approval:
 - Say "审核通过" or "可以合并" to let me commit, merge, and clean up.

@@ -131,7 +131,7 @@ flowchart TD
   K --> KN["Report not needed if no docs changed"]
   KP --> IR["Independent Review: subagent or manual"]
   KN --> IR
-  IR --> R["Approval Review: status + diff"]
+  IR --> R["Approval Review: status + diff summary"]
   R --> M["User approval -> commit, merge, cleanup"]
 ```
 
@@ -163,7 +163,7 @@ flowchart TD
 | Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
 | Check Gate | `dev-branch`, or standalone `dev-check` | Validate lifecycle routing after docs or process artifacts changed. | Errors/warnings/recommendations, or a concrete "not needed" reason. |
 | Independent Review Gate | `dev-branch` | Check plan compliance, audit coverage, related-only changes, verification evidence, and lifecycle gates using a focused read-only subagent when useful or the same manual review otherwise. | Pass/fail/not-applicable results and blockers verified by the main agent. |
-| Approval Review Gate | `dev-branch` | Show status and diff before any commit, merge, branch delete, or push. | User approval request. |
+| Approval Review Gate | `dev-branch` | Show status, changed files, and a concise diff summary before any commit, merge, branch delete, or push. | User approval request. |
 
 ## Output Templates
 
@@ -229,7 +229,7 @@ It does not require a perfectly clean worktree. It requires an attributable work
 - Related Dev Flow artifacts such as `docs/plans/*.md` or `docs/audits/*.md` may move onto the
   task branch when they clearly belong to the task.
 - Unrelated or ambiguous source, config, dependency, test, generated, or documentation changes
-  must stop the workflow. The agent must show `git status` and `git diff` and ask the user how to
+  must stop the workflow. The agent must show `git status`, changed files, and a concise diff summary, then ask the user how to
   handle them.
 - A plan created by `dev-plan` before `dev-branch` does not need to be committed first.
 
@@ -243,7 +243,7 @@ Before commit or merge, `dev-branch` must show:
 
 ```bash
 git status --short --branch --untracked-files=all
-git diff
+git diff  # inspect locally; summarize by default instead of printing the full diff
 ```
 
 Review output must include:
