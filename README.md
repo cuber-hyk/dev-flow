@@ -479,12 +479,12 @@ marked Dev Flow section only when that section is absent.
 Use skills in normal agent conversations. CLI commands are implementation primitives for agents:
 
 ```bash
-cuberhyk-dev-flow install
-cuberhyk-dev-flow validate
-cuberhyk-dev-flow init-project [project-dir]
-cuberhyk-dev-flow init-design-system [project-dir]
-cuberhyk-dev-flow validate-docs [project-dir]
-cuberhyk-dev-flow paths
+node ./bin/dev-flow.js install
+node ./bin/dev-flow.js validate
+node ./bin/dev-flow.js init-project [project-dir]
+node ./bin/dev-flow.js init-design-system [project-dir]
+node ./bin/dev-flow.js validate-docs [project-dir]
+node ./bin/dev-flow.js paths
 ```
 
 `init-project` backs the `dev-init` skill. `init-design-system` creates the initial empty
@@ -553,19 +553,14 @@ If Codex still shows an old `dev-flow` plugin, disable or remove `dev-flow@perso
 Codex or start a new session. Skills are loaded at session start and usually do not hot-refresh
 inside an existing conversation.
 
-### npm
+### Local Source CLI
 
-After publishing:
-
-```bash
-npx cuberhyk-dev-flow install
-```
-
-Local package test before publishing:
+When this plugin is not published to npm, run the CLI from a local source checkout:
 
 ```bash
-npm pack
-npx ./cuberhyk-dev-flow-0.8.0.tgz install
+git clone https://github.com/cuber-hyk/dev-flow
+cd dev-flow
+node ./bin/dev-flow.js install
 ```
 
 ## Validation
@@ -579,7 +574,7 @@ npm run validate
 Validate a project using Dev Flow docs:
 
 ```bash
-cuberhyk-dev-flow validate-docs /path/to/project
+node ./bin/dev-flow.js validate-docs /path/to/project
 ```
 
 The docs validator checks:

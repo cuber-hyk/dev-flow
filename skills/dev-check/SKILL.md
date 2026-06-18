@@ -15,7 +15,7 @@ Use this skill to verify that Dev Flow memory is organized correctly[.
 
 Dev Check does:
 
-- Run `cuberhyk-dev-flow validate-docs [project-dir]` or the local equivalent.
+- Run `node <dev-flow>/bin/dev-flow.js validate-docs [project-dir]`.
 - Report missing recommended memory paths.
 - Detect process artifacts misplaced under `docs/capabilities/`.
 - Warn when plans, audits, ADRs, or capabilities lack required metadata.
@@ -38,12 +38,6 @@ Dev Check does not:
 - Replace the `/dev-distill` skill; use the `/dev-distill` skill to close artifacts and update durable facts.
 
 ## Command
-
-Preferred after npm publish:
-
-```bash
-cuberhyk-dev-flow validate-docs /path/to/project
-```
 
 Local source checkout:
 

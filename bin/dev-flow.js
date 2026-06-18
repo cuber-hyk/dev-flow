@@ -40,12 +40,12 @@ function usage() {
   console.log(`cuberhyk-dev-flow installer
 
 Usage:
-  npx cuberhyk-dev-flow install
-  npx cuberhyk-dev-flow validate
-  npx cuberhyk-dev-flow init-project [project-dir]
-  npx cuberhyk-dev-flow init-design-system [project-dir]
-  npx cuberhyk-dev-flow validate-docs [project-dir]
-  npx cuberhyk-dev-flow paths
+  node ./bin/dev-flow.js install
+  node ./bin/dev-flow.js validate
+  node ./bin/dev-flow.js init-project [project-dir]
+  node ./bin/dev-flow.js init-design-system [project-dir]
+  node ./bin/dev-flow.js validate-docs [project-dir]
+  node ./bin/dev-flow.js paths
 
 Options:
   DEV_FLOW_PLUGIN_DIR       Override plugin install directory

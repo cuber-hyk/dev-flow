@@ -195,7 +195,7 @@ If none can be detected reliably, ask the user.
 10. Check gate:
    - Run this gate before review when changelog, distill, documentation routing, lifecycle
      artifacts, capability docs, ADRs, context-map, templates, or validation rules changed.
-   - Use the `/dev-check` skill rules or `cuberhyk-dev-flow validate-docs <project>` to verify routing and lifecycle health.
+   - Use the `/dev-check` skill rules or `node <dev-flow>/bin/dev-flow.js validate-docs <project>` to verify routing and lifecycle health.
    - If no docs or lifecycle artifacts changed, report `Check gate: not needed` with a concrete reason.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 

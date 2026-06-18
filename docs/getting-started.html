@@ -71,12 +71,14 @@ node .\bin\dev-flow.js install</code></pre>
               </article>
               <article class="install-row">
                 <div>
-                  <h3>npm 发布后</h3>
-                  <p>公开发布后，安装流程可以收敛为一个 `npx` 命令，适合跨机器快速接入。</p>
+                  <h3>源码本地使用</h3>
+                  <p>不发布 npm 时，直接从源码仓库运行本地 CLI。适合个人机器、插件 marketplace 和开发调试。</p>
                 </div>
                 <div class="terminal-card">
-                  <div class="terminal-head"><span>npx</span><button class="copy-button" data-copy="npx cuberhyk-dev-flow install">复制</button></div>
-                  <pre><code>npx cuberhyk-dev-flow install</code></pre>
+                  <div class="terminal-head"><span>Source checkout</span><button class="copy-button" data-copy="git clone https://github.com/cuber-hyk/dev-flow&#10;cd dev-flow&#10;node .\bin\dev-flow.js install">复制</button></div>
+                  <pre><code>git clone https://github.com/cuber-hyk/dev-flow
+cd dev-flow
+node .\bin\dev-flow.js install</code></pre>
                 </div>
               </article>
             </div>
@@ -110,11 +112,11 @@ node .\bin\dev-flow.js install</code></pre>
               <table>
                 <thead><tr><th>命令</th><th>用途</th></tr></thead>
                 <tbody>
-                  <tr><td><code>cuberhyk-dev-flow install</code></td><td>安装到本地 marketplace。</td></tr>
-                  <tr><td><code>cuberhyk-dev-flow validate</code></td><td>校验插件包结构。</td></tr>
-                  <tr><td><code>cuberhyk-dev-flow init-project [dir]</code></td><td>作为 `dev-init` 的底层实现，创建缺失文档结构。</td></tr>
-                  <tr><td><code>cuberhyk-dev-flow init-design-system [dir]</code></td><td>在代表性 UI 审核通过后创建 DESIGN.md 和 design-tokens.json。</td></tr>
-                  <tr><td><code>cuberhyk-dev-flow validate-docs [dir]</code></td><td>作为 `dev-check` 的底层实现，检查文档路由和生命周期。</td></tr>
+                  <tr><td><code>node .\bin\dev-flow.js install</code></td><td>安装到本地 marketplace。</td></tr>
+                  <tr><td><code>node .\bin\dev-flow.js validate</code></td><td>校验插件包结构。</td></tr>
+                  <tr><td><code>node .\bin\dev-flow.js init-project [dir]</code></td><td>作为 `dev-init` 的底层实现，创建缺失文档结构。</td></tr>
+                  <tr><td><code>node .\bin\dev-flow.js init-design-system [dir]</code></td><td>在代表性 UI 审核通过后创建 DESIGN.md 和 design-tokens.json。</td></tr>
+                  <tr><td><code>node .\bin\dev-flow.js validate-docs [dir]</code></td><td>作为 `dev-check` 的底层实现，检查文档路由和生命周期。</td></tr>
                 </tbody>
               </table>
             </div>

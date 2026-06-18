@@ -13,7 +13,7 @@ Dev Init does:
 
 - Inspect whether the current directory is a repository.
 - Check whether Dev Flow memory files and directories already exist.
-- Run `cuberhyk-dev-flow init-project [project-dir]` or the local equivalent when appropriate.
+- Run `node <dev-flow>/bin/dev-flow.js init-project [project-dir]` when appropriate.
 - Create missing files from the plugin `templates/` directory.
 - Append a marked Dev Flow section to `AGENTS.md` when it already exists; create `AGENTS.md` only when missing.
 - Explain what was created and what remains user-owned.
@@ -44,7 +44,7 @@ For an existing project, the `/dev-init` skill creates only the missing memory s
 `dev-init` uses this CLI command as its stable file-creation mechanism:
 
 ```bash
-cuberhyk-dev-flow init-project /path/to/project
+node C:\Users\YourName\plugins\dev-flow\bin\dev-flow.js init-project /path/to/project
 ```
 
 Local source checkout:
@@ -87,7 +87,7 @@ UI projects initialize their durable design contract separately after the user a
 representative UI:
 
 ```bash
-cuberhyk-dev-flow init-design-system /path/to/project
+node C:\Users\YourName\plugins\dev-flow\bin\dev-flow.js init-design-system /path/to/project
 ```
 
 ## Workflow

@@ -183,15 +183,15 @@ When creating a plan file:
 
 ## Document Routing
 
-| Artifact             | Destination                               | Rule                                                                                        |
-| -------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Decision request     | Conversation only                         | Use when decisions block planning; do not write as executable plan.                         |
-| Task plan            | `docs/plans/YYYY-MM-DD-short-topic.md`  | Create only after plan readiness passes and the persistent plan rule applies.               |
-| Audit/review report  | `docs/audits/YYYY-MM-DD-topic-audit.md` | Do not write audit findings here unless using the `/dev-audit` skill.                     |
-| Current module facts | `docs/capabilities/*.md`                | Do not write plans or audit findings here.                                                  |
-| Important decision   | `docs/adr/YYYY-MM-DD-short-title.md`    | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
-| Executable rule      | tests                                     | Prefer tests over prose-only rules when practical.                                          |
-| Confirmed reusable UI rule | `DESIGN.md` through `/dev-design-system` | Update only when the task establishes or changes a project-level rule. |
+| Artifact                   | Destination                                  | Rule                                                                                        |
+| -------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Decision request           | Conversation only                            | Use when decisions block planning; do not write as executable plan.                         |
+| Task plan                  | `docs/plans/YYYY-MM-DD-short-topic.md`     | Create only after plan readiness passes and the persistent plan rule applies.               |
+| Audit/review report        | `docs/audits/YYYY-MM-DD-topic-audit.md`    | Do not write audit findings here unless using the `/dev-audit` skill.                     |
+| Current module facts       | `docs/capabilities/*.md`                   | Do not write plans or audit findings here.                                                  |
+| Important decision         | `docs/adr/YYYY-MM-DD-short-title.md`       | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
+| Executable rule            | tests                                        | Prefer tests over prose-only rules when practical.                                          |
+| Confirmed reusable UI rule | `DESIGN.md` through `/dev-design-system` | Update only when the task establishes or changes a project-level rule.                      |
 
 ## Workflow
 
