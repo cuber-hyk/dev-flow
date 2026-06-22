@@ -62,6 +62,14 @@ For clear tasks:
 /dev-branch <implement the approved plan>
 ```
 
+For large-file, module-boundary, or code-organization risk:
+
+```text
+/dev-split <file, module, or planned change>
+/dev-plan <embed the split guidance into the execution route>
+/dev-branch <implement the confirmed route>
+```
+
 For review-driven work:
 
 ```text
@@ -85,10 +93,10 @@ For repository health:
 /dev-check  # routing, lifecycle, git visibility, changelog, ADR hints
 ```
 
-`dev-orient`, `dev-changelog`, and `dev-distill` still exist as standalone skills, but normal users
+`dev-orient`, `dev-split`, `dev-changelog`, and `dev-distill` still exist as standalone skills, but normal users
 do not need to remember them for every task. `dev-brainstorm`, `dev-plan`, `dev-audit`, and
-`dev-exploratory-review` include built-in orientation. `dev-branch` includes lifecycle gates and
-an independent subagent-or-manual review before approval.
+`dev-exploratory-review` include built-in orientation. `dev-plan` routes split-sensitive work to
+`dev-split`, and `dev-branch` includes lifecycle gates plus an independent subagent-or-manual review before approval.
 
 ## Flow Diagram
 
@@ -144,6 +152,7 @@ flowchart TD
 | `dev-orient` | Enter repository context by reading only stable entry docs and relevant capability docs. | Plan, audit, implement, or distill. | `dev-plan` or `dev-audit` |
 | `dev-brainstorm` | Clarify fuzzy ideas, compare approaches, and confirm decisions before planning. | Write executable plans, audit findings, or implementation code. | `dev-plan`, `dev-audit`, `dev-exploratory-review`, or `dev-orient` |
 | `dev-design-system` | Initialize, update, or check the durable project UI contract, tokens, and semantic reuse rules. | Invent unseen UI scenarios or replace component code and task plans. | User review, `dev-plan`, or continued `dev-branch` gates |
+| `dev-split` | Classify large-file, module-boundary, and code-placement risk; produce split guidance or guardrails. | Implement code without an approved plan, chase line-count targets, or replace `dev-plan`. | `dev-plan` or `dev-branch` |
 | `dev-plan` | Run orient gate, check decision readiness, then create a verifiable plan. | Implement, audit, close artifacts, or silently decide product/business choices. | `dev-branch` |
 | `dev-audit` | Run orient gate, produce evidence-based findings for bounded audits, and persist non-trivial audits. | Implement fixes, discover unknown risks across a project, or update capability facts directly. | `dev-plan` or `dev-branch` |
 | `dev-exploratory-review` | Map a project or bounded scope, build a risk map, run focused probes/tests, and report only realistic failures. | Implement fixes or comment on style, naming, formatting, or subjective preferences. | `dev-plan` or `dev-branch` |
@@ -158,6 +167,7 @@ flowchart TD
 | Orient Gate | `dev-plan`, `dev-audit`, or standalone `dev-orient` | Load AGENTS/CLAUDE, CONTEXT, context-map, relevant capability docs, and key code only. | Context sources and likely artifact routes. |
 | Brainstorm Gate | `dev-brainstorm` | Clarify fuzzy intent, compare approaches, and confirm the next route before planning. | Confirmed goal, decisions, alternatives, and next skill. |
 | Design System Gate | `dev-design-system`, or UI work inside `dev-branch` | Reuse existing semantic patterns, update confirmed reusable rules, and check UI compliance. | Updated/passed `DESIGN.md`, tokens, components, and visual/accessibility verification, or a concrete "not needed" reason. |
+| Split Gate | `dev-split`, or split-sensitive planning through `dev-plan` | Classify no split, local cleanup, defer, or proposed split, and define owner modules plus code-placement constraints. | Split guidance, defer trigger, proposed split awaiting approval, or concrete "not needed" reason. |
 | Decision Gate | `dev-plan` | Identify unresolved product, data, lifecycle, cleanup, or architecture decisions before planning. | Decision request or confirmed execution route. |
 | Changelog Gate | `dev-branch`, or standalone `dev-changelog` | Decide whether the change is notable for users, operators, public APIs, data, security, install, config, compatibility, or release notes. | Updated `CHANGELOG.md` or a concrete "not needed" reason. |
 | Distill Gate | `dev-branch`, or standalone `dev-distill` | Capture durable knowledge and close plans/audits before review. | Updated CONTEXT, capabilities, ADRs, context-map, tests, archives, or a concrete "not needed" reason. |
@@ -174,12 +184,13 @@ skills/<skill-name>/templates/output.md
 ```
 
 `SKILL.md` keeps the workflow rules and points to the template. Slash commands also require the
-same template shape, so `/dev-brainstorm`, `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, `/dev-distill`,
+same template shape, so `/dev-brainstorm`, `/dev-split`, `/dev-plan`, `/dev-audit`, `/dev-branch`, `/dev-changelog`, `/dev-distill`,
 and the other commands produce consistent responses across agent harnesses.
 
 Use the templates as the source of truth for response structure:
 
 - `dev-brainstorm` has ready, blocked-by-decisions, and continue-brainstorming shapes.
+- `dev-split` has classification, deferred, split proposal, and blocked shapes.
 - `dev-branch` has separate `Before Approval` and `After Merge` sections, and reports lifecycle
   gates plus an independent subagent-or-manual review before approval.
 - `dev-plan` has separate ready and decision-blocked shapes.
@@ -206,6 +217,11 @@ A task is plan-ready only when:
 
 If critical decisions are unresolved, `dev-plan` must stop at a decision request and ask the user
 to confirm the route. It should not create or update a formal plan file yet.
+
+If the task touches large files, module ownership, shared state, side effects, test boundaries, or
+code-placement risk, `dev-plan` must use or recommend `dev-split` before writing implementation
+steps. The plan should include only the selected `dev-split` result: classification, owner modules,
+guardrails, deferred trigger, verification, and lifecycle closeout.
 
 Decision points must be called out when:
 
@@ -455,6 +471,7 @@ For an existing project:
 /dev-init 接入当前项目的 Dev Flow 文档结构
 /dev-check 检查文档结构、生命周期状态、CHANGELOG 和 gitignore 规则
 /dev-brainstorm 梳理一个还不明确的新功能想法，比较路线并确认决策
+/dev-split 评估目标文件或模块边界，给出拆分/不拆/defer 和代码放置约束
 /dev-plan 我要开发某个功能，请先进入上下文、识别决策点、再制定计划
 /dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate
 /dev-check 复查文档归位和生命周期状态
@@ -532,6 +549,7 @@ Invoke skills with short Claude Code commands:
 /dev-orient
 /dev-brainstorm
 /dev-design-system
+/dev-split
 /dev-plan
 /dev-audit
 /dev-exploratory-review
@@ -608,6 +626,14 @@ Clear feature development:
 ```text
 /dev-plan 开发学习统计的连续学习天数。先进入上下文，识别是否有统计口径决策点，再制定计划。
 /dev-branch 按计划创建任务分支、实现、验证，并在审核前完成 changelog/distill/check gate。
+```
+
+Split-sensitive development:
+
+```text
+/dev-split 评估学习统计 App.tsx 是否应该拆分，以及新统计逻辑应该放在哪里。
+/dev-plan 基于 dev-split 的 owner 模块和 guardrails 制定实现计划。
+/dev-branch 按计划实现，不把新行为继续塞进已有大文件。
 ```
 
 Audit-driven development:

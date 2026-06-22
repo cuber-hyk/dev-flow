@@ -9,6 +9,7 @@ Skills:
 - `dev-orient`: enter repository context.
 - `dev-brainstorm`: clarify fuzzy ideas and compare approaches before planning.
 - `dev-design-system`: initialize, update, or check the durable project UI contract.
+- `dev-split`: evaluate large-file, module-boundary, and code-placement risk before planning or implementation.
 - `dev-plan`: create a verifiable plan.
 - `dev-audit`: create structured audit findings under `docs/audits/`.
 - `dev-exploratory-review`: map a project or scope, build a risk map, and verify realistic failures.
@@ -30,6 +31,12 @@ Use this short flow for clear non-trivial development work:
 1. `dev-plan` enters relevant context, identifies decision points, and turns the task into a verifiable goal, scope, steps, risks, and checks.
 2. `dev-branch` executes implementation in a task branch, runs lifecycle gates and an independent subagent-or-manual review, and waits for approval before commit/merge.
 
+Use this flow for large-file, module-boundary, or code-organization risk:
+
+1. `dev-split` classifies no split, local cleanup, defer, or proposed split, and defines code-placement constraints.
+2. `dev-plan` embeds the split guidance into the execution plan.
+3. `dev-branch` implements only the confirmed route and follows the owner-module constraints.
+
 Use this flow for audit-driven work:
 
 1. `dev-audit` enters relevant context and creates evidence-based findings.
@@ -40,8 +47,8 @@ Use `dev-exploratory-review` when the problem location is unknown and the agent 
 or a user-provided scope, run focused probes/tests when useful, and report only realistic failures.
 
 Use `dev-init` for first-time project adoption and `dev-check` for lifecycle/routing validation.
-`dev-orient`, `dev-changelog`, and `dev-distill` are still available standalone, but normal `dev-brainstorm`, `dev-plan`,
-`dev-audit`, and `dev-branch` calls include their relevant gates.
+`dev-orient`, `dev-split`, `dev-changelog`, and `dev-distill` are still available standalone, but normal `dev-brainstorm`, `dev-plan`,
+`dev-audit`, and `dev-branch` calls include or route to their relevant gates.
 
 Do not skip directly to implementation when the task is ambiguous, cross-module, or business-critical.
 
@@ -63,6 +70,7 @@ Persistent artifacts:
 Plan readiness:
 
 - `dev-plan` must identify unresolved product, business, data, state, irreversible cleanup, user-experience, or architecture decisions before writing an executable plan.
+- `dev-plan` must use or recommend `dev-split` when planning touches large files, module boundaries, ownership, shared state, side effects, or code-placement risk.
 - `dev-brainstorm` keeps fuzzy idea refinement chat-only by default and routes confirmed decisions into `dev-plan`.
 - If code facts cannot resolve a decision, ask the user to confirm it first.
 - Recommendations are allowed, but must be labeled as recommendations.

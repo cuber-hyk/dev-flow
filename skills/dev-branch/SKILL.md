@@ -23,6 +23,7 @@ Dev Branch does:
 - Stop for unrelated or ambiguous existing changes and ask the user how to handle them.
 - Create a task branch.
 - Implement the requested task when the route is clear.
+- Follow any `/dev-split` code-placement constraints embedded in the active plan.
 - During implementation, autonomously delegate focused worker subagents when the task can be split
   into clear, non-overlapping ownership scopes.
 - Run meaningful verification.
@@ -85,8 +86,9 @@ Before implementation, decide whether planning is needed:
 - If the task is small, explicit, and low-risk, proceed after basic orientation.
 - If the task is fuzzy or route selection is still needed, use or recommend the `/dev-brainstorm` skill.
 - If the task is non-trivial, cross-module, correctness-sensitive, or already has a persistent plan, use or recommend the `/dev-plan` skill.
+- If implementation would grow a large file or cross an unplanned module boundary, stop broad edits and use or recommend the `/dev-split` skill.
 - If unresolved decisions exist, stop and ask the user. Do not create an executable branch plan from unresolved choices.
-- If a persistent plan exists, read only the active plan for this task and verify it is plan-ready.
+- If a persistent plan exists, read only the active plan for this task, verify it is plan-ready, and follow any split guidance it contains.
 
 ## Branch Naming
 
@@ -141,6 +143,7 @@ If none can be detected reliably, ask the user.
    - Use the `/dev-orient` skill first if context is not loaded.
    - Use the `/dev-brainstorm` skill first if the task is fuzzy or the route is not confirmed.
    - Use the `/dev-plan` skill first if the task is not plan-ready.
+   - Use the `/dev-split` skill first if the implementation route would add substantial behavior to a large file, create a new central module, or cross an ownership boundary not covered by the plan.
    - Decide whether implementation should use worker subagents.
    - The agent is authorized to choose worker subagent delegation autonomously without asking the user again.
    - Use worker subagents when all are true:
@@ -153,6 +156,7 @@ If none can be detected reliably, ask the user.
    - Workers may edit only within their assigned ownership scope.
    - Workers must not commit, merge, delete branches, clean up unrelated lifecycle artifacts, or push.
    - Make the smallest necessary implementation changes.
+   - Keep new behavior inside the owner modules named by the plan or `/dev-split` result.
    - Keep existing code style.
    - Avoid unrelated refactors or compatibility fallback paths.
 
@@ -200,9 +204,8 @@ If none can be detected reliably, ask the user.
    - If validation reports errors or lifecycle/routing blockers, stop before the review gate.
 
 11. Independent review gate:
-   - This gate is mandatory. The agent is authorized to choose the review mode autonomously without
-     asking the user again.
-   - Choose exactly one mode:
+   - This gate is mandatory. Choose exactly one mode:
+   - The agent is authorized to choose the review mode autonomously without asking the user again.
      - `subagent`: use when the implementation is non-trivial or benefits from independent review,
        and a focused reviewer can work read-only without shared writes.
      - `manual`: use when the task is too small to justify dispatch or independent read-only review

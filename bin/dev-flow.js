@@ -17,6 +17,7 @@ const skillNames = [
   'dev-orient',
   'dev-brainstorm',
   'dev-design-system',
+  'dev-split',
   'dev-plan',
   'dev-audit',
   'dev-exploratory-review',

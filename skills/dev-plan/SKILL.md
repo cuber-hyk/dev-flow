@@ -25,6 +25,7 @@ Dev Plan does:
 - Create or update a persistent plan under `docs/plans/` only when the task is plan-ready and the persistence rule applies.
 - Verify that any created plan file exists and is visible to git.
 - Recommend whether implementation can start directly or should use the `/dev-branch` skill.
+- Use or recommend `/dev-split` when planning reveals large-file, module-boundary, or code-placement risk.
 
 Dev Plan does not:
 
@@ -32,6 +33,7 @@ Dev Plan does not:
 - Refine fuzzy ideas or compare early approaches; use the `/dev-brainstorm` skill before planning.
 - Read broad unrelated context, old plans, old audits, or archived files by default.
 - Perform audits or write findings; use the `/dev-audit` skill.
+- Perform large-file or module-boundary evaluation; use the `/dev-split` skill and embed its result.
 - Edit implementation code.
 - Store plans, audits, or findings in `docs/capabilities/`.
 - Hide product or business decisions as assumptions.
@@ -66,6 +68,17 @@ If orientation reveals that the task is actually a fuzzy idea, recommend the `/d
 If orientation reveals that the task is actually an audit, recommend the
 `/dev-audit` skill instead of forcing a plan.
 
+If orientation reveals large-file, module-boundary, or code-placement risk, use or recommend the
+`/dev-split` skill before writing the executable plan. Examples include:
+
+- The task touches an already large or high-churn file.
+- The task may add substantial behavior to a central module.
+- The task changes ownership boundaries, shared state, side effects, routing, services, or tests.
+- The user mentions splitting, modularization, refactor, file size, code organization, or avoiding large files.
+
+Do not recreate `/dev-split` logic inside the plan. Bring its classification, owner modules,
+code-placement constraints, defer conditions, verification, and lifecycle notes into the plan.
+
 ## Plan Readiness Gate
 
 Before writing a formal plan, check whether the route is confirmed.
@@ -78,6 +91,7 @@ Plan readiness requires:
 - No critical decision point is unresolved.
 - Validation path is known or can be defined.
 - For UI tasks, applicable design rules and the reuse/new-pattern decision are known.
+- For split-sensitive tasks, `/dev-split` classification and code-placement constraints are known.
 
 If readiness fails because the idea is not yet shaped enough to choose a route, output a recommendation
 to use `/dev-brainstorm` instead of writing a formal plan.
@@ -189,6 +203,7 @@ When creating a plan file:
 | Task plan                  | `docs/plans/YYYY-MM-DD-short-topic.md`     | Create only after plan readiness passes and the persistent plan rule applies.               |
 | Audit/review report        | `docs/audits/YYYY-MM-DD-topic-audit.md`    | Do not write audit findings here unless using the `/dev-audit` skill.                     |
 | Current module facts       | `docs/capabilities/*.md`                   | Do not write plans or audit findings here.                                                  |
+| Split guidance             | Conversation or plan section                | Use `/dev-split`; embed only the chosen constraints and proposed route in the plan.          |
 | Important decision         | `docs/adr/YYYY-MM-DD-short-title.md`       | Recommend only when there is a real tradeoff; the `/dev-distill` skill runs the ADR gate. |
 | Executable rule            | tests                                        | Prefer tests over prose-only rules when practical.                                          |
 | Confirmed reusable UI rule | `DESIGN.md` through `/dev-design-system` | Update only when the task establishes or changes a project-level rule.                      |
@@ -237,14 +252,20 @@ When creating a plan file:
    - Relevant files, APIs, tables, state stores, or tests.
    - The single source of truth if the task touches business logic.
    - For UI tasks: applicable `DESIGN.md` rules, tokens, shared components, stories, and visual checks.
-8. Create the smallest useful plan:
+8. Run split guidance when needed:
+
+   - If the task has large-file or module-boundary risk, use or recommend `/dev-split`.
+   - Embed the result as plan constraints: classification, owner modules, code-placement rules, defer triggers, verification, and lifecycle closeout.
+   - If `/dev-split` proposes a split that needs approval, stop before writing implementation steps that assume the split is approved.
+   - If `/dev-split` says no split or defer, keep the plan focused on the current task and include the guardrails.
+9. Create the smallest useful plan:
 
    - 3 to 7 steps.
    - Each executable step has `todo`, `done`, or `blocked` status.
    - Each step has a verification method.
    - Prefer proving the existing issue before modifying code.
    - Do not include unresolved option branches in executable steps.
-9. Define artifact routing:
+10. Define artifact routing:
 
    - State whether the task will create or update a plan, audit, capability doc, ADR, tests, or none.
    - If the task comes from an audit, reference the audit path, list `covered_findings`, list
@@ -254,14 +275,14 @@ When creating a plan file:
      reuse, and the visual/accessibility verification path.
    - If the task involves a hard-to-reverse decision, fact-source change, architecture choice,
      algorithm policy, or cross-module rule, flag that the `/dev-distill` skill must run the ADR gate.
-10. Verify plan file when created:
+11. Verify plan file when created:
 
 - Confirm the path exists.
 - Run `git status --short --branch --untracked-files=all`.
 - Report whether git sees the file.
 - If ignored, add a minimal allow rule only when safe; otherwise ask the user.
 
-11. Decide execution readiness:
+12. Decide execution readiness:
 
 - Ready: continue implementing.
 - Blocked by decisions: ask the user to confirm the decision points.
@@ -280,5 +301,6 @@ End with one of these:
 - "Decision points block a reliable plan; confirm the listed choices, then I will create the executable plan."
 - "Plan readiness passed and the plan is small enough to stay in conversation; next step is the `/dev-branch` skill for reviewed implementation."
 - "Persistent plan created and git visibility checked; next step is the `/dev-branch` skill for reviewed implementation."
+- "Split-sensitive planning needs `/dev-split`; classify the module boundary before writing implementation steps."
 - "Plan file is ignored by git; fix tracking before implementation or confirm that the plan should remain untracked."
 - "This is audit follow-up work; use the `/dev-branch` skill so implementation, verification, changelog, distill, and review happen in one branch."

@@ -1,7 +1,7 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.8.0",
-  "description": "A compact Codex lifecycle workflow plugin with orient, decision, exploratory review, branch, changelog, distill, and review gates.",
+  "version": "0.9.0",
+  "description": "A compact Codex lifecycle workflow plugin with orient, decision, split, exploratory review, branch, changelog, distill, and review gates.",
   "author": {
     "name": "cuber-hyk",
     "url": "https://github.com/cuber-hyk"
@@ -12,8 +12,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "cuberhyk-dev-flow",
-    "shortDescription": "Init, check, orient, brainstorm, plan, audit, exploratory review, branch, changelog, and distill coding work.",
-    "longDescription": "cuberhyk-dev-flow provides eleven focused Codex skills. dev-brainstorm refines fuzzy ideas before planning, dev-design-system maintains durable UI rules and semantic reuse, and dev-plan/dev-audit include low-noise orientation gates. dev-branch executes work inside a reviewed Git branch and runs lifecycle gates plus an independent subagent-or-manual review before approval.",
+    "shortDescription": "Init, check, orient, brainstorm, split, plan, audit, exploratory review, branch, changelog, and distill coding work.",
+    "longDescription": "cuberhyk-dev-flow provides twelve focused Codex skills. dev-brainstorm refines fuzzy ideas before planning, dev-design-system maintains durable UI rules and semantic reuse, dev-split governs large-file and module-boundary risk, and dev-plan/dev-audit include low-noise orientation gates. dev-branch executes work inside a reviewed Git branch and runs lifecycle gates plus an independent subagent-or-manual review before approval.",
     "developerName": "cuber-hyk",
     "category": "Productivity",
     "capabilities": ["Skills", "Documentation", "Planning"],
@@ -22,6 +22,7 @@
       "Use dev-check to validate docs routing.",
       "Use dev-brainstorm to refine fuzzy ideas, compare approaches, and identify decision points before planning.",
       "Use dev-design-system after an initial UI direction is approved, or to update/check reusable UI rules.",
+      "Use dev-split to evaluate large-file, module-boundary, and code-placement risk before planning or implementation.",
       "Use dev-plan to enter relevant context, identify decision points, and define the next task.",
       "Use dev-audit to enter relevant context, review bounded features or workflows, and persist non-trivial findings.",
       "Use dev-exploratory-review to map a project or scope, build a risk map, run focused probes/tests, and report realistic failures.",

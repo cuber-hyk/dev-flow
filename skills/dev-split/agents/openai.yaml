@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cuberhyk Dev Flow: Dev Split"
+  short_description: "Evaluate module boundaries and prevent large-file growth"
+  default_prompt: "Use $dev-split to scan and classify large-file or module-boundary risk, then produce split guidance or code-placement constraints before planning or implementation."

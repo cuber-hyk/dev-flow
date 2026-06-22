@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cuberhyk-dev-flow - AI Agent 开发生命周期插件</title>
+    <title>cuberhyk-dev-flow - 智能代理开发生命周期插件</title>
     <meta
       name="description"
-      content="cuberhyk-dev-flow 是一套面向 Claude Code、Codex 等 AI Agent 的开发生命周期插件。"
+      content="cuberhyk-dev-flow 是一套面向 Claude Code、Codex 等智能代理的开发生命周期插件。"
     />
     <link rel="stylesheet" href="assets/site.css" />
   </head>
@@ -52,9 +52,9 @@
               <span class="value-line">变得可控、可审查、</span><span class="value-line">可沉淀</span>
             </h1>
             <p class="hero-lede">
-              cuberhyk-dev-flow 是一套为 AI Coding 场景设计的工作流插件。
-            通过 <strong>Orient</strong>、<strong>Plan</strong>、<strong>Branch</strong>、<strong>Changelog</strong>、<strong>Distill</strong>、<strong>Check</strong>
-              等关键 Gate，帮助你将每一次改动都变成可理解、可验证、可复用的知识。
+              cuberhyk-dev-flow 是一套为智能编程场景设计的工作流插件。
+            通过 <strong>上下文</strong>、<strong>计划</strong>、<strong>分支</strong>、<strong>更新日志</strong>、<strong>知识沉淀</strong>、<strong>校验</strong>
+              等关键门控，帮助你将每一次改动都变成可理解、可验证、可复用的知识。
             </p>
             <div class="hero-actions">
               <a class="button primary" href="getting-started.html">开始使用</a>
@@ -65,8 +65,8 @@
 
           <div class="system-diagram">
             <svg viewBox="0 0 820 380" role="img" aria-labelledby="home-flow-title home-flow-desc">
-              <title id="home-flow-title">Dev Flow gate 流程图</title>
-              <desc id="home-flow-desc">从 dev-brainstorm 或 dev-plan 进入决策确认，再由 dev-branch 执行生命周期 gate、独立评审和审批评审。</desc>
+              <title id="home-flow-title">Dev Flow 门控流程图</title>
+              <desc id="home-flow-desc">从 dev-brainstorm、dev-split 或 dev-plan 进入决策和结构确认，再由 dev-branch 执行生命周期门控、独立评审和审批评审。</desc>
               <defs>
                 <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
                   <path d="M0 0 9 4.5 0 9Z" fill="#0d9488" />
@@ -103,15 +103,15 @@
               <g class="gate-node" transform="translate(272 48)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M38 18a20 20 0 1 0 20 20M38 28a10 10 0 1 0 10 10M38 38l18-18" />
-                <text x="38" y="99">Orient</text>
-                <text x="38" y="119">Gate</text>
+                <text x="38" y="99">上下文</text>
+                <text x="38" y="119">门控</text>
               </g>
 
               <g class="gate-node" transform="translate(426 48)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M20 44h36M28 26l-12 18 12 18 12-18-12-18ZM52 26 40 44l12 18 12-18-12-18ZM38 22v48" />
-                <text x="38" y="99">Decision</text>
-                <text x="38" y="119">Gate</text>
+                <text x="38" y="99">决策</text>
+                <text x="38" y="119">门控</text>
               </g>
 
               <g class="command-node">
@@ -123,29 +123,29 @@
               <g class="gate-node lower" transform="translate(150 214)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M28 18h20l8 8v32H28zM48 18v10h10M34 36h18M34 46h18M34 56h12" />
-                <text x="38" y="99">Changelog</text>
-                <text x="38" y="119">Gate</text>
+                <text x="38" y="99">更新日志</text>
+                <text x="38" y="119">门控</text>
               </g>
 
               <g class="gate-node lower" transform="translate(302 214)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M38 18 18 28l20 10 20-10-20-10ZM18 40l20 10 20-10M18 52l20 10 20-10" />
-                <text x="38" y="99">Distill</text>
-                <text x="38" y="119">Gate</text>
+                <text x="38" y="99">知识沉淀</text>
+                <text x="38" y="119">门控</text>
               </g>
 
               <g class="gate-node lower" transform="translate(454 214)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M23 38 34 50 55 27M22 58h32M22 20h32" />
-                <text x="38" y="99">Check</text>
-                <text x="38" y="119">Gate</text>
+                <text x="38" y="99">校验</text>
+                <text x="38" y="119">门控</text>
               </g>
 
               <g class="gate-node lower review-node" transform="translate(626 206)">
                 <circle cx="38" cy="38" r="38" />
                 <path d="M38 18 58 26v14c0 15-9 25-20 30-11-5-20-15-20-30V26l20-8ZM29 42l7 7 13-16" />
-                <text x="38" y="104">Independent</text>
-                <text x="38" y="124">+ Approval</text>
+                <text x="38" y="104">独立评审</text>
+                <text x="38" y="124">审批评审</text>
               </g>
             </svg>
           </div>
@@ -186,14 +186,56 @@
         </div>
       </section>
 
+      <section class="map-section">
+        <div class="container">
+          <div class="compact-head">
+            <p class="section-kicker">依赖地图</p>
+            <h2>技能不是平铺列表，而是一条可审查的依赖链</h2>
+            <p>大多数任务从理解上下文开始，经过决策和结构约束，再进入实现。实现完成后必须先处理发布说明、长期知识和生命周期状态，最后才进入用户审批。</p>
+          </div>
+          <div class="map-grid">
+            <article class="map-panel">
+              <h3>日常开发路径</h3>
+              <div class="dependency-diagram" aria-label="日常开发技能依赖图">
+                <div class="dependency-row">
+                  <div class="dependency-label">模糊想法</div>
+                  <div class="dependency-chain"><span class="diagram-pill">dev-brainstorm</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div>
+                </div>
+                <div class="dependency-row">
+                  <div class="dependency-label">结构风险</div>
+                  <div class="dependency-chain"><span class="diagram-pill warn">dev-split</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div>
+                </div>
+                <div class="dependency-row">
+                  <div class="dependency-label">审查发现</div>
+                  <div class="dependency-chain"><span class="diagram-pill">dev-audit</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div>
+                </div>
+                <div class="dependency-row">
+                  <div class="dependency-label">未知风险</div>
+                  <div class="dependency-chain"><span class="diagram-pill">dev-exploratory-review</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div>
+                </div>
+              </div>
+            </article>
+            <article class="map-panel">
+              <h3>实现分支内部闭环</h3>
+              <div class="architecture-map" aria-label="dev-branch 内部 gate 架构图">
+                <div class="architecture-layer"><strong>实现前</strong><span>确认计划、审查来源、拆分约束、设计系统影响和现有工作区归属。</span></div>
+                <div class="architecture-layer"><strong>实现中</strong><span>只改任务相关文件；新增行为进入责任模块；发现新边界风险时回到 dev-split。</span></div>
+                <div class="architecture-layer"><strong>审核前</strong><span>依次运行更新日志门控、知识沉淀门控、校验门控、独立评审门控。</span></div>
+                <div class="architecture-layer"><strong>审批后</strong><span>用户明确批准后才提交、合并、清理分支；推送需要单独确认。</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section class="section skills-showcase">
         <div class="container">
           <div class="compact-head">
-            <p class="section-kicker">Skills</p>
-            <h2>十个专注技能，各司其职</h2>
+            <p class="section-kicker">技能</p>
+            <h2>十二个专注技能，各司其职</h2>
             <p>每个技能只做一件事，职责清晰，配合使用构成完整闭环。</p>
           </div>
-          <p class="section-note">Since 0.7.2, every skill has a dedicated <code>skills/&lt;skill&gt;/templates/output.md</code> response template, audit findings use stable lifecycle fields, and branch work reports changelog, distill, and check gates before review.</p>
+          <p class="section-note">每个技能都有独立的 <code>skills/&lt;skill&gt;/templates/output.md</code> 输出模板。涉及拆分或模块边界风险的任务，会先经过 <code>dev-split</code> 再进入计划或实现。</p>
           <div class="skill-grid product-grid">
             <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7.5l8 4.5 8-4.5L12 3ZM4 12l8 4.5 8-4.5M4 16.5 12 21l8-4.5" /></svg></span>
@@ -216,6 +258,16 @@
               <p>澄清模糊想法、比较方案并确认决策，再进入计划或审查。</p>
             </article>
             <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8M8 13h5M16 13l3 3M19 13l-3 3" /></svg></span>
+              <h3>dev-design-system</h3>
+              <p>维护 DESIGN.md、设计 Token 和语义组件复用规则。</p>
+            </article>
+            <article class="skill-card product-skill">
+              <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h7M13 12h7M4 18h16M11 8v8M13 8v8" /></svg></span>
+              <h3>dev-split</h3>
+              <p>评估大文件和模块边界风险，给出拆分方案或代码放置约束。</p>
+            </article>
+            <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h2" /></svg></span>
               <h3>dev-plan</h3>
               <p>识别决策点并制定最小可验证计划，输出可执行计划文档。</p>
@@ -233,7 +285,7 @@
             <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v6a4 4 0 0 1-4 4H6M18 4l-3 3M18 4l3 3M18 20a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" /></svg></span>
               <h3>dev-branch</h3>
-              <p>创建分支实现任务，运行各项 Gate，并等待审核后再提交合并。</p>
+              <p>创建分支实现任务，运行各项门控，并等待审核后再提交合并。</p>
             </article>
             <article class="skill-card product-skill">
               <span class="line-icon"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h3" /><path d="M4 8h3M17 8h3" /></svg></span>
@@ -252,7 +304,7 @@
 
     <footer class="site-footer">
       <div class="footer-grid">
-        <div>cuberhyk-dev-flow · Lifecycle workflow for coding agents</div>
+        <div>cuberhyk-dev-flow · 智能代理开发生命周期工作流</div>
         <div class="footer-links">
           <a href="getting-started.html">快速开始</a>
           <a href="workflow.html">工作流</a>

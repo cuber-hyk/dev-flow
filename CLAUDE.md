@@ -1,6 +1,6 @@
 # cuberhyk-dev-flow
 
-cuberhyk-dev-flow is a compact lifecycle workflow for coding agents. It is intentionally small: init, check, orient, brainstorm, plan, audit, branch, changelog, distill.
+cuberhyk-dev-flow is a compact lifecycle workflow for coding agents. It is intentionally small: init, check, orient, brainstorm, design-system, split, plan, audit, exploratory review, branch, changelog, distill.
 
 ## If You Are an AI Agent
 
@@ -14,6 +14,12 @@ For clear non-trivial development, prefer the short user flow:
 
 1. `cuberhyk-dev-flow:dev-plan` - Enter relevant context, identify decision points, and create a verifiable plan.
 2. `cuberhyk-dev-flow:dev-branch` - Implement in a task branch, run lifecycle gates and an independent subagent-or-manual review, then wait for approval before commit/merge.
+
+For large-file, module-boundary, or code-organization risk:
+
+1. `cuberhyk-dev-flow:dev-split` - Classify no split, local cleanup, defer, or proposed split, and define code-placement constraints.
+2. `cuberhyk-dev-flow:dev-plan` - Embed the split guidance into the execution plan.
+3. `cuberhyk-dev-flow:dev-branch` - Implement only the confirmed route and follow the owner-module constraints.
 
 For project-level UI design systems:
 
@@ -37,12 +43,13 @@ For project setup and health checks:
 
 - `cuberhyk-dev-flow:dev-init` initializes missing Dev Flow memory structure.
 - `cuberhyk-dev-flow:dev-check` validates documentation routing, lifecycle health, changelog structure, ADR hints, and git visibility.
-- `cuberhyk-dev-flow:dev-orient`, `cuberhyk-dev-flow:dev-changelog`, and `cuberhyk-dev-flow:dev-distill` remain available standalone, but `dev-brainstorm`, `dev-plan`, `dev-audit`, and `dev-branch` call their relevant gates during normal work.
+- `cuberhyk-dev-flow:dev-orient`, `cuberhyk-dev-flow:dev-split`, `cuberhyk-dev-flow:dev-changelog`, and `cuberhyk-dev-flow:dev-distill` remain available standalone, but `dev-brainstorm`, `dev-plan`, `dev-audit`, and `dev-branch` call or route to their relevant gates during normal work.
 
 ## Skill Boundaries
 
 - `dev-orient` does not plan or edit.
 - `dev-brainstorm` clarifies fuzzy ideas, compares approaches, and confirms decisions before planning. It does not write executable plans, audit findings, or implementation code.
+- `dev-split` evaluates large-file, module-boundary, and code-placement risk. It does not implement code unless a later `dev-branch` route is approved.
 - `dev-plan` includes an orient gate, then checks plan readiness before writing a formal plan. It does not audit, implement, or archive.
 - `dev-audit` includes an orient gate, then writes findings for bounded audits with clear scope or questions. It does not implement fixes or update capability docs with stable facts.
 - `dev-exploratory-review` maps a project or bounded scope, builds a risk map, runs focused probes/tests when useful, and uses a four-pass harness to discover realistic failures. It does not implement fixes or comment on style, naming, formatting, or subjective preferences.
@@ -69,6 +76,7 @@ Persistent artifacts:
 Plan readiness:
 
 - `dev-plan` must identify unresolved product, business, data, state, irreversible cleanup, user-experience, or architecture decisions before writing an executable plan.
+- `dev-plan` must use or recommend `dev-split` when planning touches large files, module boundaries, ownership, shared state, side effects, or code-placement risk.
 - `dev-brainstorm` must route fuzzy ideas to confirmed goals and decisions before `dev-plan`; it should keep output in conversation unless the user asks for a document.
 - If code facts cannot resolve a decision, ask the user to confirm it first.
 - Recommendations are allowed, but must be labeled as recommendations.
@@ -83,6 +91,6 @@ Lifecycle rules:
 - Do not use `completed`, `distilled`, `superseded`, or `deprecated` as final document states.
 - `dev-distill` must run the ADR gate for hard-to-reverse decisions, fact-source changes, architecture choices, algorithm policy, or cross-module rules.
 
-If a harness exposes un-namespaced skills, use `dev-init`, `dev-check`, `dev-orient`, `dev-brainstorm`, `dev-design-system`, `dev-plan`, `dev-audit`, `dev-exploratory-review`, `dev-branch`, `dev-changelog`, and `dev-distill` directly.
+If a harness exposes un-namespaced skills, use `dev-init`, `dev-check`, `dev-orient`, `dev-brainstorm`, `dev-design-system`, `dev-split`, `dev-plan`, `dev-audit`, `dev-exploratory-review`, `dev-branch`, `dev-changelog`, and `dev-distill` directly.
 
-If a harness namespaces plugin skills, use `cuberhyk-dev-flow:dev-init`, `cuberhyk-dev-flow:dev-check`, `cuberhyk-dev-flow:dev-orient`, `cuberhyk-dev-flow:dev-brainstorm`, `cuberhyk-dev-flow:dev-design-system`, `cuberhyk-dev-flow:dev-plan`, `cuberhyk-dev-flow:dev-audit`, `cuberhyk-dev-flow:dev-exploratory-review`, `cuberhyk-dev-flow:dev-branch`, `cuberhyk-dev-flow:dev-changelog`, and `cuberhyk-dev-flow:dev-distill`.
+If a harness namespaces plugin skills, use `cuberhyk-dev-flow:dev-init`, `cuberhyk-dev-flow:dev-check`, `cuberhyk-dev-flow:dev-orient`, `cuberhyk-dev-flow:dev-brainstorm`, `cuberhyk-dev-flow:dev-design-system`, `cuberhyk-dev-flow:dev-split`, `cuberhyk-dev-flow:dev-plan`, `cuberhyk-dev-flow:dev-audit`, `cuberhyk-dev-flow:dev-exploratory-review`, `cuberhyk-dev-flow:dev-branch`, `cuberhyk-dev-flow:dev-changelog`, and `cuberhyk-dev-flow:dev-distill`.

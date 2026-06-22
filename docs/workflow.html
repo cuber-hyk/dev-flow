@@ -9,7 +9,7 @@
   <body data-page="workflow">
     <header class="site-header">
       <div class="nav-wrap">
-        <a class="brand" href="index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>Lifecycle workflow for coding agents</small></span></a>
+        <a class="brand" href="index.html"><span class="brand-mark">DF</span><span>cuberhyk-dev-flow<small>智能代理开发生命周期工作流</small></span></a>
         <nav class="nav-links" aria-label="主导航">
           <a data-nav="home" href="index.html">首页</a>
           <a data-nav="start" href="getting-started.html">快速开始</a>
@@ -26,14 +26,15 @@
 
     <main class="container">
       <section class="page-hero">
-        <span class="eyebrow">Workflow</span>
+        <span class="eyebrow">工作流</span>
         <h1>从模糊需求到可审核合并</h1>
-        <p class="page-lede">Dev Flow 把任务拆成一组 gate。每个 gate 都有明确职责，避免 AI 跳过决策、混入无关改动或把一次性报告当成长期知识。</p>
+        <p class="page-lede">Dev Flow 把任务拆成一组门控。每个门控都有明确职责，避免智能代理跳过决策、混入无关改动或把一次性报告当成长期知识。</p>
       </section>
 
       <div class="page-shell">
         <aside class="toc" aria-label="页面目录">
           <a href="#daily">日常开发</a>
+          <a href="#dependency-map">技能依赖图</a>
           <a href="#outputs">步骤输出</a>
           <a href="#audit">审查驱动</a>
           <a href="#branch">分支闭环</a>
@@ -43,24 +44,65 @@
         <div class="page-content">
           <section id="daily" class="page-section">
             <h2>日常开发：brainstorm -> plan -> branch</h2>
-            <p>模糊需求先由 <code>/dev-brainstorm</code> 澄清目标、非目标、方案和决策；明确任务由 <code>/dev-plan</code> 创建计划；<code>/dev-branch</code> 负责实现、验证和审核前收尾。</p>
+            <p>模糊需求先由 <code>/dev-brainstorm</code> 澄清目标、非目标、方案和决策；涉及大文件或模块边界时先用 <code>/dev-split</code> 明确代码放置约束；明确任务由 <code>/dev-plan</code> 创建计划；<code>/dev-branch</code> 负责实现、验证和审核前收尾。</p>
             <div class="process-panel">
               <div class="process-lane">
-                <div class="lane-label">Brainstorm</div>
-                <div class="lane-chain"><span class="node">/dev-brainstorm</span><span class="arrow">-></span><span class="node gate">Intent Gate</span><span class="arrow">-></span><span class="node">Confirmed route</span></div>
+                <div class="lane-label">澄清</div>
+                <div class="lane-chain"><span class="node">/dev-brainstorm</span><span class="arrow">-></span><span class="node gate">意图门控</span><span class="arrow">-></span><span class="node">确认路线</span></div>
               </div>
               <div class="process-lane">
-                <div class="lane-label">Plan</div>
-                <div class="lane-chain"><span class="node">/dev-plan</span><span class="arrow">-></span><span class="node gate">Orient Gate</span><span class="arrow">-></span><span class="node gate">Decision Gate</span><span class="arrow">-></span><span class="node">Plan file or chat plan</span></div>
+                <div class="lane-label">计划</div>
+                <div class="lane-chain"><span class="node">/dev-plan</span><span class="arrow">-></span><span class="node gate">上下文门控</span><span class="arrow">-></span><span class="node gate">决策门控</span><span class="arrow">-></span><span class="node">计划文件或会话计划</span></div>
               </div>
               <div class="process-lane">
-                <div class="lane-label">Build</div>
-                <div class="lane-chain"><span class="node">/dev-branch</span><span class="arrow">-></span><span class="node">Task branch</span><span class="arrow">-></span><span class="node">Implement</span><span class="arrow">-></span><span class="node">Verify</span></div>
+                <div class="lane-label">拆分</div>
+                <div class="lane-chain"><span class="node">/dev-split</span><span class="arrow">-></span><span class="node gate">边界门控</span><span class="arrow">-></span><span class="node">责任模块和约束</span></div>
               </div>
               <div class="process-lane">
-                <div class="lane-label">Close</div>
-                <div class="lane-chain"><span class="node gate">Changelog Gate</span><span class="arrow">-></span><span class="node gate">Distill Gate</span><span class="arrow">-></span><span class="node gate">Check Gate</span><span class="arrow">-></span><span class="node gate">Independent Review</span><span class="arrow">-></span><span class="node gate">Approval Review</span></div>
+                <div class="lane-label">实现</div>
+                <div class="lane-chain"><span class="node">/dev-branch</span><span class="arrow">-></span><span class="node">任务分支</span><span class="arrow">-></span><span class="node">实现</span><span class="arrow">-></span><span class="node">验证</span></div>
               </div>
+              <div class="process-lane">
+                <div class="lane-label">收尾</div>
+                <div class="lane-chain"><span class="node gate">更新日志门控</span><span class="arrow">-></span><span class="node gate">知识沉淀门控</span><span class="arrow">-></span><span class="node gate">校验门控</span><span class="arrow">-></span><span class="node gate">独立评审</span><span class="arrow">-></span><span class="node gate">审批评审</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="dependency-map" class="page-section">
+            <h2>技能依赖图：什么时候接入哪个技能</h2>
+            <p>这张图把用户请求先分流，再进入计划和实现。它的重点是避免 Agent 跳过前置判断：模糊需求先澄清，结构风险先约束，审查任务先产出 finding。</p>
+            <div class="flow-diagram" aria-label="技能依赖流程图">
+              <div class="flow-track">
+                <div class="flow-step"><b>1. 请求入口</b><span>用户给出想法、bug、审查问题、重构目标或明确任务。</span></div>
+                <div class="flow-step"><b>2. 前置分流</b><span><code>dev-brainstorm</code> 处理模糊目标；<code>dev-audit</code> 处理有边界审查；<code>dev-split</code> 处理大文件和模块边界风险。</span></div>
+                <div class="flow-step"><b>3. 执行计划</b><span><code>dev-plan</code> 汇总事实源、决策点、拆分约束、步骤和验证方式。</span></div>
+                <div class="flow-step"><b>4. 分支实现</b><span><code>dev-branch</code> 创建任务分支，只实现确认路线，并遵守责任模块约束。</span></div>
+                <div class="flow-step"><b>5. 审核闭环</b><span>更新日志、知识沉淀、校验、独立评审全部完成后，才等待用户审批。</span></div>
+              </div>
+              <div class="split-callout">
+                <strong>dev-split 的位置：</strong>它不是实现步骤，而是结构边界门控。它输出“不拆分、局部整理、延后处理或建议拆分”，并告诉计划“新代码应该放哪里、不要放哪里”。
+              </div>
+            </div>
+            <div class="map-grid">
+              <article class="map-panel">
+                <h3>依赖关系</h3>
+                <div class="dependency-diagram">
+                  <div class="dependency-row"><div class="dependency-label">上下文</div><div class="dependency-chain"><span class="diagram-pill">dev-orient</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan / dev-audit</span></div></div>
+                  <div class="dependency-row"><div class="dependency-label">想法</div><div class="dependency-chain"><span class="diagram-pill">dev-brainstorm</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span></div></div>
+                  <div class="dependency-row"><div class="dependency-label">结构</div><div class="dependency-chain"><span class="diagram-pill warn">dev-split</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div></div>
+                  <div class="dependency-row"><div class="dependency-label">审查</div><div class="dependency-chain"><span class="diagram-pill">dev-audit</span><span class="diagram-arrow">-></span><span class="diagram-pill gate">dev-plan</span><span class="diagram-arrow">-></span><span class="diagram-pill close">dev-branch</span></div></div>
+                </div>
+              </article>
+              <article class="map-panel">
+                <h3>文档产物流向</h3>
+                <div class="architecture-map">
+                  <div class="architecture-layer"><strong>当前事实</strong><span><code>CONTEXT.md</code>、<code>docs/capabilities/</code>、<code>DESIGN.md</code> 只保存当前有效规则。</span></div>
+                  <div class="architecture-layer"><strong>过程证据</strong><span><code>docs/plans/</code> 和 <code>docs/audits/</code> 驱动当前任务；结束后 archive、delete 或保持 active 并说明原因。</span></div>
+                  <div class="architecture-layer"><strong>长期决策</strong><span><code>docs/adr/</code> 只记录难反悔、有真实取舍的长期决策。</span></div>
+                  <div class="architecture-layer"><strong>发布说明</strong><span><code>CHANGELOG.md</code> 只记录用户、操作者、安装、配置、兼容性、安全或公开行为变化。</span></div>
+                </div>
+              </article>
             </div>
           </section>
 
@@ -72,12 +114,13 @@
                 <thead><tr><th>阶段</th><th>内部经历</th><th>最终输出</th><th>可继续条件</th></tr></thead>
                 <tbody>
                   <tr><td><code>/dev-orient</code></td><td>读取 AGENTS、CONTEXT、context-map、相关 capability 和代码入口。</td><td>上下文来源、相关入口、文档目的地、推荐下一技能。</td><td>事实源明确，下一步路由清楚。</td></tr>
-                  <tr><td><code>/dev-brainstorm</code></td><td>低噪声进入上下文、澄清目标/非目标、比较方案、确认用户决策。</td><td>confirmed route、decision points、alternatives、下一技能。</td><td>目标和关键决策已确认，或明确停下提问。</td></tr>
-                  <tr><td><code>/dev-plan</code></td><td>Orient Gate、Decision Gate、范围确认、步骤和验证设计。</td><td>目标、范围、事实源、步骤表、验收标准、plan 路径或 blocked 原因。</td><td>没有未决决策，步骤都有验证方式。</td></tr>
-                  <tr><td><code>/dev-audit</code></td><td>Audit scope、证据读取、finding 编号、严重度和状态判定。</td><td>带 ID/Status/Evidence/Owner Plan/Verification 的 findings，必要时写入 <code>docs/audits/</code>。</td><td>每个 finding 有证据和后续路由。</td></tr>
-                  <tr><td><code>/dev-branch</code></td><td>创建分支、实现、验证、生命周期 Gate、独立评审、审批评审。</td><td>变更摘要、验证结果、gate 结果、subagent/manual review、git status/diff、等待审批说明。</td><td>所有必要 gate 通过或明确不需要，且不存在评审 blocker。</td></tr>
-                  <tr><td><code>/dev-distill</code></td><td>知识分类、ADR Gate、plan closeout、audit closeout、验证。</td><td>长期文档更新、plan/audit 生命周期结果、ADR 判断、下一步 check。</td><td>未关闭产物保持 active；可关闭产物有明确原因。</td></tr>
-                  <tr><td><code>/dev-check</code></td><td>检查模板、文档路由、状态字段、归档目录和 git 可见性。</td><td>errors、warnings、recommendations、validation result。</td><td>无 error；warning 有明确处理或接受理由。</td></tr>
+                  <tr><td><code>/dev-brainstorm</code></td><td>低噪声进入上下文、澄清目标/非目标、比较方案、确认用户决策。</td><td>确认路线、决策点、备选方案、下一技能。</td><td>目标和关键决策已确认，或明确停下提问。</td></tr>
+                  <tr><td><code>/dev-split</code></td><td>扫描并评估大文件、模块边界、状态所有权和代码放置风险。</td><td>不拆分、局部整理、延后处理或建议拆分；责任模块、约束、验证方式。</td><td>计划中已有明确代码放置约束，或等待用户批准拆分方案。</td></tr>
+                  <tr><td><code>/dev-plan</code></td><td>上下文门控、决策门控、范围确认、步骤和验证设计。</td><td>目标、范围、事实源、步骤表、验收标准、计划路径或阻塞原因。</td><td>没有未决决策，步骤都有验证方式。</td></tr>
+                  <tr><td><code>/dev-audit</code></td><td>审查范围、证据读取、问题编号、严重度和状态判定。</td><td>带编号、状态、证据、归属计划、验证方式的问题表，必要时写入 <code>docs/audits/</code>。</td><td>每个问题有证据和后续路由。</td></tr>
+                  <tr><td><code>/dev-branch</code></td><td>创建分支、实现、验证、生命周期门控、独立评审、审批评审。</td><td>变更摘要、验证结果、门控结果、子代理或人工评审、git 状态和差异摘要、等待审批说明。</td><td>所有必要门控通过或明确不需要，且不存在评审阻塞项。</td></tr>
+                  <tr><td><code>/dev-distill</code></td><td>知识分类、ADR 门控、计划收尾、审查收尾、验证。</td><td>长期文档更新、计划/审查生命周期结果、ADR 判断、下一步校验。</td><td>未关闭产物保持 active；可关闭产物有明确原因。</td></tr>
+                  <tr><td><code>/dev-check</code></td><td>检查模板、文档路由、状态字段、归档目录和 git 可见性。</td><td>错误、警告、建议、校验结果。</td><td>无错误；警告有明确处理或接受理由。</td></tr>
                 </tbody>
               </table>
             </div>
@@ -97,11 +140,11 @@
             <h2>分支闭环：同一次任务只做一个可解释 diff</h2>
             <p><code>/dev-branch</code> skill 不要求工作区绝对干净，但要求改动可归属。相关 plan/audit 可以带入任务分支，无关源码或配置改动必须先停下询问。</p>
             <div class="card-grid">
-              <article class="info-card"><h3>Changelog Gate</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 <code>CHANGELOG.md</code>。</p></article>
-              <article class="info-card"><h3>Distill Gate</h3><p>任务改变长期知识、ADR、context-map、测试或 plan/audit 生命周期时，在审核前一起处理；部分修复只能更新 finding 状态。</p></article>
-              <article class="info-card"><h3>Check Gate</h3><p>文档或生命周期产物发生变化时，先验证 audit、plan、ADR、CHANGELOG、输出模板和路由状态。</p></article>
-              <article class="info-card"><h3>Independent Review Gate</h3><p>有价值且可安全委派时使用只读子 Agent，否则执行同形状的 manual review；主 Agent 复核 finding 并负责最终证据。</p></article>
-              <article class="info-card"><h3>Approval Review Gate</h3><p>展示 <code>git status</code>、变更文件和 diff 摘要，默认不输出完整 diff；用户明确批准后才提交、合并、删除分支。</p></article>
+              <article class="info-card"><h3>更新日志门控</h3><p>影响用户、操作者、公开行为、数据、安全、安装、配置、兼容性或发布说明时，更新 <code>CHANGELOG.md</code>。</p></article>
+              <article class="info-card"><h3>知识沉淀门控</h3><p>任务改变长期知识、ADR、context-map、测试或计划/审查生命周期时，在审核前一起处理；部分修复只能更新问题状态。</p></article>
+              <article class="info-card"><h3>校验门控</h3><p>文档或生命周期产物发生变化时，先验证审查、计划、ADR、CHANGELOG、输出模板和路由状态。</p></article>
+              <article class="info-card"><h3>独立评审门控</h3><p>有价值且可安全委派时使用只读子代理，否则执行同形状的人工评审；主代理复核问题并负责最终证据。</p></article>
+              <article class="info-card"><h3>审批评审门控</h3><p>展示 <code>git status</code>、变更文件和差异摘要，默认不输出完整差异；用户明确批准后才提交、合并、删除分支。</p></article>
             </div>
           </section>
 
@@ -110,45 +153,45 @@
             <p>审核不是一句“改好了”。它要让用户能判断这批 diff 是否可以进入主分支。</p>
             <p>标准分支输出模板位于 <code>skills/dev-branch/templates/output.md</code>。提交或合并审批前使用 <code>Before Approval</code> 形态；只有在用户批准合并且清理完成后，才使用 <code>After Merge</code> 形态。</p>
             <div class="terminal-card">
-              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="Branch: task/YYYYMMDD-short-task-slug&#10;Existing changes before branch: ...&#10;Changes made: ...&#10;Verification: ...&#10;Changelog gate: updated/not needed - reason&#10;Distill gate: updated/not needed - reason&#10;Check gate: passed/not needed - reason&#10;Subagent review gate: subagent/manual, compliance, coverage, evidence, blockers&#10;Review: git status + changed files + diff summary&#10;Waiting for approval">复制</button></div>
-              <pre><code>Branch: task/YYYYMMDD-short-task-slug
+              <div class="terminal-head"><span>skills/dev-branch/templates/output.md</span><button class="copy-button" data-copy="分支：task/YYYYMMDD-short-task-slug&#10;分支前已有改动：...&#10;本次改动：...&#10;验证：...&#10;更新日志门控：已更新/不需要 - 原因&#10;知识沉淀门控：已更新/不需要 - 原因&#10;校验门控：已通过/不需要 - 原因&#10;独立评审门控：子代理/人工，计划符合性、审查覆盖、证据、阻塞项&#10;审核：git 状态 + 变更文件 + 差异摘要&#10;等待审批">复制</button></div>
+              <pre><code>分支：task/YYYYMMDD-short-task-slug
 
-Existing changes before branch:
+分支前已有改动：
 - ...
 
-Changes made:
+本次改动：
 - ...
 
-Verification:
+验证：
 - ...
 
-Changelog gate:
-- Updated CHANGELOG.md under [Unreleased]
-- or Not needed: &lt;reason&gt;
+更新日志门控：
+- 已在 CHANGELOG.md 的 [Unreleased] 下更新
+- 或不需要：&lt;原因&gt;
 
-Distill gate:
-- Updated CONTEXT/capabilities/ADR/context-map/tests/lifecycle artifacts
-- or Not needed: &lt;reason&gt;
+知识沉淀门控：
+- 已更新 CONTEXT、capability、ADR、context-map、测试或生命周期产物
+- 或不需要：&lt;原因&gt;
 
-Check gate:
-- Passed: &lt;command/result&gt;
-- or Not needed: &lt;reason&gt;
+校验门控：
+- 已通过：&lt;命令/结果&gt;
+- 或不需要：&lt;原因&gt;
 
-Subagent review gate:
-- Mode: subagent/manual
-- Plan compliance: pass/fail/not applicable
-- Audit coverage: pass/fail/not applicable
-- Related changes only: pass/fail
-- Verification evidence: pass/fail
-- Blocking issues: none/&lt;issues&gt;
+独立评审门控：
+- 模式：子代理/人工
+- 计划符合性：通过/失败/不适用
+- 审查覆盖：通过/失败/不适用
+- 只包含相关改动：通过/失败
+- 验证证据：通过/失败
+- 阻塞项：无/&lt;问题&gt;
 
-Review:
+审核：
 - git status --short --branch --untracked-files=all
-- changed files and diff summary
+- 变更文件和差异摘要
 
-Waiting for approval:
-- Say "审核通过" or "可以合并" to let me commit, merge, and clean up.
-- Push will not be performed unless separately requested and confirmed.</code></pre>
+等待审批：
+- 回复“审核通过”或“可以合并”后，才会提交、合并和清理。
+- 除非单独请求并确认，否则不会推送。</code></pre>
             </div>
           </section>
         </div>

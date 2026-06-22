@@ -23,6 +23,13 @@ Fact sources:
 Context loaded:
 - <file or source>
 
+Split guidance:
+- Required: yes/no
+- Source: dev-split result or not needed because <reason>
+- Classification: no split/local cleanup/defer/proposed split/not applicable
+- Code-placement constraints: <owner modules and guardrails or none>
+- Deferred split trigger: <trigger or none>
+
 Steps and verification:
 | ID | Status | Step | Verification |
 |---|---|---|---|

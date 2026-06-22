@@ -895,6 +895,198 @@ pre {
   box-shadow: var(--shadow);
 }
 
+.map-section {
+  padding: 54px 0;
+  border-top: 1px solid var(--line);
+  background: #f8fffd;
+}
+
+.map-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 18px;
+}
+
+.map-panel {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--soft-shadow);
+}
+
+.map-panel h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.map-panel p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.dependency-diagram {
+  display: grid;
+  gap: 12px;
+}
+
+.dependency-row {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.dependency-label {
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.dependency-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.diagram-pill {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfffe;
+  color: var(--ink-2);
+  font-size: 0.76rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.diagram-pill.gate {
+  border-color: #a9d8d0;
+  background: var(--surface-soft);
+  color: var(--primary-strong);
+}
+
+.diagram-pill.warn {
+  border-color: #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.diagram-pill.close {
+  border-color: #c7d2fe;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.diagram-arrow {
+  color: var(--primary-strong);
+  font-weight: 900;
+}
+
+.architecture-map {
+  display: grid;
+  gap: 10px;
+}
+
+.architecture-layer {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfffe;
+}
+
+.architecture-layer strong {
+  display: grid;
+  align-content: center;
+  color: var(--primary-strong);
+  font-size: 0.78rem;
+}
+
+.architecture-layer span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.flow-diagram {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: var(--soft-shadow);
+}
+
+.flow-track {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 10px;
+  align-items: stretch;
+}
+
+.flow-step {
+  position: relative;
+  min-height: 116px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfffe;
+}
+
+.flow-step::after {
+  content: "->";
+  position: absolute;
+  top: 50%;
+  right: -13px;
+  transform: translateY(-50%);
+  color: var(--primary-strong);
+  font-weight: 900;
+}
+
+.flow-step:last-child::after {
+  content: "";
+}
+
+.flow-step b {
+  display: block;
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.flow-step span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.split-callout {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  background: #fff7ed;
+  color: #7c3b10;
+  font-size: 0.84rem;
+  line-height: 1.58;
+}
+
 .process-lane {
   display: grid;
   grid-template-columns: 130px minmax(0, 1fr);
@@ -1353,8 +1545,17 @@ tr:last-child td {
   .feature-grid,
   .card-grid,
   .skill-grid,
-  .value-strip {
+  .value-strip,
+  .map-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .flow-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .flow-step::after {
+    content: "";
   }
 
   .value-item {
@@ -1410,13 +1611,28 @@ tr:last-child td {
   .card-grid,
   .skill-grid,
   .value-strip,
+  .map-grid,
   .install-row,
   .skill-source-grid,
   .flow-row,
+  .flow-track,
   .process-lane,
   .step-item,
   .toc {
     grid-template-columns: 1fr;
+  }
+
+  .dependency-row,
+  .architecture-layer {
+    grid-template-columns: 1fr;
+  }
+
+  .dependency-chain {
+    align-items: stretch;
+  }
+
+  .diagram-pill {
+    white-space: normal;
   }
 
   .section,
