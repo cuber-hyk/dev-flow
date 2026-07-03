@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Multi-agent lifecycle workflow plugin with orient, brainstorm, design-system, split, decision, exploratory review, branch, changelog, distill, and review gates.",
   "type": "module",
   "bin": {

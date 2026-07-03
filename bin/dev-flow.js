@@ -289,6 +289,19 @@ function validatePluginRoot(root = pluginRoot) {
     throw new Error(`Missing required files:\n${missing.map((item) => `- ${item}`).join('\n')}`)
   }
 
+  const invalidSkillFrontmatter = skillNames.filter((name) => {
+    const text = fs.readFileSync(path.join(root, 'skills', name, 'SKILL.md'), 'utf8')
+    return !/^---\r?\n/.test(text)
+  })
+
+  if (invalidSkillFrontmatter.length > 0) {
+    throw new Error(
+      `Skill files must start directly with YAML frontmatter and no UTF-8 BOM:\n${invalidSkillFrontmatter
+        .map((name) => `- skills/${name}/SKILL.md`)
+        .join('\n')}`
+    )
+  }
+
   const invalidOpenAiAgents = skillNames.filter((name) => {
     const text = readText(path.join(root, 'skills', name, 'agents', 'openai.yaml'))
     return !/^interface:\r?\n/.test(text)

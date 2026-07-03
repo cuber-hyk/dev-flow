@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A compact Codex lifecycle workflow plugin with orient, decision, split, exploratory review, branch, changelog, distill, and review gates.",
   "author": {
     "name": "cuber-hyk",
