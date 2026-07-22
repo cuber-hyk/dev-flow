@@ -176,6 +176,25 @@ function defaultCodexMarketplacePath() {
   )
 }
 
+function codexMarketplaceRoot(marketplacePath) {
+  return path.resolve(path.dirname(marketplacePath), '..', '..')
+}
+
+function runCodex(args) {
+  const options = {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+  }
+  if (process.platform !== 'win32') return execFileSync('codex', args, options)
+
+  const quotedArgs = args.map((arg) => `'${arg.replace(/'/g, "''")}'`).join(', ')
+  return execFileSync(
+    'powershell.exe',
+    ['-NoProfile', '-NonInteractive', '-Command', `& codex.cmd @(${quotedArgs}); exit $LASTEXITCODE`],
+    options
+  )
+}
+
 function toPosixRelative(from, to) {
   return `./${path.relative(from, to).split(path.sep).join('/')}`
 }
@@ -186,9 +205,9 @@ function installCodexMarketplace(pluginDir) {
   fs.mkdirSync(marketplaceRoot, { recursive: true })
 
   let marketplace = {
-    name: 'personal',
+    name: 'cuberhyk-plugins',
     interface: {
-      displayName: 'Personal',
+      displayName: 'cuberhyk-plugins',
     },
     plugins: [],
   }
@@ -225,6 +244,32 @@ function installCodexMarketplace(pluginDir) {
 
   fs.writeFileSync(marketplacePath, `${JSON.stringify(marketplace, null, 2)}\n`)
   return marketplacePath
+}
+
+function registerCodexMarketplace(marketplacePath, executeCodex = runCodex) {
+  const marketplaceRoot = codexMarketplaceRoot(marketplacePath)
+
+  try {
+    const listed = JSON.parse(executeCodex(['plugin', 'marketplace', 'list', '--json']))
+    const alreadyRegistered = listed.marketplaces?.some(
+      (marketplace) => path.resolve(marketplace.root) === marketplaceRoot
+    )
+    if (alreadyRegistered) return { status: 'already-registered', marketplaceRoot }
+  } catch {
+    // Try registration below. The add command provides the actionable failure if Codex is unavailable.
+  }
+
+  try {
+    executeCodex(['plugin', 'marketplace', 'add', marketplaceRoot])
+    return { status: 'registered', marketplaceRoot }
+  } catch (error) {
+    const detail = String(error.stderr || error.stdout || error.message || '').trim().replace(/\s+/g, ' ')
+    return {
+      status: 'manual-required',
+      marketplaceRoot,
+      detail: detail || 'Codex CLI could not register the marketplace.',
+    }
+  }
 }
 
 function installClaudeMarketplace(pluginDir) {
@@ -880,7 +925,8 @@ function install() {
   if (path.resolve(pluginDir) === path.resolve(sourceRoot)) {
     const marketplacePath = installCodexMarketplace(pluginDir)
     const claudeMarketplacePath = installClaudeMarketplace(pluginDir)
-    printSuccess(pluginDir, marketplacePath, claudeMarketplacePath)
+    const codexRegistration = registerCodexMarketplace(marketplacePath)
+    printSuccess(pluginDir, marketplacePath, claudeMarketplacePath, codexRegistration)
     return
   }
 
@@ -888,14 +934,22 @@ function install() {
   copyRecursive(sourceRoot, pluginDir)
   const marketplacePath = installCodexMarketplace(pluginDir)
   const claudeMarketplacePath = installClaudeMarketplace(pluginDir)
-  printSuccess(pluginDir, marketplacePath, claudeMarketplacePath)
+  const codexRegistration = registerCodexMarketplace(marketplacePath)
+  printSuccess(pluginDir, marketplacePath, claudeMarketplacePath, codexRegistration)
 }
 
-function printSuccess(pluginDir, marketplacePath, claudeMarketplacePath) {
-  console.log('cuberhyk-dev-flow installed.')
+function printSuccess(pluginDir, marketplacePath, claudeMarketplacePath, codexRegistration) {
+  console.log('cuberhyk-dev-flow files installed.')
   console.log(`Plugin directory: ${pluginDir}`)
   console.log(`Codex marketplace: ${marketplacePath}`)
   console.log(`Claude marketplace: ${claudeMarketplacePath}`)
+  console.log('')
+  if (codexRegistration.status === 'registered' || codexRegistration.status === 'already-registered') {
+    console.log(`Codex marketplace registration: ${codexRegistration.status}`)
+  } else {
+    console.log(`Codex marketplace registration: manual action required (${codexRegistration.detail})`)
+    console.log(`  codex plugin marketplace add "${codexRegistration.marketplaceRoot}"`)
+  }
   console.log('')
   console.log('Claude Code local test:')
   console.log(`  claude --plugin-dir "${pluginDir}"`)
@@ -905,7 +959,7 @@ function printSuccess(pluginDir, marketplacePath, claudeMarketplacePath) {
   console.log('  /plugin install cuberhyk-dev-flow@cuberhyk-plugins')
   console.log('')
   console.log('Codex:')
-  console.log('  Open /plugins and install cuberhyk-dev-flow from the cuberhyk-plugins marketplace.')
+  console.log('  Restart Codex, open /plugins, then install cuberhyk-dev-flow from the cuberhyk-plugins marketplace.')
 }
 
 function paths() {
@@ -916,21 +970,25 @@ function paths() {
 
 const command = process.argv[2] || 'install'
 
-try {
-  if (command === 'install') install()
-  else if (command === 'init-project') initProject()
-  else if (command === 'init-design-system') initDesignSystem()
-  else if (command === 'validate-docs') validateDocs()
-  else if (command === 'validate') {
-    validatePluginRoot(pluginRoot)
-    console.log('cuberhyk-dev-flow package structure is valid.')
-  } else if (command === 'paths') paths()
-  else if (command === 'help' || command === '--help' || command === '-h') usage()
-  else {
-    usage()
+export { codexMarketplaceRoot, installCodexMarketplace, registerCodexMarketplace }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  try {
+    if (command === 'install') install()
+    else if (command === 'init-project') initProject()
+    else if (command === 'init-design-system') initDesignSystem()
+    else if (command === 'validate-docs') validateDocs()
+    else if (command === 'validate') {
+      validatePluginRoot(pluginRoot)
+      console.log('cuberhyk-dev-flow package structure is valid.')
+    } else if (command === 'paths') paths()
+    else if (command === 'help' || command === '--help' || command === '-h') usage()
+    else {
+      usage()
+      process.exitCode = 1
+    }
+  } catch (error) {
+    console.error(error.message)
     process.exitCode = 1
   }
-} catch (error) {
-  console.error(error.message)
-  process.exitCode = 1
 }

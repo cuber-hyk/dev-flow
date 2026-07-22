@@ -532,6 +532,9 @@ cd /path/to/dev-flow
 node ./bin/dev-flow.js install
 ```
 
+The installer registers the local marketplace with the Codex CLI when it is available. If Codex is
+not on `PATH`, it prints the exact `codex plugin marketplace add ...` command needed to finish setup.
+
 ### Claude Code
 
 Add the marketplace root, then install the plugin:
@@ -564,8 +567,16 @@ plugin version is installed.
 
 ### Codex
 
-Open `/plugins`, add or select the `cuberhyk-plugins` marketplace, then install
-`cuberhyk-dev-flow`.
+Run the local installer, then restart Codex. It registers the `cuberhyk-plugins` marketplace when
+the Codex CLI is available. Open `/plugins`, select that marketplace, and install
+`cuberhyk-dev-flow`. Verify the marketplace registration with:
+
+```bash
+codex plugin marketplace list
+```
+
+If the installer reports that Codex CLI registration needs manual action, run the command it prints
+before restarting Codex.
 
 If Codex still shows an old `dev-flow` plugin, disable or remove `dev-flow@personal`, then restart
 Codex or start a new session. Skills are loaded at session start and usually do not hot-refresh
