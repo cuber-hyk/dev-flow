@@ -19,5 +19,6 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 ### Fixed
 
 - Register the local Codex marketplace during installation when the Codex CLI is available.
+- Reject persistent Markdown documents whose YAML frontmatter is missing or rendered as a title.
 
 ### Security

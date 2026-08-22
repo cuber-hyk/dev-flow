@@ -15,6 +15,14 @@ For open-ended project or scope review where the problem location is unknown, us
 - Follow an explicit user language request or a documented existing repository language convention instead.
 - Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
 
+## Persistent Markdown Frontmatter
+
+When creating or updating an audit file, copy the YAML frontmatter block from
+`templates/docs/audits/_template.md` before replacing values. It must be the first content in the
+file, start with `---`, end with a second `---`, and precede `# Audit Title`. Never render metadata
+fields as Markdown headings or body text. Run `validate-docs` after writing the audit and fix any
+frontmatter error before reporting completion.
+
 ## Boundary
 
 Dev Audit does:

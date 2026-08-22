@@ -18,6 +18,14 @@ Core principle:
 > `DESIGN.md` records confirmed UI intent and reuse rules; design tokens and shared components make
 > those rules executable.
 
+## Persistent Markdown Frontmatter
+
+When creating or updating `DESIGN.md`, copy the YAML frontmatter block from `templates/DESIGN.md`
+before replacing values. It must be the first content in the file, start with `---`, end with a
+second `---`, and precede the Markdown title. Never render metadata fields as Markdown headings or
+body text. Run `validate-docs` after writing the design contract and fix any frontmatter error
+before reporting completion.
+
 ## Modes
 
 - `initialize`: after the user approves an initial representative UI, create the first `DESIGN.md`

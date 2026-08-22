@@ -9,6 +9,13 @@ Language policy:
 - Follow an explicit user language request or a documented existing repository language convention instead.
 - Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
 
+Persistent Markdown frontmatter:
+
+- For `DESIGN.md` and documents under `docs/capabilities/`, `docs/plans/`, `docs/audits/`, or `docs/adr/`, copy the matching template's YAML frontmatter block exactly before filling in values.
+- YAML frontmatter must be the first content in the file, start with `---`, end with a second `---`, and be followed by the Markdown title on a later line.
+- Never turn metadata fields such as `artifact_type`, `status`, `created`, or `updated` into Markdown headings or body text.
+- After creating or updating a persistent artifact, run `validate-docs`; a frontmatter error must be fixed before reporting the artifact complete.
+
 Default user-facing flow:
 
 For fuzzy ideas or unclear product/workflow changes:

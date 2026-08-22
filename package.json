@@ -1,6 +1,6 @@
 {
   "name": "cuberhyk-dev-flow",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Multi-agent lifecycle workflow plugin with orient, brainstorm, design-system, split, decision, exploratory review, branch, changelog, distill, and review gates.",
   "type": "module",
   "bin": {
@@ -31,7 +31,8 @@
     "validate-docs": "node ./bin/dev-flow.js validate-docs",
     "test:p1-review-gate": "node ./tests/dev-branch-review-gate.test.js",
     "test:codex-install": "node ./tests/codex-marketplace-install.test.js",
-    "test:language-policy": "node ./tests/language-policy.test.js"
+    "test:language-policy": "node ./tests/language-policy.test.js",
+    "test:frontmatter-contract": "node ./tests/frontmatter-contract.test.js"
   },
   "keywords": [
     "ai-agent",

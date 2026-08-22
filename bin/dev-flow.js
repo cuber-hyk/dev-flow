@@ -36,6 +36,13 @@ const resolvedNoVerificationCloseouts = ['accepted_risk', 'wont_fix', 'not_repro
 const unresolvedFindingStatuses = ['open', 'planned', 'not_verified']
 const agentSectionStart = '<!-- cuberhyk-dev-flow:start -->'
 const agentSectionEnd = '<!-- cuberhyk-dev-flow:end -->'
+const persistentArtifactTemplateFields = {
+  'templates/DESIGN.md': ['artifact_type', 'status', 'updated', 'token_source'],
+  'templates/docs/capabilities/_template.md': ['artifact_type', 'status', 'updated', 'source_of_truth'],
+  'templates/docs/plans/_template.md': ['artifact_type', 'status', 'created', 'updated', 'owner'],
+  'templates/docs/audits/_template.md': ['artifact_type', 'status', 'created', 'updated', 'scope', 'source_of_truth'],
+  'templates/docs/adr/_template.md': ['artifact_type', 'status', 'created', 'updated', 'source_of_truth'],
+}
 
 function usage() {
   console.log(`cuberhyk-dev-flow installer
@@ -112,6 +119,32 @@ function parseFrontmatter(text) {
     if (item) values[item[1]] = item[2].replace(/^["']|["']$/g, '').trim()
   }
   return values
+}
+
+function missingFrontmatterFields(frontmatter, requiredFields) {
+  if (!frontmatter) return requiredFields
+  return requiredFields.filter((field) => !Object.hasOwn(frontmatter, field) || !frontmatter[field])
+}
+
+function missingFrontmatterKeys(frontmatter, requiredFields) {
+  if (!frontmatter) return requiredFields
+  return requiredFields.filter((field) => !Object.hasOwn(frontmatter, field))
+}
+
+function validateArtifactFrontmatter(errors, text, relativePath, requiredFields) {
+  const frontmatter = parseFrontmatter(text)
+  if (!frontmatter) {
+    errors.push(
+      `${relativePath} must start with YAML frontmatter delimited by ---; metadata fields must not appear in the document title.`
+    )
+    return null
+  }
+
+  const missingFields = missingFrontmatterFields(frontmatter, requiredFields)
+  if (missingFields.length > 0) {
+    errors.push(`${relativePath} is missing required frontmatter fields: ${missingFields.join(', ')}`)
+  }
+  return frontmatter
 }
 
 function isGitRepository(root) {
@@ -345,6 +378,24 @@ function validatePluginRoot(root = pluginRoot) {
         .map((name) => `- skills/${name}/SKILL.md`)
         .join('\n')}`
     )
+  }
+
+  const invalidArtifactTemplates = Object.entries(persistentArtifactTemplateFields).flatMap(
+    ([relativePath, requiredFields]) => {
+      const text = readText(path.join(root, relativePath))
+      const frontmatter = parseFrontmatter(text)
+      if (!frontmatter) return [`${relativePath} must start with YAML frontmatter delimited by ---.`]
+      const missingFields = missingFrontmatterKeys(frontmatter, requiredFields)
+      if (missingFields.length > 0) {
+        return [`${relativePath} is missing required frontmatter fields: ${missingFields.join(', ')}`]
+      }
+      const frontmatterEnd = text.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n\r?\n# /)
+      return frontmatterEnd ? [] : [`${relativePath} must place its Markdown title after closing YAML frontmatter.`]
+    }
+  )
+
+  if (invalidArtifactTemplates.length > 0) {
+    throw new Error(`Invalid persistent artifact templates:\n${invalidArtifactTemplates.map((item) => `- ${item}`).join('\n')}`)
   }
 
   const invalidOpenAiAgents = skillNames.filter((name) => {
@@ -630,6 +681,7 @@ function validateDocs() {
 
   if (fs.existsSync(designPath)) {
     const design = readText(designPath)
+    validateArtifactFrontmatter(errors, design, 'DESIGN.md', persistentArtifactTemplateFields['templates/DESIGN.md'])
     for (const heading of ['Authority And Scope', 'Sources', 'Foundations', 'Component Rules', 'Known Gaps']) {
       if (!hasHeading(design, heading)) warnings.push(`DESIGN.md should contain ## ${heading}.`)
     }
@@ -691,9 +743,13 @@ function validateDocs() {
   for (const file of capabilityFiles) {
     const rel = path.relative(targetRoot, file).split(path.sep).join('/')
     const text = readText(file)
-    const fm = parseFrontmatter(text)
     if (path.basename(file) === '_template.md') continue
-    if (!/source_of_truth:/i.test(text)) warnings.push(`Capability should declare source_of_truth: ${rel}`)
+    const fm = validateArtifactFrontmatter(
+      errors,
+      text,
+      rel,
+      persistentArtifactTemplateFields['templates/docs/capabilities/_template.md']
+    )
     if (/(audit|audits|plan|plans|findings)/i.test(path.basename(file))) {
       errors.push(`Process artifact appears to be stored in capabilities: ${rel}`)
     }
@@ -704,7 +760,7 @@ function validateDocs() {
       warnings.push(`Capability file may contain audit findings; keep only current facts: ${rel}`)
     }
     if (fm?.artifact_type && fm.artifact_type !== 'capability') {
-      warnings.push(`Capability artifact_type should be capability: ${rel}`)
+      errors.push(`Capability artifact_type should be capability: ${rel}`)
     }
   }
 
@@ -720,10 +776,13 @@ function validateDocs() {
       const rel = path.relative(targetRoot, file).split(path.sep).join('/')
       if (path.basename(file) === '_template.md') continue
       const text = readText(file)
-      const fm = parseFrontmatter(text)
-      if (!fm?.status) {
-        warnings.push(`Process artifact should include frontmatter status: ${rel}`)
-      } else if (!allowedStatuses.includes(fm.status)) {
+      const requiredFields =
+        dir === 'docs/plans'
+          ? persistentArtifactTemplateFields['templates/docs/plans/_template.md']
+          : persistentArtifactTemplateFields['templates/docs/audits/_template.md']
+      const fm = validateArtifactFrontmatter(errors, text, rel, requiredFields)
+      if (!fm) continue
+      if (!allowedStatuses.includes(fm.status)) {
         warnings.push(
           `Process artifact has invalid status "${fm.status}" in ${rel}; expected one of ${allowedStatuses.join(', ')}`
         )
@@ -733,8 +792,6 @@ function validateDocs() {
           `Process artifact uses disallowed lifecycle status "${fm.status}" in ${rel}; use active, archived, or delete the file.`
         )
       }
-      if (!fm?.updated) warnings.push(`Process artifact should include frontmatter updated: ${rel}`)
-      if (!fm?.artifact_type) warnings.push(`Process artifact should include frontmatter artifact_type: ${rel}`)
       if (rel.includes('/archived/') && fm?.status === 'active') {
         errors.push(`Archived artifact should not remain active: ${rel}`)
       }
@@ -770,12 +827,8 @@ function validateDocs() {
       }
 
       if (dir === 'docs/audits') {
-        const auditFields = ['artifact_type', 'status', 'created', 'updated', 'scope', 'source_of_truth']
-        for (const field of auditFields) {
-          if (!fm?.[field]) warnings.push(`Audit should include frontmatter ${field}: ${rel}`)
-        }
         if (fm?.artifact_type && fm.artifact_type !== 'audit') {
-          warnings.push(`Audit artifact_type should be audit: ${rel}`)
+          errors.push(`Audit artifact_type should be audit: ${rel}`)
         }
 
         const findingTables = auditFindingTables(text)
@@ -820,9 +873,14 @@ function validateDocs() {
   for (const file of adrFiles) {
     const rel = path.relative(targetRoot, file).split(path.sep).join('/')
     if (path.basename(file) === '_template.md') continue
-    const fm = parseFrontmatter(readText(file))
-    if (!fm?.status) warnings.push(`ADR should include frontmatter status: ${rel}`)
-    else if (!adrStatuses.includes(fm.status)) {
+    const fm = validateArtifactFrontmatter(
+      errors,
+      readText(file),
+      rel,
+      persistentArtifactTemplateFields['templates/docs/adr/_template.md']
+    )
+    if (!fm) continue
+    if (!adrStatuses.includes(fm.status)) {
       warnings.push(`ADR has invalid status "${fm.status}" in ${rel}; expected one of ${adrStatuses.join(', ')}`)
     }
     if (fm?.status && disallowedLifecycleStatuses.includes(fm.status)) {
@@ -830,7 +888,6 @@ function validateDocs() {
         `ADR uses disallowed lifecycle status "${fm.status}" in ${rel}; use proposed, accepted, archived, or delete the file.`
       )
     }
-    if (!fm?.updated) warnings.push(`ADR should include frontmatter updated: ${rel}`)
     if (rel.includes('/archived/') && fm?.status !== 'archived') {
       warnings.push(`ADR under archived/ should use status: archived: ${rel}`)
     }

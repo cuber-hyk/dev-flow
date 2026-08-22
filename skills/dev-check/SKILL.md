@@ -23,8 +23,9 @@ Dev Check does:
 
 - Run `node <dev-flow>/bin/dev-flow.js validate-docs [project-dir]`.
 - Report missing recommended memory paths.
+- Error when a persistent Markdown document does not begin with correctly delimited YAML frontmatter.
 - Detect process artifacts misplaced under `docs/capabilities/`.
-- Warn when plans, audits, ADRs, or capabilities lack required metadata.
+- Error when plans, audits, ADRs, or capabilities lack required metadata.
 - Warn when plan/audit/ADR statuses violate the lifecycle protocol.
 - Warn when audit findings lack stable IDs or finding status.
 - Error when archived audits still contain unresolved findings or follow-up work.
@@ -75,6 +76,7 @@ The validator checks:
   - `docs/adr/archived/`
 - Audit, review, findings, or plan artifacts stored under `docs/capabilities/`.
 - Capability docs without `source_of_truth`.
+- Persistent Markdown documents without opening YAML frontmatter delimited by `---` before their title.
 - Plan and audit files without `status`, `updated`, or `artifact_type`.
 - Audit files without required frontmatter: `artifact_type`, `status`, `created`, `updated`, `scope`,
   and `source_of_truth`.
