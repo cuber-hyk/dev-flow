@@ -17,6 +17,14 @@ Core principle:
 
 > Plan files are for confirmed execution routes, not unresolved product or architecture disagreements.
 
+## Persistent Markdown Frontmatter
+
+When creating or updating a plan file, copy the YAML frontmatter block from
+`templates/docs/plans/_template.md` before replacing values. It must be the first content in the
+file, start with `---`, end with a second `---`, and precede `# Plan Title`. Never render metadata
+fields as Markdown headings or body text. Run `validate-docs` after writing the plan and fix any
+frontmatter error before reporting completion.
+
 ## Boundary
 
 Dev Plan does:

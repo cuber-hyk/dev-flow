@@ -13,6 +13,14 @@ Use this skill to discover unknown project risks through a map-first, evidence-g
 - Follow an explicit user language request or a documented existing repository language convention instead.
 - Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
 
+## Persistent Markdown Frontmatter
+
+When creating or updating an exploratory review report, copy the YAML frontmatter block from
+`templates/docs/audits/_template.md` before replacing values. It must be the first content in the
+file, start with `---`, end with a second `---`, and precede `# Audit Title`. Never render metadata
+fields as Markdown headings or body text. Run `validate-docs` after writing the report and fix any
+frontmatter error before reporting completion.
+
 ## Boundary
 
 Dev Exploratory Review does:

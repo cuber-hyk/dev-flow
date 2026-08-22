@@ -14,6 +14,14 @@ repository memory accurate without accumulating process noise.
 - Follow an explicit user language request or a documented existing repository language convention instead.
 - Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
 
+## Persistent Markdown Frontmatter
+
+When updating `DESIGN.md` or a document under `docs/capabilities/`, `docs/plans/`,
+`docs/audits/`, or `docs/adr/`, preserve its opening YAML frontmatter block. It must remain the
+first content in the file, bounded by `---`, and separate from the Markdown title. Never move
+metadata fields into headings or body text. Run `validate-docs` after the update and fix any
+frontmatter error before reporting completion.
+
 ## Boundary
 
 Dev Distill does:

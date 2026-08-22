@@ -615,6 +615,7 @@ node ./bin/dev-flow.js validate-docs /path/to/project
 The docs validator checks:
 
 - missing memory files and directories;
+- persistent Markdown documents without correctly delimited YAML frontmatter;
 - plan/audit files without required metadata;
 - invalid lifecycle statuses;
 - active artifacts stored under archived directories;
