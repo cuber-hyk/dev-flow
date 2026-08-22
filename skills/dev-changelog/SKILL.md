@@ -7,6 +7,12 @@ description: Maintain human-readable CHANGELOG.md entries using Keep a Changelog
 
 Use this skill to maintain `CHANGELOG.md` as human-facing release notes.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > A changelog is for people, not a dump of commits.

@@ -10,6 +10,8 @@ The format is based on Keep a Changelog, and this project follows Semantic Versi
 
 ### Changed
 
+- Default user-facing replies and generated documents to Chinese unless the user or repository specifies another language.
+
 ### Deprecated
 
 ### Removed

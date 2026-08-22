@@ -33,6 +33,12 @@ Guiding rule:
 Current facts stay current. Process artifacts get closed. Old process noise is not default context.
 ```
 
+## Language Policy
+
+Dev Flow defaults to Chinese for user-facing replies and documents it creates. An explicit user
+language request or the repository's documented language convention takes precedence. Code, commands,
+APIs, identifiers, paths, configuration keys, and required schema/status values remain in English.
+
 ## User-Facing Flow
 
 The daily user flow is intentionally short:

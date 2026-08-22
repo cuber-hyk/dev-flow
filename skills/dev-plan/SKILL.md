@@ -7,6 +7,12 @@ description: Create a minimal, verifiable development plan after repository orie
 Use this skill to enter the relevant project context, then turn the task or audit findings into a
 confirmed, verifiable execution plan.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > Plan files are for confirmed execution routes, not unresolved product or architecture disagreements.

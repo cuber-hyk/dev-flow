@@ -7,6 +7,12 @@ description: Perform open-ended, risk-driven review when the problem location is
 
 Use this skill to discover unknown project risks through a map-first, evidence-gated review.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 ## Boundary
 
 Dev Exploratory Review does:

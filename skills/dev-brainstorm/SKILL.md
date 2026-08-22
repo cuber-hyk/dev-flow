@@ -7,6 +7,12 @@ description: Refine fuzzy ideas before planning. Use when the user wants to expl
 
 Use this skill to turn an unclear idea into a plan-ready task frame.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > Brainstorming confirms intent and decisions; it does not create an executable plan.

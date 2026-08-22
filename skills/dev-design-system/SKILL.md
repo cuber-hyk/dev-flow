@@ -7,6 +7,12 @@ description: Maintain a project's durable UI design system contract. Use after t
 
 Use this skill to keep a project's UI design rules executable, current, and useful to coding agents.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > `DESIGN.md` records confirmed UI intent and reuse rules; design tokens and shared components make

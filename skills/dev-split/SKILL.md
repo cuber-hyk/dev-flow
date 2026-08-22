@@ -7,6 +7,12 @@ description: Evaluate and govern large-file, module-boundary, and code-organizat
 
 Use this skill to keep code organization deliberate when a task may grow large files or blur module boundaries.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > Line count is only a candidate signal. The real decision is whether module boundaries, ownership,

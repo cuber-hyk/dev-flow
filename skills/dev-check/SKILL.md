@@ -11,6 +11,12 @@ description: Validate Dev Flow repository memory, documentation routing, and lif
 
 Use this skill to verify that Dev Flow memory is organized correctly[.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 ## Boundary
 
 Dev Check does:

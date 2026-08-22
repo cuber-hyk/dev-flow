@@ -9,6 +9,12 @@ Use this skill to perform a bounded audit and route findings correctly.
 
 For open-ended project or scope review where the problem location is unknown, use the `/dev-exploratory-review` skill.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 ## Boundary
 
 Dev Audit does:

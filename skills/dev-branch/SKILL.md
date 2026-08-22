@@ -7,6 +7,12 @@ description: Execute a clear or planned development task in an isolated Git bran
 
 Use this skill to execute a task in an isolated Git workflow with an explicit review gate.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 Core principle:
 
 > The branch must contain only explainable task changes. Changelog and distillation happen before

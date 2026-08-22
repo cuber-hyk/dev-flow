@@ -7,6 +7,12 @@ description: Initialize Dev Flow repository memory for a new or existing project
 
 Use this skill to bootstrap the Dev Flow memory structure in a repository.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 ## Boundary
 
 Dev Init does:

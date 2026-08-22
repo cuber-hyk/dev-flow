@@ -8,6 +8,12 @@ description: Distill completed work into durable repository knowledge. Use after
 Use this skill after implementation, or inside the `/dev-branch` skill before the review gate, to keep
 repository memory accurate without accumulating process noise.
 
+## Language Policy
+
+- Default to Chinese for user-facing replies and documents created by this workflow.
+- Follow an explicit user language request or a documented existing repository language convention instead.
+- Keep code, commands, APIs, identifiers, paths, configuration keys, and required schema/status values in English.
+
 ## Boundary
 
 Dev Distill does:
